@@ -4,6 +4,8 @@ using System.Threading;
 using BurnSystems.Logging;
 using System.Collections.Generic;
 using System.Text;
+using RazorEngine;
+using BurnSystems.WebServer.Parser;
 
 namespace BurnSystems.WebServer
 {
@@ -39,6 +41,11 @@ namespace BurnSystems.WebServer
                 this.httpListener.Prefixes.Add(prefix);
             }
         }
+
+        /// <summary>
+        /// Stores the template parser
+        /// </summary>
+        private TemplateParser templateParser = new TemplateParser();
 
         /// <summary>
         /// Starts listening
@@ -90,34 +97,67 @@ namespace BurnSystems.WebServer
                 while (this.running)
                 {
                     var context = this.httpListener.GetContext();
-
-                    var content404 = Localization_WebServer.Error404;
-
-                    context.Response.StatusCode = 404;
-                    using (var response = context.Response.OutputStream)
+                    try
                     {
-                        var bytes = Encoding.UTF8.GetBytes(content404);
-                        response.Write(bytes, 0, bytes.Length);
+                        this.ExecuteHttpRequest(context);
+
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(this.ExecuteHttpRequest), context);
                     }
-
-                    context.Response.Close();
-
-                    //ThreadPool.QueueUserWorkItem(this.ExecuteHttpRequest, context);
+                    catch (Exception exc)
+                    {
+                        Log.TheLog.LogEntry(
+                            new LogEntry(
+                                String.Format(
+                                    Localization_WebServer.ExceptionDuringListening,
+                                    exc.Message),
+                                LogLevel.Message));
+                        Log.TheLog.LogEntry(
+                            new LogEntry(
+                                String.Format(
+                                    Localization_WebServer.ExceptionDuringListening,
+                                    exc.ToString()),
+                                LogLevel.Verbose));
+                    }
                 }
             }
             catch (HttpListenerException)
             {
                 // Listener has been stopped.
             }
-            catch (Exception exc)
+        }        
+
+        /// <summary>
+        /// Executes the http request itself
+        /// </summary>
+        /// <param name="context"></param>
+        private void ExecuteHttpRequest(object value)
+        {
+            var context = value as HttpListenerContext;
+            if (context == null)
             {
-                Log.TheLog.LogEntry(
-                    new LogEntry(
-                        String.Format(
-                            Localization_WebServer.ExceptionDuringListening,
-                            exc.Message),
-                        LogLevel.Message));
+                throw new ArgumentException("value is not HttpListenerContext");
             }
+
+            var content404 = Localization_WebServer.Error404;
+
+            var model = new
+            {
+                Title = "File Not Found",
+                Message = context.Request.Url.ToString(),
+                Code = 404.ToString()
+            };
+
+            var template = this.templateParser.Parse(content404, model, "__Content404");
+
+            context.Response.StatusCode = 404;
+            using (var response = context.Response.OutputStream)
+            {
+                var bytes = Encoding.UTF8.GetBytes(template);
+                response.Write(bytes, 0, bytes.Length);
+            }
+
+            context.Response.Close();
+
         }
     }
 }

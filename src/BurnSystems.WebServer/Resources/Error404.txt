@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>BurnSystems FBK-Webserver</title>
+		<title>BurnSystems Webserver</title>
 		<style type="text/css">		
 			body
 			{
@@ -14,6 +14,10 @@
 		</style>
 	</head>
 	<body>
-		<h1>404 - File not found</h1>		
+		<h1>@Model.Title</h1>
+		<p>@Model.Message</p>
+		@if(!string.IsNullOrEmpty(Model.Code)) {
+			<p><code>@Model.Code</code></p>
+		}
 	</body>
 </html>
