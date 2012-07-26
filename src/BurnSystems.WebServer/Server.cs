@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer
 {
@@ -24,6 +25,36 @@ namespace BurnSystems.WebServer
         /// Stores the listener
         /// </summary>
         private Listener listener;
+
+        /// <summary>
+        /// Stores the activation container
+        /// </summary>
+        private ActivationContainer activationContainer;
+
+        /// <summary>
+        /// Gets the activation container
+        /// </summary>
+        public ActivationContainer ActivationContainer
+        {
+            get { return this.activationContainer; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Server class.
+        /// </summary>
+        public Server()
+        {
+            this.activationContainer = new ActivationContainer("BurnSystems.WebServer");
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Server class.
+        /// </summary>
+        /// <param name="container">Container to be set</param>
+        public Server(ActivationContainer container)
+        {
+            this.activationContainer = container;
+        }
 
         /// <summary>
         /// Adds a certain prefix
