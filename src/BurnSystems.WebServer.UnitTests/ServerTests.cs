@@ -17,7 +17,7 @@ namespace BurnSystems.WebServer.UnitTests
         [Test]
         public void TestServer()
         {
-            var server = new Server();
+            var server = Server.Default;
             server.AddPrefix("http://localhost:8081/");
             server.Start();
 

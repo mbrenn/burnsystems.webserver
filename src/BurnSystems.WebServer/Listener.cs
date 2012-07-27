@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using RazorEngine;
 using BurnSystems.WebServer.Parser;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer
 {
@@ -30,11 +31,18 @@ namespace BurnSystems.WebServer
         private volatile bool running = false;
 
         /// <summary>
+        /// Stoers the activation container
+        /// </summary>
+        private ActivationContainer activationContainer;
+
+        /// <summary>
         /// Initializes a new instance of the Listener instance
         /// </summary>
-        /// <param name="prefixes"></param>
-        internal Listener(IEnumerable<string> prefixes)
+        /// <param name="container">Defines the activation container</param>
+        /// <param name="prefixes">Prefixes to be listened to</param>
+        internal Listener(ActivationContainer container, IEnumerable<string> prefixes)
         {
+            this.activationContainer = container;
             this.httpListener = new HttpListener();
             foreach (var prefix in prefixes)
             {
@@ -138,23 +146,9 @@ namespace BurnSystems.WebServer
                 throw new ArgumentException("value is not HttpListenerContext");
             }
 
-            var content404 = Localization_WebServer.Error404;
-
-            var model = new
-            {
-                Title = "File Not Found",
-                Message = context.Request.Url.ToString(),
-                Code = 404.ToString()
-            };
-
-            var template = this.templateParser.Parse(content404, model, "__Content404");
-
-            context.Response.StatusCode = 404;
-            using (var response = context.Response.OutputStream)
-            {
-                var bytes = Encoding.UTF8.GetBytes(template);
-                response.Write(bytes, 0, bytes.Length);
-            }
+            // Throw 404
+            var errorResponse = this.activationContainer.Create<ErrorResponse>();
+            errorResponse.Respond(404, "Not Found", context);
 
             context.Response.Close();
 

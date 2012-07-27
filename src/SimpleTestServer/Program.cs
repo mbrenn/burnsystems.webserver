@@ -14,8 +14,8 @@ namespace SimpleTestServer
         {
             Log.TheLog.FilterLevel = LogLevel.Verbose;
             Log.TheLog.AddLogProvider(new ConsoleProvider());
-            var actionContainer = new ActivationContainer("Server");
-            var server = new Server(actionContainer);
+            var activationContainer = new ActivationContainer("Server");
+            var server = Server.CreateDefaultServer(activationContainer);
             server.AddPrefix("http://127.0.0.1:8081/");
             server.AddPrefix("http://localhost:8081/");
             server.Start();

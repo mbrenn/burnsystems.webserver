@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BurnSystems.ObjectActivation;
+using BurnSystems.WebServer.Parser;
 
 namespace BurnSystems.WebServer
 {
@@ -40,11 +41,38 @@ namespace BurnSystems.WebServer
         }
 
         /// <summary>
-        /// Initializes a new instance of the Server class.
+        /// Stores the template parser used for Web
         /// </summary>
-        public Server()
+        private static TemplateParser parser = new TemplateParser();
+
+        /// <summary>
+        /// Defines the binding name for template parser
+        /// </summary>
+        public const string TemplateParserBindingName = "WebtemplateParser";
+
+        /// <summary>
+        /// Creates the default server
+        /// </summary>
+        public static Server Default
         {
-            this.activationContainer = new ActivationContainer("BurnSystems.WebServer");
+            get
+            {
+                var activationContainer = new ActivationContainer("BurnSystems.Webserver");
+                
+                return CreateDefaultServer(activationContainer);
+            }
+        }
+
+        /// <summary>
+        /// Creates the default server with all bindings
+        /// </summary>
+        /// <param name="activationContainer">Activation container where default binding will be addedd</param>
+        /// <returns></returns>
+        public static Server CreateDefaultServer(ObjectActivation.ActivationContainer activationContainer)
+        {
+            activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
+
+            return new Server(activationContainer);
         }
 
         /// <summary>
@@ -80,7 +108,7 @@ namespace BurnSystems.WebServer
                 throw new InvalidOperationException(Localization_WebServer.ServerAlreadyStarted);
             }
 
-            this.listener = new Listener(this.prefixes);
+            this.listener = new Listener(this.activationContainer, this.prefixes);
             this.listener.StartListening();
             this.isRunning = true;
         }

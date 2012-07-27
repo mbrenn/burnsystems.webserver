@@ -65,7 +65,7 @@ namespace BurnSystems.WebServer {
         ///       &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
         ///	&lt;head&gt;
-        ///		&lt;title&gt;BurnSystems FBK-Webserver&lt;/title&gt;
+        ///		&lt;title&gt;BurnSystems Webserver&lt;/title&gt;
         ///		&lt;style type=&quot;text/css&quot;&gt;		
         ///			body
         ///			{
@@ -77,14 +77,14 @@ namespace BurnSystems.WebServer {
         ///		&lt;/style&gt;
         ///	&lt;/head&gt;
         ///	&lt;body&gt;
-        ///		&lt;h1&gt;404 - File not found&lt;/h1&gt;		
-        ///	&lt;/body&gt;
-        ///&lt;/html&gt;
-        /// ähnelt.
+        ///		&lt;h1&gt;@Model.Title&lt;/h1&gt;
+        ///		&lt;p&gt;@Model.Message&lt;/p&gt;
+        ///		@if(!string.IsNullOrEmpty(Model.Code)) {
+        /// [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
-        internal static string Error404 {
+        internal static string Error {
             get {
-                return ResourceManager.GetString("Error404", resourceCulture);
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         

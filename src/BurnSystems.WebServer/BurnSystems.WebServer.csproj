@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ErrorResponse.cs" />
+    <Compile Include="HttpStatusCode.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="Localization_WebServer.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -66,11 +68,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Localization_WebServer.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Localization_WebServer.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Error404.txt" />
+    <Content Include="Resources\Error.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
