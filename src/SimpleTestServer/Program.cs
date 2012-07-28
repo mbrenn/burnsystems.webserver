@@ -23,7 +23,6 @@ namespace SimpleTestServer
             Console.WriteLine("Press key to stop server");
             Console.ReadKey();
             server.Stop();
-
         }
     }
 }
