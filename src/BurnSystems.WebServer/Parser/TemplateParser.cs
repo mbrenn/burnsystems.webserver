@@ -34,7 +34,7 @@ namespace BurnSystems.WebServer.Parser
         /// Initializes a new instance of the template parser instance
         /// </summary>
         public TemplateParser()
-            : base(CompilerServiceFactory.CreateCompilerService())
+            : base()
         {
         }
     }
