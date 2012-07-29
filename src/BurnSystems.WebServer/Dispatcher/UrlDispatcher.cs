@@ -15,12 +15,12 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <summary>
         /// Cache for already found urls
         /// </summary>
-        private Dictionary<string, IRequestDispatcher> cache;
+        private Dictionary<string, IRequestDispatcher> cache = new Dictionary<string, IRequestDispatcher>();
 
         /// <summary>
         /// List of dispatchers
         /// </summary>
-        private List<IRequestDispatcher> dispatchers;
+        private List<IRequestDispatcher> dispatchers = new List<IRequestDispatcher>();
 
         /// <summary>
         /// Initializes a new instance of the UrlDispatcher class
@@ -29,6 +29,11 @@ namespace BurnSystems.WebServer.Dispatcher
         public UrlDispatcher(Func<HttpListenerContext, bool> filter)
             : base(filter)
         {
+        }
+
+        public void Add(IRequestDispatcher dispatcher)
+        {
+            this.dispatchers.Add(dispatcher);
         }
 
         public override void Dispatch(System.Net.HttpListenerContext context)
