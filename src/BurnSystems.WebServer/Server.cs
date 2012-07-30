@@ -51,6 +51,11 @@ namespace BurnSystems.WebServer
         public const string TemplateParserBindingName = "WebtemplateParser";
 
         /// <summary>
+        /// Stores the name for the default dispatcher
+        /// </summary>
+        public const string DefaultDispatcherBindingName = "DefaultDispatcher";
+
+        /// <summary>
         /// Creates the default server
         /// </summary>
         public static Server Default

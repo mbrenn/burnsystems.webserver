@@ -47,8 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dispatcher\BaseDispatcher.cs" />
+    <Compile Include="Dispatcher\DispatchFilter.cs" />
+    <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
+    <Compile Include="IRequestDispatcher.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="Localization_WebServer.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -75,6 +79,7 @@
   <ItemGroup>
     <Content Include="Resources\Error.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
