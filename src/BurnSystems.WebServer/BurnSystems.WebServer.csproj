@@ -50,7 +50,7 @@
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
-    <Compile Include="ErrorResponse.cs" />
+    <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="IRequestDispatcher.cs" />
     <Compile Include="Listener.cs" />

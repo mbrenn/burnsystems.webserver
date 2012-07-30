@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer.Dispatcher
 {
@@ -36,7 +37,7 @@ namespace BurnSystems.WebServer.Dispatcher
             this.dispatchers.Add(dispatcher);
         }
 
-        public override void Dispatch(System.Net.HttpListenerContext context)
+        public override void Dispatch(IActivates activates, System.Net.HttpListenerContext context)
         {
             var url = context.Request.Url.AbsolutePath;
 
@@ -46,12 +47,12 @@ namespace BurnSystems.WebServer.Dispatcher
             {
                 if (foundRequest != null)
                 {
-                    foundRequest.Dispatch(context);
+                    foundRequest.Dispatch(activates, context);
                 }
             }
 
             // Not found, go through list
-            foundRequest = this.dispatchers.Where(x => x.IsResponsible(context)).FirstOrDefault();
+            foundRequest = this.dispatchers.Where(x => x.IsResponsible(activates, context)).FirstOrDefault();
             this.cache[url] = foundRequest;
             if (foundRequest == null)
             {
@@ -60,7 +61,7 @@ namespace BurnSystems.WebServer.Dispatcher
             }
             else
             {
-                foundRequest.Dispatch(context);
+                foundRequest.Dispatch(activates, context);
             }
         }
     }

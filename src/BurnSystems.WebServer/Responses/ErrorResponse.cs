@@ -7,7 +7,7 @@ using BurnSystems.WebServer.Parser;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Test;
 
-namespace BurnSystems.WebServer
+namespace BurnSystems.WebServer.Responses
 {
     public class ErrorResponse
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using BurnSystems.Test;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer.Dispatcher
 {
@@ -23,11 +24,11 @@ namespace BurnSystems.WebServer.Dispatcher
             this.filter = filter;
         }
 
-        public bool IsResponsible(HttpListenerContext context)
+        public bool IsResponsible(IActivates activates, HttpListenerContext context)
         {
             return this.filter(context);
         }
 
-        public abstract void Dispatch(HttpListenerContext context);
+        public abstract void Dispatch(IActivates activates, HttpListenerContext context);
     }
 }

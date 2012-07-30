@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer
 {
@@ -16,12 +17,12 @@ namespace BurnSystems.WebServer
         /// </summary>
         /// <param name="context">Context of Http Request</param>
         /// <returns>true, if this dispatcher shall dispatch the request</returns>
-        bool IsResponsible(HttpListenerContext context);
+        bool IsResponsible(IActivates container, HttpListenerContext context);
 
         /// <summary>
         /// Dispatches the request
         /// </summary>
         /// <param name="context">Context of the request</param>
-        void Dispatch(HttpListenerContext context);
+        void Dispatch(IActivates container, HttpListenerContext context);
     }
 }
