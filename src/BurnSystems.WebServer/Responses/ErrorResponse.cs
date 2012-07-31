@@ -6,10 +6,14 @@ using System.Net;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Test;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace BurnSystems.WebServer.Responses
 {
-    public class ErrorResponse
+    /// <summary>
+    /// Returns an error page
+    /// </summary>
+    public class ErrorResponse : BaseDispatcher
     {
         [ByName(Server.TemplateParserBindingName)]
         public TemplateParser TemplateParser
@@ -19,20 +23,49 @@ namespace BurnSystems.WebServer.Responses
         }
 
         /// <summary>
+        /// Initializes a new instance of the ErrorResponse class.
+        /// </summary>
+        public ErrorResponse()
+            : base(DispatchFilter.None)
+        {
+        }
+
+        public int Code
+        {
+            get;
+            set;
+        }
+
+        public string Message
+        {
+            get;
+            set;
+        }
+
+        public void Set(HttpStatusCode code)
+        {
+            Ensure.That(code != null);
+            this.Code = code.Code;
+            this.Message = code.Message;
+        }
+
+        /// <summary>
         /// Gives response to listener context
         /// </summary>
         /// <param name="context">Context to be used</param>
-        public void Respond(int code, string message, HttpListenerContext context)
+        public override void Dispatch(IActivates container, HttpListenerContext context)
         {
+            Ensure.That(this.Code != 0, "Code is 0");
+            Ensure.That(this.Message != null, "Code is null");
             Ensure.That(this.TemplateParser != null, "this.TemplateParser == null");
 
             var content = Localization_WebServer.Error;
 
             var model = new
             {
-                Title = message,
+                Title = this.Message,
                 Message = context.Request.Url.ToString(),
-                Code = code.ToString()
+                Code = this.Code.ToString()
             };
 
             var template = this.TemplateParser.Parse(content, model, null, this.GetType().ToString());

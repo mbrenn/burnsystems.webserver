@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using BurnSystems.Logging;
-using System.Collections.Generic;
-using System.Text;
-using RazorEngine;
-using BurnSystems.WebServer.Parser;
 using BurnSystems.ObjectActivation;
+using BurnSystems.WebServer.Parser;
+using BurnSystems.WebServer.Responses;
 
 namespace BurnSystems.WebServer
 {
@@ -140,17 +139,21 @@ namespace BurnSystems.WebServer
         /// <param name="context"></param>
         private void ExecuteHttpRequest(object value)
         {
-            var context = value as HttpListenerContext;
-            if (context == null)
+            using (var block = new ActivationBlock("WebRequest", this.activationContainer))
             {
-                throw new ArgumentException("value is not HttpListenerContext");
+                var context = value as HttpListenerContext;
+                if (context == null)
+                {
+                    throw new ArgumentException("value is not HttpListenerContext");
+                }
+
+                // Throw 404
+                var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                errorResponse.Set(HttpStatusCode.NotFound);
+                errorResponse.Dispatch(block, context);
+
+                context.Response.Close();
             }
-
-            // Throw 404
-            var errorResponse = this.activationContainer.Create<ErrorResponse>();
-            errorResponse.Respond(404, "Not Found", context);
-
-            context.Response.Close();
 
         }
     }
