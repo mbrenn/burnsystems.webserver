@@ -50,6 +50,7 @@
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
+    <Compile Include="Helper\MimeTypeInfo.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="IRequestDispatcher.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\PhysicalFileResponse.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="Helper\MimeTypeConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\BurnSystems\src\BurnSystems.csproj">

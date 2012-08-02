@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
+using BurnSystems.WebServer.Helper;
 
 namespace BurnSystems.WebServer
 {
@@ -76,6 +77,9 @@ namespace BurnSystems.WebServer
         public static Server CreateDefaultServer(ObjectActivation.ActivationContainer activationContainer)
         {
             activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
+
+            var mimeTypeConverter = MimeTypeConverter.Default;
+            activationContainer.Bind<MimeTypeConverter>().ToConstant(mimeTypeConverter);
 
             return new Server(activationContainer);
         }

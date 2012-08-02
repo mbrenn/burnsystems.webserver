@@ -15,7 +15,7 @@ namespace BurnSystems.WebServer.Responses
     /// </summary>
     public class ErrorResponse : BaseDispatcher
     {
-        [ByName(Server.TemplateParserBindingName)]
+        [Inject(Server.TemplateParserBindingName)]
         public TemplateParser TemplateParser
         {
             get;
