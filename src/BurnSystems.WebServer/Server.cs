@@ -103,6 +103,11 @@ namespace BurnSystems.WebServer
             this.prefixes.Add(prefix);
         }
 
+        public void Add(IRequestDispatcher dispatcher)
+        {
+            this.activationContainer.Bind<IRequestDispatcher>().ToConstant(dispatcher);
+        }
+
         /// <summary>
         /// Starts the webserver
         /// </summary>
