@@ -90,6 +90,7 @@ namespace BurnSystems.WebServer
         /// <param name="container">Container to be set</param>
         public Server(ActivationContainer container)
         {
+            container.Bind<Server>().ToConstant(this);
             this.activationContainer = container;
         }
 

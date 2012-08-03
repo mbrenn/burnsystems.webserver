@@ -5,6 +5,7 @@ using System.Text;
 using BurnSystems.WebServer;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace SimpleTestServer
 {
@@ -19,6 +20,8 @@ namespace SimpleTestServer
             server.AddPrefix("http://127.0.0.1:8081/");
             server.AddPrefix("http://localhost:8081/");
             server.Start();
+
+            server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
 
             Console.WriteLine("Press key to stop server");
             Console.ReadKey();

@@ -147,6 +147,14 @@ namespace BurnSystems.WebServer
                     throw new ArgumentException("value is not HttpListenerContext");
                 }
 
+                foreach ( var dispatcher in block.GetAll<IRequestDispatcher>() )
+                {
+                    if (dispatcher.IsResponsible(block, context))
+                    {
+                        dispatcher.Dispatch(block, context);
+                    }
+                }
+                
                 // Throw 404
                 var errorResponse = this.activationContainer.Create<ErrorResponse>();
                 errorResponse.Set(HttpStatusCode.NotFound);
