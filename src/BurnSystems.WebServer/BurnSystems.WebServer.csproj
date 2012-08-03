@@ -64,6 +64,7 @@
     <Compile Include="Parser\TemplateParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\PhysicalFileResponse.cs" />
+    <Compile Include="Responses\StaticContentResponse.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Helper\MimeTypeConverter.cs" />
   </ItemGroup>
