@@ -45,6 +45,8 @@ namespace BurnSystems.WebServer.Dispatcher
                 var errorResponse = container.Create<ErrorResponse>();
                 errorResponse.Set(HttpStatusCode.Forbidden);
                 errorResponse.Dispatch(container, context);
+
+                return;
             }
 
             if (File.Exists(physicalPath))
