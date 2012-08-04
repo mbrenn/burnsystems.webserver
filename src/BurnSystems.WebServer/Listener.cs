@@ -168,6 +168,7 @@ namespace BurnSystems.WebServer
                     catch (Exception exc)
                     {
                         var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                        errorResponse.Title = "Server error";
                         errorResponse.Message = exc.ToString();
                         errorResponse.Code = 500;
                         errorResponse.Dispatch(block, context);
