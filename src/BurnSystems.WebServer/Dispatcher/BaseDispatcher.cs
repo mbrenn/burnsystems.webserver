@@ -24,11 +24,11 @@ namespace BurnSystems.WebServer.Dispatcher
             this.filter = filter;
         }
 
-        public bool IsResponsible(IActivates activates, HttpListenerContext context)
+        public bool IsResponsible(IActivates container, HttpListenerContext context)
         {
             return this.filter(context);
         }
 
-        public abstract void Dispatch(IActivates activates, HttpListenerContext context);
+        public abstract void Dispatch(IActivates container, HttpListenerContext context);
     }
 }
