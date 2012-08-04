@@ -141,26 +141,47 @@ namespace BurnSystems.WebServer
         {
             using (var block = new ActivationBlock("WebRequest", this.activationContainer))
             {
-                var context = value as HttpListenerContext;
-                if (context == null)
+                try
                 {
-                    throw new ArgumentException("value is not HttpListenerContext");
-                }
-
-                foreach ( var dispatcher in block.GetAll<IRequestDispatcher>() )
-                {
-                    if (dispatcher.IsResponsible(block, context))
+                    var context = value as HttpListenerContext;
+                    try
                     {
-                        dispatcher.Dispatch(block, context);
+                        if (context == null)
+                        {
+                            throw new ArgumentException("value is not HttpListenerContext");
+                        }
+
+                        foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
+                        {
+                            if (dispatcher.IsResponsible(block, context))
+                            {
+                                dispatcher.Dispatch(block, context);
+                            }
+                        }
+
+                        // Throw 404
+                        var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                        errorResponse.Set(HttpStatusCode.NotFound);
+                        errorResponse.Dispatch(block, context);
+
+                    }
+                    catch (Exception exc)
+                    {
+                        var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                        errorResponse.Title = "Server error";
+                        errorResponse.Message = exc.ToString();
+                        errorResponse.Code = 500;
+                        errorResponse.Dispatch(block, context);
+                    }
+                    finally
+                    {
+                        context.Response.Close();
                     }
                 }
-                
-                // Throw 404
-                var errorResponse = this.activationContainer.Create<ErrorResponse>();
-                errorResponse.Set(HttpStatusCode.NotFound);
-                errorResponse.Dispatch(block, context);
-
-                context.Response.Close();
+                catch (Exception exc)
+                {
+                    // Default, can't do anything
+                }
             }
 
         }

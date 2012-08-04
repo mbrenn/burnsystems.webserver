@@ -15,6 +15,7 @@
 	</head>
 	<body>
 		<h1>@Model.Title</h1>
+		<p>@Model.Url</p>
 		<p>@Model.Message</p>
 		@if(!string.IsNullOrEmpty(Model.Code)) {
 			<p><code>@Model.Code</code></p>

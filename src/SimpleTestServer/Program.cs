@@ -7,6 +7,7 @@ using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Responses.Tests;
+using BurnSystems.WebServer.Dispatcher.Test;
 
 namespace SimpleTestServer
 {
@@ -24,7 +25,10 @@ namespace SimpleTestServer
 
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller"));
 
+            server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
+            server.Start();
+
 
             Console.WriteLine("Press key to stop server");
             Console.ReadKey();

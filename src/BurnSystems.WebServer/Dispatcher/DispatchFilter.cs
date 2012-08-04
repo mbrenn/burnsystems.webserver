@@ -39,8 +39,13 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <returns></returns>
         public static Func<HttpListenerContext, bool> ByUrl(string url)
         {
+            if (!url.StartsWith("/"))
+            {
+                throw new ArgumentException("url does not start with '/'.");
+            }
+
             return (x) =>
-               x.Request.Url.ToString().ToLower().StartsWith(url);
+               x.Request.Url.AbsolutePath.ToLower().StartsWith(url);
         }
 
         public static Func<HttpListenerContext, bool> And(Func<HttpListenerContext, bool> f1, Func<HttpListenerContext, bool> f2)

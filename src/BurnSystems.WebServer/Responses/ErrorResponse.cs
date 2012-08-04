@@ -42,11 +42,18 @@ namespace BurnSystems.WebServer.Responses
             set;
         }
 
+        public string Title
+        {
+            get;
+            set;
+        }
+
         public void Set(HttpStatusCode code)
         {
             Ensure.That(code != null);
             this.Code = code.Code;
             this.Message = code.Message;
+            this.Title = code.Message;
         }
 
         /// <summary>
@@ -63,8 +70,9 @@ namespace BurnSystems.WebServer.Responses
 
             var model = new
             {
-                Title = this.Message,
-                Message = context.Request.Url.ToString(),
+                Title = this.Title,
+                Url = context.Request.Url.ToString(),
+                Message = this.Message,
                 Code = this.Code.ToString()
             };
 
