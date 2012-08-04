@@ -178,7 +178,7 @@ namespace BurnSystems.WebServer
                         context.Response.Close();
                     }
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
                     // Default, can't do anything
                 }

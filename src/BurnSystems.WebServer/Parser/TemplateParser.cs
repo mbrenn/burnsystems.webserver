@@ -14,28 +14,12 @@ namespace BurnSystems.WebServer.Parser
     public class TemplateParser : TemplateService
     {
         /// <summary>
-        /// Gets or sets the compiler service factory
-        /// </summary>
-        private static ICompilerServiceFactory CompilerServiceFactory
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Static constructor
-        /// </summary>
-        static TemplateParser()
-        {
-            CompilerServiceFactory = new DefaultCompilerServiceFactory();
-        }
-
-        /// <summary>
         /// Initializes a new instance of the template parser instance
         /// </summary>
         public TemplateParser()
             : base()
         {
+            this.AddNamespace("BurnSystems");
         }
     }
 }
