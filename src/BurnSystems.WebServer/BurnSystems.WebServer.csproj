@@ -54,6 +54,7 @@
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
+    <Compile Include="Helper\PostVariableReader.cs" />
     <Compile Include="MVC\Controller.cs" />
     <Compile Include="MVC\UrlParameterAttribute.cs" />
     <Compile Include="MVC\WebMethodAttribute.cs" />
