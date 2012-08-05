@@ -96,6 +96,7 @@
     </Content>
     <Content Include="htdocs\test.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup />

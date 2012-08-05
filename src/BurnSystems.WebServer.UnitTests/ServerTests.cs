@@ -5,39 +5,62 @@ using System.Text;
 using NUnit.Framework;
 using System.Net;
 using System.Threading;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace BurnSystems.WebServer.UnitTests
 {
     [TestFixture]
     public class ServerTests
     {
+        public static Server CreateServer()
+        {
+            var server = Server.Default;
+            server.AddPrefix("http://localhost:8081/");
+            
+            server.Add(new FileSystemDispatcher(DispatchFilter.ByUrl("/file"), "htdocs/", "/file/"));
+            server.Start();
+
+            return server;
+        }
+
         /// <summary>
         /// Tests the server itself. Just opening and closing
         /// </summary>
         [Test]
         public void TestServer()
         {
-            var server = Server.Default;
-            server.AddPrefix("http://localhost:8081/");
-            server.Start();
-
-            var webClient = new WebClient();
-            webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
-
-            try
+            using (var server = CreateServer())
             {
-                var data = webClient.DownloadString("http://localhost:8081/");
+                var webClient = new WebClient();
+                webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
 
-                // Shall not get reached
-                Assert.IsTrue(false);
-            }
-            catch (WebException exc)
-            {
-                Assert.That(exc.Status == WebExceptionStatus.ProtocolError);
-            }
+                try
+                {
+                    var data = webClient.DownloadString("http://localhost:8081/NotFound");
 
-            server.Stop();
+                    // Shall not get reached
+                    Assert.IsTrue(false);
+                }
+                catch (WebException exc)
+                {
+                    Assert.That(exc.Status == WebExceptionStatus.ProtocolError);
+                }
+            }
         }
 
+        [Test]
+        public void TestFileSystemDownload()
+        {
+            using (var server = CreateServer())
+            {
+                var webClient = new WebClient();
+                webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+
+                var data = webClient.DownloadString("http://localhost:8081/file/test.txt");
+
+                // Shall not get reached
+                Assert.That(data.Trim(), Is.EqualTo("This is a test."));
+            }
+        }
     }
 }
