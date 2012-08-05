@@ -23,21 +23,57 @@ namespace BurnSystems.WebServer.Dispatcher
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the webprefix
+        /// </summary>
+        public string WebPrefix
+        {
+            get;
+            set;
+        }
+
         public FileSystemDispatcher(Func<HttpListenerContext, bool> filter)
             : base(filter)
         {
         }
 
         public FileSystemDispatcher(Func<HttpListenerContext, bool> filter, string physicalRootPath)
-            : base(filter)
+            : this(filter)
         {
             this.PhysicalRootPath = physicalRootPath;
+        }
+
+        public FileSystemDispatcher(Func<HttpListenerContext, bool> filter, string physicalRootPath, string webPrefix)
+            : this(filter, physicalRootPath)
+        {
+            this.WebPrefix = webPrefix;
         }
 
         public override void Dispatch(IActivates container, System.Net.HttpListenerContext context)
         {
             // Substring(1) to remove '/'
-            var relativePath = context.Request.Url.AbsolutePath.Substring(1);
+            string relativePath;
+            var absolutePath = context.Request.Url.AbsolutePath;
+
+            if (string.IsNullOrEmpty(this.WebPrefix))
+            {
+                relativePath = absolutePath.Substring(1);
+            }
+            else
+            {
+                if (absolutePath.StartsWith(this.WebPrefix))
+                {
+                    relativePath = absolutePath.Substring(this.WebPrefix.Length);
+                }
+                else
+                {
+                    var errorResponse = container.Create<ErrorResponse>();
+                    errorResponse.Set(HttpStatusCode.NotFound);
+                    errorResponse.Dispatch(container, context);
+                    return;
+                }
+            }
+
             var physicalPath = Path.Combine(this.PhysicalRootPath, relativePath);
 
             if (relativePath.Contains("..") || Path.IsPathRooted(relativePath) || !physicalPath.StartsWith(this.PhysicalRootPath))

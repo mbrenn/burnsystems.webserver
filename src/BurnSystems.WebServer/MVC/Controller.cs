@@ -32,6 +32,7 @@ namespace BurnSystems.WebServer.MVC
         {
             var bytes = Encoding.UTF8.GetBytes(result);
             this.Context.Response.ContentEncoding = Encoding.UTF8;
+            this.Context.Response.ContentType = "text/html";
 
             using (var stream = this.Context.Response.OutputStream)
             {

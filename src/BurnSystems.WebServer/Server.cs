@@ -11,7 +11,7 @@ namespace BurnSystems.WebServer
     /// <summary>
     /// Server responsible to start up server, close it and offer the dependency framework
     /// </summary>
-    public class Server
+    public class Server : IDisposable
     {
         /// <summary>
         /// Stores list of prefixes
@@ -140,6 +140,17 @@ namespace BurnSystems.WebServer
 
             this.listener.StopListening();
             this.isRunning = false;
+        }
+
+        /// <summary>
+        /// Disposes the instance
+        /// </summary>
+        public void Dispose()
+        {
+            if (this.isRunning)
+            {
+                this.Stop();
+            }
         }
     }
 }
