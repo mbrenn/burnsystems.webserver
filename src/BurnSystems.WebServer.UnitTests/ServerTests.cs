@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System.Net;
 using System.Threading;
 using BurnSystems.WebServer.Dispatcher;
+using BurnSystems.WebServer.Responses.Tests;
 
 namespace BurnSystems.WebServer.UnitTests
 {
@@ -16,7 +17,8 @@ namespace BurnSystems.WebServer.UnitTests
         {
             var server = Server.Default;
             server.AddPrefix("http://localhost:8081/");
-            
+
+            server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new FileSystemDispatcher(DispatchFilter.ByUrl("/file"), "htdocs/", "/file/"));
             server.Start();
 

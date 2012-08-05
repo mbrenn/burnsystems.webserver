@@ -15,6 +15,12 @@ namespace BurnSystems.WebServer.Responses.Tests
         }
 
         [WebMethod]
+        public void Test()
+        {
+            this.Html("Test");
+        }
+
+        [WebMethod]
         public void Greet(string name)
         {
             this.Html("Hello " + name);
