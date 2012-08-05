@@ -124,11 +124,20 @@
   <data name="ExceptionDuringListening" xml:space="preserve">
     <value>Ausnahme während des Listen-Vorgangs: {0}</value>
   </data>
+  <data name="FileUploadNotSupported" xml:space="preserve">
+    <value>Das Hochladen von Dateien wird nicht unterstützt.</value>
+  </data>
   <data name="HttpListenerException" xml:space="preserve">
     <value>Beim Starten des Webservers ist ein Fehler aufgetreten. Überprüfen Sie bitte ob folgende Dinge erfüllt sind:
 - Programm läuft mit Administratorrechte
 - Die angeforderte Website wird bereits von einer anderen Anwendung belegt.
 Die konkrete Fehlermeldung lautet: {0}</value>
+  </data>
+  <data name="InvalidMultipart" xml:space="preserve">
+    <value>Das übertragene Formular wurde nicht erkannt 'multipart/form-data'</value>
+  </data>
+  <data name="MaximumPostLengthExceeded" xml:space="preserve">
+    <value>Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes)</value>
   </data>
   <data name="ServerAlreadyStarted" xml:space="preserve">
     <value>Der Webserver wurde bereits gestartet.</value>

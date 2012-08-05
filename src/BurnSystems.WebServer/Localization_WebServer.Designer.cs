@@ -78,9 +78,9 @@ namespace BurnSystems.WebServer {
         ///	&lt;/head&gt;
         ///	&lt;body&gt;
         ///		&lt;h1&gt;@Model.Title&lt;/h1&gt;
+        ///		&lt;p&gt;@Model.Url&lt;/p&gt;
         ///		&lt;p&gt;@Model.Message&lt;/p&gt;
-        ///		@if(!string.IsNullOrEmpty(Model.Code)) {
-        /// [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///		@if(!string.IsNullOrE [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string Error {
             get {
@@ -98,6 +98,15 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Das Hochladen von Dateien wird nicht unterstützt. ähnelt.
+        /// </summary>
+        internal static string FileUploadNotSupported {
+            get {
+                return ResourceManager.GetString("FileUploadNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Beim Starten des Webservers ist ein Fehler aufgetreten. Überprüfen Sie bitte ob folgende Dinge erfüllt sind:
         ///- Programm läuft mit Administratorrechte
         ///- Die angeforderte Website wird bereits von einer anderen Anwendung belegt.
@@ -106,6 +115,24 @@ namespace BurnSystems.WebServer {
         internal static string HttpListenerException {
             get {
                 return ResourceManager.GetString("HttpListenerException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Das übertragene Formular wurde nicht erkannt &apos;multipart/form-data&apos; ähnelt.
+        /// </summary>
+        internal static string InvalidMultipart {
+            get {
+                return ResourceManager.GetString("InvalidMultipart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes) ähnelt.
+        /// </summary>
+        internal static string MaximumPostLengthExceeded {
+            get {
+                return ResourceManager.GetString("MaximumPostLengthExceeded", resourceCulture);
             }
         }
         

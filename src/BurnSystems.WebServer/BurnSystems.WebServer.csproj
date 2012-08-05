@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\dependencies\RazorEngine\System.Web.Razor.dll</HintPath>
@@ -55,6 +56,7 @@
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
     <Compile Include="Helper\PostVariableReader.cs" />
+    <Compile Include="Helper\PostVariableReaderConfig.cs" />
     <Compile Include="MVC\Controller.cs" />
     <Compile Include="MVC\UrlParameterAttribute.cs" />
     <Compile Include="MVC\WebMethodAttribute.cs" />
