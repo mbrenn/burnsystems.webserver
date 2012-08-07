@@ -9,34 +9,54 @@ using System.IO;
 using BurnSystems.Collections;
 using BurnSystems.Net;
 using System.Web;
+using BurnSystems.Test;
 
 namespace BurnSystems.WebServer.Helper
 {
+    /// <summary>
+    /// Reads the postvariables from Http-Context and offers them as a dictionary
+    /// </summary>
     public class PostVariableReader
     {
-        [Inject]
-        public HttpListenerContext ListenerContext
+        /// <summary>
+        /// Gets or sets the http Listener context
+        /// </summary>
+        private HttpListenerContext ListenerContext
         {
             get;
             set;
         }
 
-        [Inject]
-        public PostVariableReaderConfig Config
+        /// <summary>
+        /// Gets or sets the configuration
+        /// </summary>
+        private PostVariableReaderConfig Config
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// Gets the post variables
+        /// </summary>
         public NiceDictionary<string, string> PostVariables
         {
             get;
-            set;
+            private set;
         }
 
-        public PostVariableReader()
+        [Inject]
+        public PostVariableReader(PostVariableReaderConfig config, HttpListenerContext context)
         {
+            Ensure.That(config != null);
+            Ensure.That(context != null);
+            
+            this.Config = config;
             this.PostVariables = new NiceDictionary<string, string>();
+            this.ListenerContext = context;
+
+            // Performs the reading
+            this.ReadPostFromFormData();
         }
 
         /// <summary>
