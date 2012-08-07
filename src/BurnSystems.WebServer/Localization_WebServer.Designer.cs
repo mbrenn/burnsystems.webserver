@@ -61,6 +61,15 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP-Präfix: {0} ähnelt.
+        /// </summary>
+        internal static string AddedPrefix {
+            get {
+                return ResourceManager.GetString("AddedPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
         ///       &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;

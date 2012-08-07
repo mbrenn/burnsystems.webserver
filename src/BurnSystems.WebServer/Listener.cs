@@ -15,6 +15,11 @@ namespace BurnSystems.WebServer
     internal class Listener
     {
         /// <summary>
+        /// Defines the class logger
+        /// </summary>
+        private ClassLogger logger = new ClassLogger(typeof(Listener));
+
+        /// <summary>
         /// Httplistener, which receives the requests
         /// </summary>
         private HttpListener httpListener;
@@ -45,6 +50,10 @@ namespace BurnSystems.WebServer
             this.httpListener = new HttpListener();
             foreach (var prefix in prefixes)
             {
+                logger.LogEntry(new LogEntry(
+                    string.Format(Localization_WebServer.AddedPrefix, prefix),
+                    LogLevel.Notify));
+
                 this.httpListener.Prefixes.Add(prefix);
             }
         }
@@ -112,18 +121,12 @@ namespace BurnSystems.WebServer
                     }
                     catch (Exception exc)
                     {
-                        Log.TheLog.LogEntry(
+                        logger.LogEntry(
                             new LogEntry(
                                 String.Format(
                                     Localization_WebServer.ExceptionDuringListening,
                                     exc.Message),
                                 LogLevel.Message));
-                        Log.TheLog.LogEntry(
-                            new LogEntry(
-                                String.Format(
-                                    Localization_WebServer.ExceptionDuringListening,
-                                    exc.ToString()),
-                                LogLevel.Verbose));
                     }
                 }
             }
@@ -181,9 +184,9 @@ namespace BurnSystems.WebServer
                 catch (Exception exc)
                 {
                     // Default, can't do anything
+                    logger.LogEntry(new LogEntry(exc.Message, LogLevel.Message));
                 }
             }
-
         }
     }
 }
