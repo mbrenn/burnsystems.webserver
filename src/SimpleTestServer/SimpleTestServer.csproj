@@ -76,6 +76,10 @@
       <Project>{42023D16-AFD1-4D99-BC39-9EF46982EB54}</Project>
       <Name>BurnSystems</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BurnSystems.WebServer.UnitTests\BurnSystems.WebServer.UnitTests.csproj">
+      <Project>{E424D9CA-EF99-405E-A80D-0D0A026E9FB8}</Project>
+      <Name>BurnSystems.WebServer.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BurnSystems.WebServer\BurnSystems.WebServer.csproj">
       <Project>{B31DF31A-F19E-4FF9-B50F-B70F4F5949F4}</Project>
       <Name>BurnSystems.WebServer</Name>

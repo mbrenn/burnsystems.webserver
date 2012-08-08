@@ -22,12 +22,11 @@ namespace BurnSystems.WebServer.Helper
         /// </summary>
         /// <param name="fileExtension">File extension to be converted</param>
         /// <returns>Found mimetype or null</returns>
-        public string ConvertFromExtension(string fileExtension)
+        public MimeTypeInfo ConvertFromExtension(string fileExtension)
         {
             return
                 this.infos
                     .Where(x => x.FileExtension == fileExtension)
-                    .Select(x => x.MimeType)
                     .FirstOrDefault();                    
         }
 
@@ -40,11 +39,11 @@ namespace BurnSystems.WebServer.Helper
             {
                 var result = new MimeTypeConverter();
 
-                result.Add(new MimeTypeInfo(".txt", "text/plain"));
-                result.Add(new MimeTypeInfo(".html", "text/html"));
-                result.Add(new MimeTypeInfo(".htm", "text/html"));
+                result.Add(new MimeTypeInfo(".txt", "text/plain", Encoding.UTF8));
+                result.Add(new MimeTypeInfo(".html", "text/html", Encoding.UTF8));
+                result.Add(new MimeTypeInfo(".htm", "text/html", Encoding.UTF8));
 
-                result.Add(new MimeTypeInfo(".css", "text/css"));
+                result.Add(new MimeTypeInfo(".css", "text/css", Encoding.UTF8));
 
                 result.Add(new MimeTypeInfo(".jpg", "image/jpeg"));
                 result.Add(new MimeTypeInfo(".png", "image/png"));

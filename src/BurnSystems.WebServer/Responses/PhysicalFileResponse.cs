@@ -48,10 +48,21 @@ namespace BurnSystems.WebServer.Responses
         public void Dispatch(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
         {
             var extension = Path.GetExtension(this.PhysicalPath);
-            var mimeType = this.MimeTypeConverter.ConvertFromExtension(extension);
+            var info = this.MimeTypeConverter.ConvertFromExtension(extension);
             
             // Set some header
-            context.Response.AddHeader("Content-Type", mimeType);
+            if (info != null)
+            {
+                if (info.MimeType != null)
+                {
+                    context.Response.ContentType = info.MimeType;
+                }
+
+                if (info.ContentEncoding != null)
+                {
+                    context.Response.ContentEncoding = info.ContentEncoding;
+                }
+            }
 
             // File is not sent out at once, file is sent out by by chunks
             using (var responseStream = context.Response.OutputStream)

@@ -19,6 +19,12 @@ namespace BurnSystems.WebServer.Helper
             private set;
         }
 
+        public Encoding ContentEncoding
+        {
+            get;
+            set;
+        }
+
         public MimeTypeInfo(string fileExtension, string mimeType)
         {
             if (!fileExtension.StartsWith("."))
@@ -28,6 +34,12 @@ namespace BurnSystems.WebServer.Helper
 
             this.FileExtension = fileExtension;
             this.MimeType = mimeType;
+        }
+
+        public MimeTypeInfo(string fileExtension, string mimeType, Encoding contentEncoding)
+            : this(fileExtension, mimeType)
+        {
+            this.ContentEncoding = contentEncoding;
         }
     }
 }
