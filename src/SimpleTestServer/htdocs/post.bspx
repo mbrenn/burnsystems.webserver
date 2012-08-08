@@ -1,0 +1,15 @@
+﻿<% 
+<DynamicPage Controller="test/PostTest">
+</DynamicPage>
+%>
+<html>
+	<body>
+		<form action="?" method="POST">
+			<fieldset>
+				Vorname: <input type="text" name="prename" /><br />
+				Nachname: <input type="text" name="name" /><br />
+				<submit value="Abschicken" />
+			</fieldset>
+		</form>
+	</body>
+</html>
