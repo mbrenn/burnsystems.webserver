@@ -10,6 +10,5 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         public void PostTest()
         {
         }
-
     }
 }

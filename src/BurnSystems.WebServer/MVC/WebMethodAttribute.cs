@@ -12,9 +12,10 @@ namespace BurnSystems.WebServer.MVC
     public sealed class WebMethodAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets the http Method being captured by the webmethod
+        /// Gets or sets the name of the webmethod, if name of webmethod is different 
+        /// to the name of the Method
         /// </summary>
-        public string HttpMethod
+        public string Name
         {
             get;
             set;

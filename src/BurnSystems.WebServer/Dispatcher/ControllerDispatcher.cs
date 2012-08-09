@@ -17,7 +17,15 @@ namespace BurnSystems.WebServer.Dispatcher
     /// <typeparam name="T">Type of the controller</typeparam>
     public class ControllerDispatcher<T> : BaseDispatcher where T : Controller, new()
     {
+        /// <summary>
+        /// Logger being used in this class.
+        /// </summary>
         private ClassLogger logger = new ClassLogger(typeof(ControllerDispatcher<T>));
+
+        /// <summary>
+        /// Stores the webmethod infos
+        /// </summary>
+        private List<WebMethodInfo> webMethodInfos = new List<WebMethodInfo>();
 
         /// <summary>
         /// Gets or sets the webpath, including controller name
@@ -28,17 +36,27 @@ namespace BurnSystems.WebServer.Dispatcher
             set;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the ControllerDispatcher class
+        /// </summary>
+        /// <param name="filter">Filter being used</param>
         public ControllerDispatcher(Func<HttpListenerContext, bool> filter)
             : base(filter)
         {
+            this.InitializeWebMethods();
         }
-
+        
+        /// <summary>
+        /// Initializes a new instance of the ControllerDispatcher class
+        /// </summary>
+        /// <param name="filter">Filter being used</param>
+        /// <param name="webPath">Path, where controller is stored</param>
         public ControllerDispatcher(Func<HttpListenerContext, bool> filter, string webPath)
-            : base(filter)
+            : this(filter)
         {
             this.WebPath = webPath;
         }
-
+        
         public override void Dispatch(ObjectActivation.IActivates activates, HttpListenerContext context)
         {
             // Stores the absolute path
@@ -76,25 +94,18 @@ namespace BurnSystems.WebServer.Dispatcher
             var methodName = segments[0];
 
             // Try to find method
-            var methods = typeof(T).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
-                .Where(x => x.Name == methodName)
-                .Where(x => x.GetCustomAttributes(typeof(WebMethodAttribute), false).Length > 0)
-                .ToList();
+            var info = this.webMethodInfos
+                .Where(x => x.Name == methodName)  
+                .FirstOrDefault();
 
-            if (methods.Count() > 1)
-            {
-                throw new InvalidOperationException("More than one Webmethod found");
-            }
-
-            if (methods.Count() == 0)
+            if (info == null)
             {
                 this.Throw404(activates, context);
+                return;
             }
-            
-            var webMethod = methods[0];
 
             // Ok, now look for get variables
-            var parameters = webMethod.GetParameters();
+            var parameters = info.MethodInfo.GetParameters();
             var callArguments = new List<object>();
             foreach (var parameter in parameters)
             {
@@ -116,7 +127,40 @@ namespace BurnSystems.WebServer.Dispatcher
                 }
             }
 
-            webMethod.Invoke(controller, callArguments.ToArray());
+            info.MethodInfo.Invoke(controller, callArguments.ToArray());
+        }
+        
+        /// <summary>
+        /// Initializes the webmethods and stores the webmethods into 
+        /// </summary>
+        private void InitializeWebMethods()
+        {
+            // Try to find method
+            var foundMethods = typeof(T).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+                .Select (x=> new 
+                {
+                    Method = x,
+                    WebMethodAttribute = (WebMethodAttribute) x.GetCustomAttributes(typeof(WebMethodAttribute), false).FirstOrDefault()
+                })
+                .Where(x => x.WebMethodAttribute != null);
+
+            // Convert methods into predefined data structures
+            foreach (var info in foundMethods)
+            {                
+                var name = info.Method.Name;
+                if (!string.IsNullOrEmpty(info.WebMethodAttribute.Name))
+                {
+                    name = info.WebMethodAttribute.Name;
+                }
+
+                var code = new WebMethodInfo()
+                {
+                    MethodInfo = info.Method,
+                    Name = name
+                };
+
+                this.webMethodInfos.Add(code);
+            }
         }
 
         /// <summary>
