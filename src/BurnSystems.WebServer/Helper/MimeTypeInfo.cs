@@ -25,6 +25,15 @@ namespace BurnSystems.WebServer.Helper
             set;
         }
 
+        /// <summary>
+        /// Stores the type of the dispatcher used to evaluate the given file
+        /// </summary>
+        public Type FileRequestDispatcher
+        {
+            get;
+            set;
+        }
+
         public MimeTypeInfo(string fileExtension, string mimeType)
         {
             if (!fileExtension.StartsWith("."))
@@ -40,6 +49,11 @@ namespace BurnSystems.WebServer.Helper
             : this(fileExtension, mimeType)
         {
             this.ContentEncoding = contentEncoding;
+        }
+
+        public MimeTypeInfo(Type fileDispatcher)
+        {
+            this.FileRequestDispatcher = fileDispatcher;
         }
     }
 }

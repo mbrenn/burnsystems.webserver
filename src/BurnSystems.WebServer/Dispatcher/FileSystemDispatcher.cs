@@ -89,6 +89,7 @@ namespace BurnSystems.WebServer.Dispatcher
             {
                 var physicalFileResponse = container.Create<PhysicalFileResponse>();
                 physicalFileResponse.PhysicalPath = physicalPath;
+                physicalFileResponse.VirtualPath = "/" + relativePath;
                 physicalFileResponse.Dispatch(container, context);
             }
             else
