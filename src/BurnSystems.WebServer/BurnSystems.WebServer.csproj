@@ -52,6 +52,7 @@
     <Compile Include="Dispatcher\ControllerDispatcher.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
     <Compile Include="Dispatcher\FileSystemDispatcher.cs" />
+    <Compile Include="Dispatcher\IFileRequestDispatcher.cs" />
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />

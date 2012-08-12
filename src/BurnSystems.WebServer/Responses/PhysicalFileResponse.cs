@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using BurnSystems.WebServer.Helper;
+﻿using System.IO;
 using BurnSystems.ObjectActivation;
+using BurnSystems.WebServer.Dispatcher;
+using BurnSystems.WebServer.Helper;
 
 namespace BurnSystems.WebServer.Responses
 {
@@ -32,6 +29,12 @@ namespace BurnSystems.WebServer.Responses
             set;
         }
 
+        public string VirtualPath
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Initializes a new instance of the PhysicalFileResponse class;
         /// </summary>
@@ -49,10 +52,20 @@ namespace BurnSystems.WebServer.Responses
         {
             var extension = Path.GetExtension(this.PhysicalPath);
             var info = this.MimeTypeConverter.ConvertFromExtension(extension);
-            
+                        
             // Set some header
             if (info != null)
             {
+                if (info.FileRequestDispatcher != null)
+                {
+                    // Finds file request dispatcher
+                    var fileRequestDispatcher = container.Create(info.FileRequestDispatcher) as IFileRequestDispatcher;
+                    fileRequestDispatcher.PhysicalPath = this.PhysicalPath;
+                    fileRequestDispatcher.VirtualPath = this.VirtualPath;
+
+                    fileRequestDispatcher.Dispatch(container, context);
+                }
+
                 if (info.MimeType != null)
                 {
                     context.Response.ContentType = info.MimeType;
