@@ -25,5 +25,15 @@ namespace BurnSystems.WebServer.MVC
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the HTTP-Method, where this method shall be called.
+        /// If null, for all methods
+        /// </summary>
+        public string IfMethodIs
+        {
+            get;
+            set;
+        }
     }
 }

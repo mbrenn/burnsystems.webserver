@@ -31,5 +31,11 @@ namespace BurnSystems.WebServer.Responses.Tests
         {
             this.Html(string.Format("{0} + {1} = {2}", a, b, a + b));
         }
+
+        [WebMethod(Name = "Subtract")]
+        public void Minus(int a, int b)
+        {
+            this.Html(string.Format("{0} - {1} = {2}", a, b, a - b));
+        }
     }
 }

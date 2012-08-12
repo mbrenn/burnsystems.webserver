@@ -56,7 +56,7 @@ namespace BurnSystems.WebServer.Dispatcher
         {
             this.WebPath = webPath;
         }
-        
+
         public override void Dispatch(ObjectActivation.IActivates activates, HttpListenerContext context)
         {
             // Stores the absolute path
@@ -89,45 +89,56 @@ namespace BurnSystems.WebServer.Dispatcher
 
             // Split segments
             var segments = restUrl.Split(new char[] { '/' });
-            
+
             // First segment is method name
             var methodName = segments[0];
 
             // Try to find method
-            var info = this.webMethodInfos
-                .Where(x => x.Name == methodName)  
-                .FirstOrDefault();
+            var infos = this.webMethodInfos
+                .Where(x => x.Name == methodName);
 
-            if (info == null)
+            foreach (var info in infos)
             {
-                this.Throw404(activates, context);
+                if (!string.IsNullOrEmpty(info.IfMethodIs))
+                {
+                    if (info.IfMethodIs != context.Request.HttpMethod.ToLower())
+                    {
+                        // No match, 
+                        continue;
+                    }
+                }
+
+                // Ok, now look for get variables
+                var parameters = info.MethodInfo.GetParameters();
+                var callArguments = new List<object>();
+                foreach (var parameter in parameters)
+                {
+                    var urlParameterAttributes = parameter.GetCustomAttributes(typeof(UrlParameterAttribute), false);
+                    if (urlParameterAttributes.Length > 0)
+                    {
+                        // Is a url parameter attribute, do not like this
+                        continue;
+                    }
+
+                    var value = context.Request.QueryString[parameter.Name];
+                    if (value == null)
+                    {
+                        callArguments.Add(this.GetDefaultArgument(parameter));
+                    }
+                    else
+                    {
+                        callArguments.Add(this.ConvertToArgument(value, parameter));
+                    }
+                }
+
+                info.MethodInfo.Invoke(controller, callArguments.ToArray());
+
+                // First hit is success
                 return;
             }
 
-            // Ok, now look for get variables
-            var parameters = info.MethodInfo.GetParameters();
-            var callArguments = new List<object>();
-            foreach (var parameter in parameters)
-            {
-                var urlParameterAttributes = parameter.GetCustomAttributes(typeof(UrlParameterAttribute), false);
-                if (urlParameterAttributes.Length > 0)
-                {
-                    // Is a url parameter attribute, do not like this
-                    continue;
-                }
-
-                var value = context.Request.QueryString[parameter.Name];
-                if (value == null)
-                {
-                    callArguments.Add(this.GetDefaultArgument(parameter));
-                }
-                else
-                {
-                    callArguments.Add(this.ConvertToArgument(value, parameter));
-                }
-            }
-
-            info.MethodInfo.Invoke(controller, callArguments.ToArray());
+            this.Throw404(activates, context);
+            return;
         }
         
         /// <summary>
@@ -158,6 +169,12 @@ namespace BurnSystems.WebServer.Dispatcher
                     MethodInfo = info.Method,
                     Name = name
                 };
+
+                var methods = info.Method.GetCustomAttributes(typeof(IfMethodIsAttribute), false);
+                if (methods.Length == 1)
+                {
+                    code.IfMethodIs = (methods[0] as IfMethodIsAttribute).MethodName;
+                }
 
                 this.webMethodInfos.Add(code);
             }

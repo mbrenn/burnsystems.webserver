@@ -69,5 +69,20 @@ namespace BurnSystems.WebServer.UnitTests.Controller
                 Assert.That(data.Trim(), Is.EqualTo("-4 + 10 = 6"));
             }
         }
+
+        [Test]
+        public void TestControllerWithNamedController()
+        {
+            using (var server = ServerTests.CreateServer())
+            {
+                var webClient = new WebClient();
+                webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
+
+                var data = webClient.DownloadString("http://localhost:8081/controller/Subtract?a=20&b=10");
+
+                // Shall not get reached
+                Assert.That(data.Trim(), Is.EqualTo("20 - 10 = 10"));
+            }
+        }
     }
 }
