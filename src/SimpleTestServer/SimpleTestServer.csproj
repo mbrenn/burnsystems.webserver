@@ -90,7 +90,9 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
-    <None Include="htdocs\post.bspx" />
+    <None Include="htdocs\post.bspx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="htdocs\css\style.css">

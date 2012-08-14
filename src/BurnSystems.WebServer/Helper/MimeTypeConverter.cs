@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BurnSystems.WebServer.Responses.FileRequests;
 
 namespace BurnSystems.WebServer.Helper
 {
@@ -48,6 +49,8 @@ namespace BurnSystems.WebServer.Helper
                 result.Add(new MimeTypeInfo(".jpg", "image/jpeg"));
                 result.Add(new MimeTypeInfo(".png", "image/png"));
                 result.Add(new MimeTypeInfo(".gif", "image/gif"));
+
+                result.Add(new MimeTypeInfo(".bspx", typeof(BspxFileRequest)));
 
                 return result;
             }

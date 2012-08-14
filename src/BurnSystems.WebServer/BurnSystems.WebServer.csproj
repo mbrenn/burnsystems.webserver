@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="Parser\TemplateParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Responses\FileRequests\BspxFileRequest.cs" />
     <Compile Include="Responses\PhysicalFileResponse.cs" />
     <Compile Include="Responses\StaticContentResponse.cs" />
     <Compile Include="Responses\Tests\TestController.cs" />

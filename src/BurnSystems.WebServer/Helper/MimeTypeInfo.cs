@@ -51,8 +51,9 @@ namespace BurnSystems.WebServer.Helper
             this.ContentEncoding = contentEncoding;
         }
 
-        public MimeTypeInfo(Type fileDispatcher)
+        public MimeTypeInfo(string fileExtension, Type fileDispatcher)
         {
+            this.FileExtension = fileExtension;
             this.FileRequestDispatcher = fileDispatcher;
         }
     }
