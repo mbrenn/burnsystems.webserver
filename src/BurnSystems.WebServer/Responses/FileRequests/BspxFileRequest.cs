@@ -34,16 +34,16 @@ namespace BurnSystems.WebServer.Responses.FileRequests
         /// <param name="context">Context being used</param>
         public override void Dispatch(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
         {
-            var viewModel = File.ReadAllText(this.PhysicalPath);
+            var viewTemplate = File.ReadAllText(this.PhysicalPath);
 
             // Try to configuration xml file
-            var completeFile = viewModel.TrimStart();
+            var completeFile = viewTemplate.TrimStart();
             if (completeFile.StartsWith("<%"))
             {
                 var endPosition = completeFile.IndexOf("%>");
                 if (endPosition != -1)
                 {
-                    viewModel = completeFile.Substring(endPosition + 2);
+                    viewTemplate = completeFile.Substring(endPosition + 2);
                     
                     // <%1234%>
                     // 01234567
@@ -77,8 +77,14 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                     }
 
                     // Now, create me!
-                    var dispatcher = new ControllerDispatcher(type, DispatchFilter.All);
-                    dispatcher.DispatchForWebMethod(container, context, controllerWebMethod.Value);
+                    var webMethodContainer = new ActivationContainer("BspxFileRequest");
+                    webMethodContainer.BindToName("PageTemplate").ToConstant(viewTemplate);
+
+                    using (var block = new ActivationBlock("BspxFileRequest", webMethodContainer, container as ActivationBlock))
+                    {
+                        var dispatcher = new ControllerDispatcher(type, DispatchFilter.All);
+                        dispatcher.DispatchForWebMethod(container, context, controllerWebMethod.Value);
+                    }
                 }
             }
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BurnSystems.WebServer.MVC;
+using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer.UnitTests.Controller
 {
@@ -12,7 +13,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
     public class PostController : MVC.Controller
     {
         [WebMethod]
-        public void PostTest()
+        public void PostTest([Inject("PageTemplate")] string template)
         {
             this.Html("Hallo Welt");
         }
