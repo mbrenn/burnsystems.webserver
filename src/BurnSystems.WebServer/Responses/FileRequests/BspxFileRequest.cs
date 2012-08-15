@@ -79,6 +79,7 @@ namespace BurnSystems.WebServer.Responses.FileRequests
 
                     // Now, create me!
                     var controller = container.Create(type) as Controller;
+                    
                     resultText = controller.GetType().FullName;
                 }
             }

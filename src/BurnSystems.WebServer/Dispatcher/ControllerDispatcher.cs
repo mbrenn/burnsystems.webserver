@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
 using BurnSystems.WebServer.Responses;
+using BurnSystems.Test;
 
 namespace BurnSystems.WebServer.Dispatcher
 {
@@ -15,12 +16,39 @@ namespace BurnSystems.WebServer.Dispatcher
     /// Contains the controller dispatcher for a specific controller class
     /// </summary>
     /// <typeparam name="T">Type of the controller</typeparam>
-    public class ControllerDispatcher<T> : BaseDispatcher where T : Controller, new()
+    public class ControllerDispatcher<T> : ControllerDispatcher where T : Controller, new()
     {
+        /// <summary>
+        /// Initializes a new instance of the ControllerDispatcher class
+        /// </summary>
+        /// <param name="filter">Filter being used</param>
+        public ControllerDispatcher(Func<HttpListenerContext, bool> filter)
+            : base(typeof(T), filter)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the ControllerDispatcher class
+        /// </summary>
+        /// <param name="filter">Filter being used</param>
+        /// <param name="webPath">Virtual web path being used to strip away constant part</param>
+        public ControllerDispatcher(Func<HttpListenerContext, bool> filter, string webPath)
+            : base(typeof(T), filter, webPath)
+        {
+        }
+    }
+
+    public class ControllerDispatcher : BaseDispatcher
+    {
+        /// <summary>
+        /// Stores the type of the controller
+        /// </summary>
+        private Type controllerType;
+
         /// <summary>
         /// Logger being used in this class.
         /// </summary>
-        private ClassLogger logger = new ClassLogger(typeof(ControllerDispatcher<T>));
+        private ClassLogger logger = new ClassLogger(typeof(ControllerDispatcher));
 
         /// <summary>
         /// Stores the webmethod infos
@@ -39,29 +67,37 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <summary>
         /// Initializes a new instance of the ControllerDispatcher class
         /// </summary>
+        /// <param name="controllerType">Type of the controller being used</param>
         /// <param name="filter">Filter being used</param>
-        public ControllerDispatcher(Func<HttpListenerContext, bool> filter)
+        public ControllerDispatcher(Type controllerType, Func<HttpListenerContext, bool> filter)
             : base(filter)
         {
+            this.controllerType = controllerType;
             this.InitializeWebMethods();
         }
         
         /// <summary>
         /// Initializes a new instance of the ControllerDispatcher class
         /// </summary>
+        /// <param name="controllerType">Type of the controller</param>
         /// <param name="filter">Filter being used</param>
         /// <param name="webPath">Path, where controller is stored</param>
-        public ControllerDispatcher(Func<HttpListenerContext, bool> filter, string webPath)
-            : this(filter)
+        public ControllerDispatcher(Type controllerType, Func<HttpListenerContext, bool> filter, string webPath)
+            : this(controllerType, filter)
         {
             this.WebPath = webPath;
         }
 
+        /// <summary>
+        /// Dispatches the object, depending of activity and context
+        /// </summary>
+        /// <param name="activates">Container used for activation</param>
+        /// <param name="context">Context of http</param>
         public override void Dispatch(ObjectActivation.IActivates activates, HttpListenerContext context)
         {
             // Stores the absolute path
             var absolutePath = context.Request.Url.AbsolutePath;
-            if (!this.WebPath.EndsWith("/"))
+            if (!string.IsNullOrEmpty(this.WebPath) && !this.WebPath.EndsWith("/"))
             {
                 this.WebPath = this.WebPath + "/";
                 logger.LogEntry(new LogEntry("this.WebPath did not end with '/'", LogLevel.Verbose));
@@ -73,11 +109,7 @@ namespace BurnSystems.WebServer.Dispatcher
                 ErrorResponse.Throw404(activates, context);
                 return;
             }
-
-            var controller = activates.Create<T>();
-            controller.Container = activates;
-            controller.Context = context;
-
+            
             // Now try to find the correct method and call the function
             var restUrl = absolutePath.Substring(this.WebPath.Length);
             if (string.IsNullOrEmpty(restUrl))
@@ -93,12 +125,30 @@ namespace BurnSystems.WebServer.Dispatcher
             // First segment is method name
             var methodName = segments[0];
 
-            // Try to find method
-            var infos = this.webMethodInfos
-                .Where(x => x.Name == methodName);
+            // Creates controller
+            var controller = activates.Create(this.controllerType) as Controller;
+            Ensure.That(controller != null, "Unknown ControllerType: " + this.controllerType.FullName);
 
-            foreach (var info in infos)
+            controller.Container = activates;
+            controller.Context = context;
+
+            this.DispatchForWebMethod(activates, context, controller, methodName);
+        }
+
+        /// <summary>
+        /// Performs the dispatch for a specific 
+        /// </summary>
+        /// <param name="activates">Activation Container</param>
+        /// <param name="context">WebContext for request</param>
+        /// <param name="controller">Controller to be used</param>
+        /// <param name="methodName">Requested web method</param>
+        private void DispatchForWebMethod(ObjectActivation.IActivates activates, HttpListenerContext context, Controller controller, string methodName)
+        {
+            // Try to find the method
+            foreach (var info in this.webMethodInfos
+                .Where(x => x.Name == methodName))
             {
+                // Check for http Method
                 if (!string.IsNullOrEmpty(info.IfMethodIs))
                 {
                     if (info.IfMethodIs != context.Request.HttpMethod.ToLower())
@@ -147,7 +197,7 @@ namespace BurnSystems.WebServer.Dispatcher
         private void InitializeWebMethods()
         {
             // Try to find method
-            var foundMethods = typeof(T).GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
+            var foundMethods = this.controllerType.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
                 .Select (x=> new 
                 {
                     Method = x,
