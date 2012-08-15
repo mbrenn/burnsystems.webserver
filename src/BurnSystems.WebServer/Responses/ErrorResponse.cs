@@ -85,5 +85,23 @@ namespace BurnSystems.WebServer.Responses
                 response.Write(bytes, 0, bytes.Length);
             }
         }
+
+        /// <summary>
+        /// Throws a 404 page
+        /// </summary>
+        /// <param name="container">Container to be used</param>
+        /// <param name="context">HTTP Context</param>
+        public static void Throw404(ObjectActivation.IActivates container, HttpListenerContext context, string additionalMessage = null)
+        {
+            var errorResponse = container.Create<ErrorResponse>();
+            errorResponse.Set(HttpStatusCode.NotFound);
+
+            if (!string.IsNullOrEmpty(additionalMessage))
+            {
+                errorResponse.Message = additionalMessage;
+            }
+
+            errorResponse.Dispatch(container, context);
+        }
     }
 }

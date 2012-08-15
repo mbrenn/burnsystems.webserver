@@ -70,7 +70,7 @@ namespace BurnSystems.WebServer.Dispatcher
             if (!absolutePath.StartsWith(this.WebPath))
             {
                 // I'm not the real responsible for this task
-                this.Throw404(activates, context);
+                ErrorResponse.Throw404(activates, context);
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace BurnSystems.WebServer.Dispatcher
             if (string.IsNullOrEmpty(restUrl))
             {
                 // Nothing to do here... Default page. Not implemented yet
-                this.Throw404(activates, context);
+                ErrorResponse.Throw404(activates, context);
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace BurnSystems.WebServer.Dispatcher
                 return;
             }
 
-            this.Throw404(activates, context);
+            ErrorResponse.Throw404(activates, context);
             return;
         }
         
@@ -230,18 +230,6 @@ namespace BurnSystems.WebServer.Dispatcher
             }
 
             throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);
-        }
-
-        /// <summary>
-        /// Throws a 404 page
-        /// </summary>
-        /// <param name="container">Container to be used</param>
-        /// <param name="context">HTTP Context</param>
-        private void Throw404(ObjectActivation.IActivates container, HttpListenerContext context)
-        {
-            var errorResponse = container.Create<ErrorResponse>();
-            errorResponse.Set(HttpStatusCode.NotFound);
-            errorResponse.Dispatch(container, context);
         }
     }
 }

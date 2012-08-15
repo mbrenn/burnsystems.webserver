@@ -8,6 +8,7 @@ using BurnSystems.Logging;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Responses.Tests;
 using BurnSystems.WebServer.Dispatcher.Test;
+using BurnSystems.WebServer.UnitTests.Controller;
 
 namespace SimpleTestServer
 {
@@ -26,6 +27,8 @@ namespace SimpleTestServer
             server.AddPrefix("http://localhost:8081/");
             
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
+            server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
+ 
             server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
             server.Start();

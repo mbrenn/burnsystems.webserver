@@ -1,5 +1,5 @@
 ﻿<% 
-<DynamicPage Controller="test/PostTest">
+<DynamicPage ControllerType="BurnSystems.WebServer.UnitTests.Controller.PostController" WebMethod="PostTest">
 </DynamicPage>
 %>
 <html>
