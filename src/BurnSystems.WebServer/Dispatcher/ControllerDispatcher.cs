@@ -125,14 +125,8 @@ namespace BurnSystems.WebServer.Dispatcher
             // First segment is method name
             var methodName = segments[0];
 
-            // Creates controller
-            var controller = activates.Create(this.controllerType) as Controller;
-            Ensure.That(controller != null, "Unknown ControllerType: " + this.controllerType.FullName);
 
-            controller.Container = activates;
-            controller.Context = context;
-
-            this.DispatchForWebMethod(activates, context, controller, methodName);
+            this.DispatchForWebMethod(activates, context, methodName);
         }
 
         /// <summary>
@@ -142,8 +136,15 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <param name="context">WebContext for request</param>
         /// <param name="controller">Controller to be used</param>
         /// <param name="methodName">Requested web method</param>
-        private void DispatchForWebMethod(ObjectActivation.IActivates activates, HttpListenerContext context, Controller controller, string methodName)
+        public void DispatchForWebMethod(ObjectActivation.IActivates activates, HttpListenerContext context, string methodName)
         {
+            // Creates controller
+            var controller = activates.Create(this.controllerType) as Controller;
+            Ensure.That(controller != null, "Unknown ControllerType: " + this.controllerType.FullName);
+
+            controller.Container = activates;
+            controller.Context = context;
+
             // Try to find the method
             foreach (var info in this.webMethodInfos
                 .Where(x => x.Name == methodName))

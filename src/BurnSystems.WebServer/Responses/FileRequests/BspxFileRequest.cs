@@ -35,7 +35,6 @@ namespace BurnSystems.WebServer.Responses.FileRequests
         public override void Dispatch(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
         {
             var viewModel = File.ReadAllText(this.PhysicalPath);
-            string resultText = "";
 
             // Try to configuration xml file
             var completeFile = viewModel.TrimStart();
@@ -78,17 +77,9 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                     }
 
                     // Now, create me!
-                    var controller = container.Create(type) as Controller;
-                    
-                    resultText = controller.GetType().FullName;
+                    var dispatcher = new ControllerDispatcher(type, DispatchFilter.All);
+                    dispatcher.DispatchForWebMethod(container, context, controllerWebMethod.Value);
                 }
-            }
-
-            // Give response
-            var result = Encoding.UTF8.GetBytes(resultText);
-            using (var stream = context.Response.OutputStream)
-            {
-                stream.Write(result, 0, result.Count());
             }
         }
     }
