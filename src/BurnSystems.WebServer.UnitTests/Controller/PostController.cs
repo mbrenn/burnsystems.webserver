@@ -15,7 +15,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         [WebMethod]
         public void PostTest([Inject("PageTemplate")] string template)
         {
-            this.Html("Hallo Welt");
+            this.Html(template);
         }
     }
 }

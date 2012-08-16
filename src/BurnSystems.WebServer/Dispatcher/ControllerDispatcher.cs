@@ -164,13 +164,33 @@ namespace BurnSystems.WebServer.Dispatcher
                 var callArguments = new List<object>();
                 foreach (var parameter in parameters)
                 {
-                    var urlParameterAttributes = parameter.GetCustomAttributes(typeof(UrlParameterAttribute), false);
-                    if (urlParameterAttributes.Length > 0)
+                    var parameterAttributes = parameter.GetCustomAttributes(false);
+                    var injectParameterAttribute = parameterAttributes.Where(x => x is InjectAttribute).Cast<InjectAttribute>().FirstOrDefault();
+                    if (injectParameterAttribute != null)
                     {
+                        if (string.IsNullOrEmpty(injectParameterAttribute.ByName))
+                        {
+                            // Ok, we are NOT by name, injection by type
+                            callArguments.Add(activates.Get(parameter.ParameterType));
+                        }
+                        else
+                        {
+                            callArguments.Add(activates.GetByName(injectParameterAttribute.ByName));
+                        }
+
+                        continue;
+                    }
+
+                    // Check for Url-Parameter
+                    var urlParameterAttributes = parameterAttributes.Where ( x => x is UrlParameterAttribute).FirstOrDefault();
+                    if (urlParameterAttributes != null)
+                    {
+                        callArguments.Add(null);
                         // Is a url parameter attribute, do not like this
                         continue;
                     }
 
+                    // Rest is Get-Parameter
                     var value = context.Request.QueryString[parameter.Name];
                     if (value == null)
                     {

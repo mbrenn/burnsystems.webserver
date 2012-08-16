@@ -83,7 +83,7 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                     using (var block = new ActivationBlock("BspxFileRequest", webMethodContainer, container as ActivationBlock))
                     {
                         var dispatcher = new ControllerDispatcher(type, DispatchFilter.All);
-                        dispatcher.DispatchForWebMethod(container, context, controllerWebMethod.Value);
+                        dispatcher.DispatchForWebMethod(block, context, controllerWebMethod.Value);
                     }
                 }
             }
