@@ -4,12 +4,25 @@
 %>
 <html>
 	<body>
-		<form action="?" method="POST">
-			<fieldset>
-				Vorname: <input type="text" name="Prename" /><br />
-				Nachname: <input type="text" name="Name" /><br />
-				<input type="submit" value="Abschicken" />
-			</fieldset>
-		</form>
+		@if(Model==null) {
+			<form action="?" method="POST">
+				<fieldset>
+					Vorname: <input type="text" name="Prename" /><br />
+					Nachname: <input type="text" name="Name" /><br />
+					<input type="submit" value="Abschicken" />
+				</fieldset>
+			</form>
+		} else {
+			<table>
+				<tr>
+					<td>Vorname:</td>
+					<td>@Model.Prename</td>
+				</tr>
+				<tr>
+					<td>Nachname:</td>
+					<td>@Model.Name</td>
+				</tr>
+			</table>
+		}
 	</body>
 </html>

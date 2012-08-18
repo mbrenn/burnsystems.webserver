@@ -26,9 +26,18 @@ namespace BurnSystems.WebServer.Parser
             this.templateService.AddNamespace("BurnSystems");
         }
 
-        public string Parse(string template, object model, DynamicViewBag bag, string cacheName)
+        public string Parse<T>(string template, T model, Dictionary<string, object> bag, string cacheName)
         {
-            return this.templateService.Parse(template, model, bag, cacheName);
+            if (bag == null)
+            {
+                return this.templateService.Parse<T>(template, model, null, cacheName);
+            }
+            else
+            {
+                var typeBag = new DynamicViewBag();
+                typeBag.AddDictionaryValues(bag);
+                return this.templateService.Parse<T>(template, model, typeBag, cacheName);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using BurnSystems.WebServer.MVC;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Helper;
+using BurnSystems.WebServer.Parser;
 
 namespace BurnSystems.WebServer.UnitTests.Controller
 {
@@ -12,8 +13,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
     /// Demo controller for Post
     /// </summary>
     public class PostController : MVC.Controller
-    {
-        
+    {        
         public class PostTestModel
         {
             public string Prename
@@ -29,18 +29,24 @@ namespace BurnSystems.WebServer.UnitTests.Controller
             }
         }
 
-        [WebMethod]
-        [IfMethodIs("get")]
-        public void PostTest([Inject("PageTemplate")] string template)
+        [Inject]
+        public ITemplateParser TemplateParser
         {
-            this.Html(template);
+            get;
+            set;
         }
 
-        [WebMethod(Name = "PostTest")]
-        [IfMethodIs("post")]
-        public void PostTestCallback([PostModel] PostTestModel model, [Inject("PageTemplate")] string template)
+        [WebMethod]
+        public void PostTest([PostModel] PostTestModel model, [Inject("PageTemplate")] string template)
         {
-            this.Html("Prename: " + model.Prename + "<br />Name: " + model.Name);
+            if (model == null)
+            {
+                this.Html(this.TemplateParser.Parse<PostTestModel>(template, null, null, "PostController"));
+            }
+            else
+            {
+                this.Html(this.TemplateParser.Parse(template, model, null, "PostController"));
+            }
         }
     }
 }

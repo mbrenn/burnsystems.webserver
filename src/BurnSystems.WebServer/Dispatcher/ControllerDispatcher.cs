@@ -174,8 +174,15 @@ namespace BurnSystems.WebServer.Dispatcher
                     var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
                     if (postParameterAttribute != null)
                     {
-                        callArguments.Add(
-                            this.CreatePostModel(activates, parameter));
+                        if (context.Request.HttpMethod.ToLower() != "post")
+                        {
+                            callArguments.Add(null);
+                        }
+                        else
+                        {
+                            callArguments.Add(
+                                this.CreatePostModel(activates, parameter));
+                        }
                         continue;
                     }
 
@@ -242,9 +249,15 @@ namespace BurnSystems.WebServer.Dispatcher
 
             foreach (var property in parameterType.GetProperties(BindingFlags.SetField | BindingFlags.Instance | BindingFlags.Public))
             {
+                var value = postVariables[property.Name];
+                if (value == null)
+                {
+                    continue;
+                }
+
                 property.SetValue(
                     instance,
-                    postVariables[property.Name].ConvertTo(property.PropertyType), 
+                    value.ConvertTo(property.PropertyType), 
                     null);
             }
 

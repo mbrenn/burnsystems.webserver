@@ -49,7 +49,7 @@ namespace BurnSystems.WebServer.UnitTests
                     outputStream.Read(responseBytes, 0, totalLength);
 
                     var data = Encoding.UTF8.GetString(responseBytes);
-                    Assert.That(data.Contains("Prename: Hans"));
+                    Assert.That(data.Contains("Hans"));
                 }
             }
         }
