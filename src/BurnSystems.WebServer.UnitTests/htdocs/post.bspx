@@ -1,0 +1,15 @@
+﻿<% 
+<DynamicPage ControllerType="BurnSystems.WebServer.UnitTests.Controller.PostController" WebMethod="PostTest">
+</DynamicPage>
+%>
+<html>
+	<body>
+		<form action="?" method="POST">
+			<fieldset>
+				Vorname: <input type="text" name="Prename" /><br />
+				Nachname: <input type="text" name="Name" /><br />
+				<input type="submit" value="Abschicken" />
+			</fieldset>
+		</form>
+	</body>
+</html>

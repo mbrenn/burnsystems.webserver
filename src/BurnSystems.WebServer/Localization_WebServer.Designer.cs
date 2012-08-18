@@ -116,6 +116,15 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Es wurde bereits ein Inhalt versandt. Ein weiteres Versenden ist nicht zulässig. ähnelt.
+        /// </summary>
+        internal static string FinishedSending {
+            get {
+                return ResourceManager.GetString("FinishedSending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Beim Starten des Webservers ist ein Fehler aufgetreten. Überprüfen Sie bitte ob folgende Dinge erfüllt sind:
         ///- Programm läuft mit Administratorrechte
         ///- Die angeforderte Website wird bereits von einer anderen Anwendung belegt.

@@ -13,6 +13,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
     /// </summary>
     public class PostController : MVC.Controller
     {
+        
         public class PostTestModel
         {
             public string Prename
@@ -39,7 +40,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         [IfMethodIs("post")]
         public void PostTestCallback([PostModel] PostTestModel model, [Inject("PageTemplate")] string template)
         {
-            this.Html("Vorname: " + model.Prename + "<br />Nachname: " + model.Name);
+            this.Html("Prename: " + model.Prename + "<br />Name: " + model.Name);
         }
     }
 }

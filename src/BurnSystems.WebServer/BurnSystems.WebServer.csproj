@@ -104,6 +104,7 @@
     <Compile Include="MVC\UrlParameterAttribute.cs" />
     <Compile Include="MVC\WebMethodAttribute.cs" />
     <Compile Include="MVC\WebMethodInfo.cs" />
+    <Compile Include="Parser\ITemplateParser.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="IRequestDispatcher.cs" />
