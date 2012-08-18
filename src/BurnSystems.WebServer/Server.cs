@@ -5,6 +5,7 @@ using System.Text;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Helper;
+using BurnSystems.WebServer.Sessions;
 
 namespace BurnSystems.WebServer
 {
@@ -83,6 +84,9 @@ namespace BurnSystems.WebServer
 
             activationContainer.Bind<PostVariableReaderConfig>().ToConstant(new PostVariableReaderConfig());
             activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();
+
+            activationContainer.Bind<SessionContainer>().ToConstant(new SessionContainer());
+            activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
 
             return new Server(activationContainer);
         }
