@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BurnSystems.WebServer.MVC;
 using BurnSystems.ObjectActivation;
+using BurnSystems.WebServer.Helper;
 
 namespace BurnSystems.WebServer.UnitTests.Controller
 {
@@ -12,6 +13,13 @@ namespace BurnSystems.WebServer.UnitTests.Controller
     /// </summary>
     public class PostController : MVC.Controller
     {
+        [Inject]
+        public PostVariableReader POST
+        {
+            get;
+            set;
+        }
+
         [WebMethod]
         public void PostTest([Inject("PageTemplate")] string template)
         {

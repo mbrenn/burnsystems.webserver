@@ -182,7 +182,7 @@ namespace BurnSystems.WebServer.Dispatcher
                     }
 
                     // Check for Url-Parameter
-                    var urlParameterAttributes = parameterAttributes.Where ( x => x is UrlParameterAttribute).FirstOrDefault();
+                    var urlParameterAttributes = parameterAttributes.Where(x => x is UrlParameterAttribute).FirstOrDefault();
                     if (urlParameterAttributes != null)
                     {
                         callArguments.Add(null);

@@ -56,7 +56,35 @@ namespace BurnSystems.WebServer.Helper
             this.ListenerContext = context;
 
             // Performs the reading
-            this.ReadPostFromFormData();
+            this.ReadPostVariables();
+        }
+
+        /// <summary>
+        /// Reads the post variables from inputstream
+        /// </summary>
+        public void ReadPostVariables()
+        {
+            if (this.ListenerContext.Request.ContentType != null &&
+                this.ListenerContext.Request.ContentType.StartsWith("multipart/form-data"))
+            {
+                this.ReadPostFromFormData();
+            }
+            else
+            {
+                this.ReadPostFromWWWUrlEncoded();
+            }
+
+            // Removes .x und .y.
+            // These variables are set by some browsers, when the user clicks on imagebuttons
+            foreach (var pair in new Dictionary<string, string>(this.PostVariables))
+            {
+                if (pair.Key.EndsWith(".x") || pair.Value.EndsWith(".y"))
+                {
+                    var leftPart = pair.Key.Substring(0, pair.Key.Length - 2);
+                    this.PostVariables[leftPart]
+                        = pair.Value;
+                }
+            }
         }
 
         /// <summary>
@@ -136,34 +164,6 @@ namespace BurnSystems.WebServer.Helper
         }
 
         /// <summary>
-        /// Reads the post variables from inputstream
-        /// </summary>
-        public void ReadPostVariables()
-        {
-            if (this.ListenerContext.Request.ContentType != null &&
-                this.ListenerContext.Request.ContentType.StartsWith("multipart/form-data"))
-            {
-                this.ReadPostFromFormData();
-            }
-            else
-            {
-                this.ReadPostFromWWWUrlEncoded();
-            }
-
-            // Removes .x und .y.
-            // These variables are set by some browsers, when the user clicks on imagebuttons
-            foreach (var pair in new Dictionary<string, string>(this.PostVariables))
-            {
-                if (pair.Key.EndsWith(".x") || pair.Value.EndsWith(".y"))
-                {
-                    var leftPart = pair.Key.Substring(0, pair.Key.Length - 2);
-                    this.PostVariables[leftPart]
-                        = pair.Value;
-                }
-            }
-        }
-
-        /// <summary>
         /// Reads urlencoded variables
         /// </summary>
         private void ReadPostFromWWWUrlEncoded()
@@ -179,6 +179,12 @@ namespace BurnSystems.WebServer.Helper
             }
 
             var postLength = Convert.ToInt32(Math.Min(this.Config.MaxPostLength, requestLength));
+
+            if (postLength == 0)
+            {
+                // Nothing to do here!
+                return;
+            }
 
             byte[] bytes = new byte[postLength];
             this.ListenerContext.Request.InputStream.Read(bytes, 0, postLength);

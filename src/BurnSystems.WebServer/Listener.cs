@@ -142,11 +142,14 @@ namespace BurnSystems.WebServer
         /// <param name="context"></param>
         private void ExecuteHttpRequest(object value)
         {
-            using (var block = new ActivationBlock("WebRequest", this.activationContainer))
+            var context = value as HttpListenerContext;
+
+            var webRequestContainer = new ActivationContainer("WebRequest", this.activationContainer);
+            webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
+            using (var block = new ActivationBlock("WebRequest", webRequestContainer))
             {
                 try
                 {
-                    var context = value as HttpListenerContext;
                     try
                     {
                         if (context == null)
