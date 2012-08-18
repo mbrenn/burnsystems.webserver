@@ -99,7 +99,8 @@
     <Compile Include="Helper\PostVariableReader.cs" />
     <Compile Include="Helper\PostVariableReaderConfig.cs" />
     <Compile Include="MVC\Controller.cs" />
-    <Compile Include="MVC\IfMethodIs.cs" />
+    <Compile Include="MVC\IfMethodIsAttribute.cs" />
+    <Compile Include="MVC\PostAttribute.cs" />
     <Compile Include="MVC\UrlParameterAttribute.cs" />
     <Compile Include="MVC\WebMethodAttribute.cs" />
     <Compile Include="MVC\WebMethodInfo.cs" />

@@ -78,8 +78,7 @@ namespace BurnSystems.WebServer
         {
             activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
 
-            var mimeTypeConverter = MimeTypeConverter.Default;
-            activationContainer.Bind<MimeTypeConverter>().ToConstant(mimeTypeConverter);
+            activationContainer.Bind<MimeTypeConverter>().ToConstant(MimeTypeConverter.Default);
 
             activationContainer.Bind<PostVariableReaderConfig>().ToConstant(new PostVariableReaderConfig());
             activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();

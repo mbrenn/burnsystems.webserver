@@ -6,8 +6,8 @@
 	<body>
 		<form action="?" method="POST">
 			<fieldset>
-				Vorname: <input type="text" name="prename" /><br />
-				Nachname: <input type="text" name="name" /><br />
+				Vorname: <input type="text" name="Prename" /><br />
+				Nachname: <input type="text" name="Name" /><br />
 				<input type="submit" value="Abschicken" />
 			</fieldset>
 		</form>

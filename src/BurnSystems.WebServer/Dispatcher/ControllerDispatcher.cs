@@ -9,6 +9,9 @@ using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
 using BurnSystems.WebServer.Responses;
 using BurnSystems.Test;
+using System.Reflection;
+using BurnSystems.WebServer.Helper;
+using BurnSystems.Extensions;
 
 namespace BurnSystems.WebServer.Dispatcher
 {
@@ -165,6 +168,19 @@ namespace BurnSystems.WebServer.Dispatcher
                 foreach (var parameter in parameters)
                 {
                     var parameterAttributes = parameter.GetCustomAttributes(false);
+
+                    /////////////////////////////////
+                    // Check for POST-Parameter
+                    var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
+                    if (postParameterAttribute != null)
+                    {
+                        callArguments.Add(
+                            this.CreatePostModel(activates, parameter));
+                        continue;
+                    }
+
+                    /////////////////////////////////
+                    // Check for injection parameter
                     var injectParameterAttribute = parameterAttributes.Where(x => x is InjectAttribute).Cast<InjectAttribute>().FirstOrDefault();
                     if (injectParameterAttribute != null)
                     {
@@ -181,6 +197,7 @@ namespace BurnSystems.WebServer.Dispatcher
                         continue;
                     }
 
+                    /////////////////////////////////
                     // Check for Url-Parameter
                     var urlParameterAttributes = parameterAttributes.Where(x => x is UrlParameterAttribute).FirstOrDefault();
                     if (urlParameterAttributes != null)
@@ -210,6 +227,28 @@ namespace BurnSystems.WebServer.Dispatcher
 
             ErrorResponse.Throw404(activates, context);
             return;
+        }
+
+        /// <summary>
+        /// Creates the post model for a certain parameter
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        private object CreatePostModel(IActivates activates,  System.Reflection.ParameterInfo parameter)
+        {
+            var parameterType = parameter.ParameterType;
+            var instance = Activator.CreateInstance(parameterType);
+            var postVariables = activates.Get<PostVariableReader>();
+
+            foreach (var property in parameterType.GetProperties(BindingFlags.SetField | BindingFlags.Instance | BindingFlags.Public))
+            {
+                property.SetValue(
+                    instance,
+                    postVariables[property.Name].ConvertTo(property.PropertyType), 
+                    null);
+            }
+
+            return instance;
         }
         
         /// <summary>

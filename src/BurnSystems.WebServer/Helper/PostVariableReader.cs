@@ -39,10 +39,16 @@ namespace BurnSystems.WebServer.Helper
         /// <summary>
         /// Gets the post variables
         /// </summary>
-        public NiceDictionary<string, string> PostVariables
+        private NiceDictionary<string, string> postVariables = new NiceDictionary<string, string>();
+
+        /// <summary>
+        /// Gets post variable
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string this[string key]
         {
-            get;
-            private set;
+            get { return this.postVariables[key]; }
         }
 
         [Inject]
@@ -52,7 +58,6 @@ namespace BurnSystems.WebServer.Helper
             Ensure.That(context != null);
             
             this.Config = config;
-            this.PostVariables = new NiceDictionary<string, string>();
             this.ListenerContext = context;
 
             // Performs the reading
@@ -76,12 +81,12 @@ namespace BurnSystems.WebServer.Helper
 
             // Removes .x und .y.
             // These variables are set by some browsers, when the user clicks on imagebuttons
-            foreach (var pair in new Dictionary<string, string>(this.PostVariables))
+            foreach (var pair in new Dictionary<string, string>(this.postVariables))
             {
                 if (pair.Key.EndsWith(".x") || pair.Value.EndsWith(".y"))
                 {
                     var leftPart = pair.Key.Substring(0, pair.Key.Length - 2);
-                    this.PostVariables[leftPart]
+                    this.postVariables[leftPart]
                         = pair.Value;
                 }
             }
@@ -147,7 +152,7 @@ namespace BurnSystems.WebServer.Helper
                     {
                         // Normale Formvariable
                         var content = UTF8Encoding.UTF8.GetString(part.Content);
-                        this.PostVariables[name] =
+                        this.postVariables[name] =
                             content.Trim();
                     }
                     else
@@ -208,7 +213,7 @@ namespace BurnSystems.WebServer.Helper
                     var leftPart = part.Substring(0, positionEqual);
                     var rightPart = part.Substring(positionEqual + 1);
 
-                    this.PostVariables[HttpUtility.UrlDecode(leftPart)] =
+                    this.postVariables[HttpUtility.UrlDecode(leftPart)] =
                         HttpUtility.UrlDecode(rightPart);
                 }
             }
