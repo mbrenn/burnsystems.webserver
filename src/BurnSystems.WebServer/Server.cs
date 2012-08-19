@@ -87,6 +87,8 @@ namespace BurnSystems.WebServer
 
             activationContainer.Bind<SessionContainer>().ToConstant(new SessionContainer());
             activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
+            activationContainer.Bind<Session>().To(
+                (x) => x.Get<ISessionInterface>().GetSession());
 
             return new Server(activationContainer);
         }

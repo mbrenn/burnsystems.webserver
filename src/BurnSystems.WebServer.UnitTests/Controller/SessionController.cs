@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using BurnSystems.ObjectActivation;
+using BurnSystems.WebServer.Sessions;
+using BurnSystems.WebServer.Parser;
+using BurnSystems.WebServer.MVC;
+
+namespace BurnSystems.WebServer.UnitTests.Controller
+{
+    /// <summary>
+    /// Defines the session controller 
+    /// </summary>
+    public class SessionController : MVC.Controller
+    {
+        [Inject]
+        public Session Session
+        {
+            get;
+            set;
+        }
+
+        [Inject]
+        public ITemplateParser TemplateParser
+        {
+            get;
+            set;
+        }
+
+        [WebMethod]
+        public void SessionTest([PostModel] SessionPostModel postModel, [Inject("PageTemplate")] string template)
+        {
+            if (postModel != null)
+            {
+                this.Session["Test"] = postModel.Value;
+            }
+
+            var model = new
+            {
+                SessionValue = this.Session["Test"]
+            };
+
+            this.Html(this.TemplateParser.Parse(template, model, null, "SessonController"));
+        }
+        
+        /// <summary>
+        /// Post Model
+        /// </summary>
+        public class SessionPostModel
+        {
+            public string Value
+            {
+                get;
+                set;
+            }
+        }
+    }
+}

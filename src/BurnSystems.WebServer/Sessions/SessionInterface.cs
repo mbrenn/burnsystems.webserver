@@ -20,7 +20,6 @@ namespace BurnSystems.WebServer.Sessions
         /// <summary>
         /// Stores the sessioncontainer
         /// </summary>
-        [Inject]
         public SessionContainer sessionContainer
         {
             get;
@@ -31,12 +30,12 @@ namespace BurnSystems.WebServer.Sessions
         /// Initializes a new instance of the SessionInterface class.
         /// </summary>
         /// <param name="context">Http Context to be used</param>
-        [Inject]        
-        public SessionInterface(HttpListenerContext context)
+        [Inject]
+        public SessionInterface(HttpListenerContext context, SessionContainer sessionContainer)
         {
             this.context = context;
+            this.sessionContainer = sessionContainer;
         }
-
 
         /// <summary>
         /// Checks, if a session exists with the name in cookie "SessionId". 
