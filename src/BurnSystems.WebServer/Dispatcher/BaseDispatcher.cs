@@ -11,24 +11,24 @@ namespace BurnSystems.WebServer.Dispatcher
     /// <summary>
     /// The base dispatcher, offering filter possibility for responsibility check
     /// </summary>
-    public abstract class BaseDispatcher: IRequestDispatcher
+    public abstract class BaseDispatcher : IRequestDispatcher
     {
         /// <summary>
         /// Stores the filter
         /// </summary>
-        private Func<HttpListenerContext, bool> filter;
+        private Func<ContextDispatchInformation, bool> filter;
 
-        public BaseDispatcher(Func<HttpListenerContext, bool> filter)
+        public BaseDispatcher(Func<ContextDispatchInformation, bool> filter)
         {
             Ensure.That(filter != null);
             this.filter = filter;
         }
 
-        public bool IsResponsible(IActivates container, HttpListenerContext context)
+        public bool IsResponsible(IActivates container, ContextDispatchInformation info)
         {
-            return this.filter(context);
+            return this.filter(info);
         }
 
-        public abstract void Dispatch(IActivates container, HttpListenerContext context);
+        public abstract void Dispatch(IActivates container, ContextDispatchInformation context);
     }
 }

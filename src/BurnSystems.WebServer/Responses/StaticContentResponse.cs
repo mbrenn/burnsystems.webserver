@@ -21,24 +21,24 @@ namespace BurnSystems.WebServer.Responses
             set;
         }
 
-        public StaticContentResponse(Func<HttpListenerContext, bool> filter)
+        public StaticContentResponse(Func<ContextDispatchInformation, bool> filter)
             : base(filter)
         {
         }
 
-        public StaticContentResponse(Func<HttpListenerContext, bool> filter, string contentType, byte[] content)
+        public StaticContentResponse(Func<ContextDispatchInformation, bool> filter, string contentType, byte[] content)
             : base(filter)
         {
             this.ContentType = contentType;
             this.Content = content;
         }
 
-        public override void Dispatch(ObjectActivation.IActivates activates, System.Net.HttpListenerContext context)
+        public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
-            context.Response.ContentLength64 = this.Content.Length;
-            context.Response.ContentType = this.ContentType;
+            info.Context.Response.ContentLength64 = this.Content.Length;
+            info.Context.Response.ContentType = this.ContentType;
 
-            using (var responseStream = context.Response.OutputStream)
+            using (var responseStream = info.Context.Response.OutputStream)
             {
                 responseStream.Write(this.Content, 0, this.Content.Length);
             }

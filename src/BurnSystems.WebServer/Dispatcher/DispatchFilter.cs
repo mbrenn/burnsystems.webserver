@@ -11,12 +11,12 @@ namespace BurnSystems.WebServer.Dispatcher
     /// </summary>
     public static class DispatchFilter
     {
-        public static Func<HttpListenerContext, bool> All
+        public static Func<ContextDispatchInformation, bool> All
         {
             get { return (x) => true; }
         }
 
-        public static Func<HttpListenerContext, bool> None
+        public static Func<ContextDispatchInformation, bool> None
         {
             get { return (x) => false; }
         }
@@ -26,10 +26,10 @@ namespace BurnSystems.WebServer.Dispatcher
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        public static Func<HttpListenerContext, bool> ByHost(string host)
+        public static Func<ContextDispatchInformation, bool> ByHost(string host)
         {
             return (x) =>
-               x.Request.Url.Host.ToLower() == host.ToLower();
+               x.RequestUrl.Host.ToLower() == host.ToLower();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        public static Func<HttpListenerContext, bool> ByUrl(string url)
+        public static Func<ContextDispatchInformation, bool> ByUrl(string url)
         {
             if (!url.StartsWith("/"))
             {
@@ -45,15 +45,15 @@ namespace BurnSystems.WebServer.Dispatcher
             }
 
             return (x) =>
-               x.Request.Url.AbsolutePath.ToLower().StartsWith(url);
+               x.RequestUrl.AbsolutePath.ToLower().StartsWith(url);
         }
 
-        public static Func<HttpListenerContext, bool> And(Func<HttpListenerContext, bool> f1, Func<HttpListenerContext, bool> f2)
+        public static Func<ContextDispatchInformation, bool> And(Func<ContextDispatchInformation, bool> f1, Func<ContextDispatchInformation, bool> f2)
         {
             return (x) => f1(x) && f2(x);
         }
 
-        public static Func<HttpListenerContext, bool> Or(Func<HttpListenerContext, bool> f1, Func<HttpListenerContext, bool> f2)
+        public static Func<ContextDispatchInformation, bool> Or(Func<ContextDispatchInformation, bool> f1, Func<ContextDispatchInformation, bool> f2)
         {
             return (x) => f1(x) && f2(x);
         }

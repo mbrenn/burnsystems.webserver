@@ -32,28 +32,28 @@ namespace BurnSystems.WebServer.Dispatcher
             set;
         }
 
-        public FileSystemDispatcher(Func<HttpListenerContext, bool> filter)
+        public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter)
             : base(filter)
         {
         }
 
-        public FileSystemDispatcher(Func<HttpListenerContext, bool> filter, string physicalRootPath)
+        public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath)
             : this(filter)
         {
             this.PhysicalRootPath = physicalRootPath;
         }
 
-        public FileSystemDispatcher(Func<HttpListenerContext, bool> filter, string physicalRootPath, string webPrefix)
+        public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath, string webPrefix)
             : this(filter, physicalRootPath)
         {
             this.WebPrefix = webPrefix;
         }
 
-        public override void Dispatch(IActivates container, System.Net.HttpListenerContext context)
+        public override void Dispatch(IActivates container, ContextDispatchInformation info)
         {
             // Substring(1) to remove '/'
             string relativePath;
-            var absolutePath = context.Request.Url.AbsolutePath;
+            var absolutePath = info.RequestUrl.AbsolutePath;
 
             if (string.IsNullOrEmpty(this.WebPrefix))
             {
@@ -69,7 +69,7 @@ namespace BurnSystems.WebServer.Dispatcher
                 {
                     var errorResponse = container.Create<ErrorResponse>();
                     errorResponse.Set(HttpStatusCode.NotFound);
-                    errorResponse.Dispatch(container, context);
+                    errorResponse.Dispatch(container, info);
                     return;
                 }
             }
@@ -80,7 +80,7 @@ namespace BurnSystems.WebServer.Dispatcher
             {
                 var errorResponse = container.Create<ErrorResponse>();
                 errorResponse.Set(HttpStatusCode.Forbidden);
-                errorResponse.Dispatch(container, context);
+                errorResponse.Dispatch(container, info);
 
                 return;
             }
@@ -90,13 +90,13 @@ namespace BurnSystems.WebServer.Dispatcher
                 var physicalFileResponse = container.Create<PhysicalFileResponse>();
                 physicalFileResponse.PhysicalPath = physicalPath;
                 physicalFileResponse.VirtualPath = "/" + relativePath;
-                physicalFileResponse.Dispatch(container, context);
+                physicalFileResponse.Dispatch(container, info);
             }
             else
             {
                 var errorResponse = container.Create<ErrorResponse>();
                 errorResponse.Set(HttpStatusCode.NotFound);
-                errorResponse.Dispatch(container, context);
+                errorResponse.Dispatch(container, info);
             }
         }
     }

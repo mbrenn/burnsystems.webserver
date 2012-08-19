@@ -27,7 +27,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// Initializes a new instance of the UrlDispatcher class
         /// </summary>
         /// <param name="filter">Filter to be used</param>
-        public UrlDispatcher(Func<HttpListenerContext, bool> filter)
+        public UrlDispatcher(Func<ContextDispatchInformation, bool> filter)
             : base(filter)
         {
         }
@@ -37,9 +37,9 @@ namespace BurnSystems.WebServer.Dispatcher
             this.dispatchers.Add(dispatcher);
         }
 
-        public override void Dispatch(IActivates activates, System.Net.HttpListenerContext context)
+        public override void Dispatch(IActivates activates, ContextDispatchInformation info)
         {
-            var url = context.Request.Url.AbsolutePath;
+            var url = info.Context.Request.Url.AbsolutePath;
 
             // Found
             IRequestDispatcher foundRequest;
@@ -47,12 +47,12 @@ namespace BurnSystems.WebServer.Dispatcher
             {
                 if (foundRequest != null)
                 {
-                    foundRequest.Dispatch(activates, context);
+                    foundRequest.Dispatch(activates, info);
                 }
             }
 
             // Not found, go through list
-            foundRequest = this.dispatchers.Where(x => x.IsResponsible(activates, context)).FirstOrDefault();
+            foundRequest = this.dispatchers.Where(x => x.IsResponsible(activates, info)).FirstOrDefault();
             this.cache[url] = foundRequest;
             if (foundRequest == null)
             {
@@ -61,7 +61,7 @@ namespace BurnSystems.WebServer.Dispatcher
             }
             else
             {
-                foundRequest.Dispatch(activates, context);
+                foundRequest.Dispatch(activates, info);
             }
         }
     }

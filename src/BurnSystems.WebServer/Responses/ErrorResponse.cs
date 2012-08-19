@@ -59,8 +59,8 @@ namespace BurnSystems.WebServer.Responses
         /// <summary>
         /// Gives response to listener context
         /// </summary>
-        /// <param name="context">Context to be used</param>
-        public override void Dispatch(IActivates container, HttpListenerContext context)
+        /// <param name="info">Context to be used</param>
+        public override void Dispatch(IActivates container, ContextDispatchInformation info)
         {
             Ensure.That(this.Code != 0, "Code is 0");
             Ensure.That(this.Message != null, "Code is null");
@@ -71,15 +71,15 @@ namespace BurnSystems.WebServer.Responses
             var model = new
             {
                 Title = this.Title,
-                Url = context.Request.Url.ToString(),
+                Url = info.Context.Request.Url.ToString(),
                 Message = this.Message,
                 Code = this.Code.ToString()
             };
 
             var template = this.TemplateParser.Parse(content, model, null, this.GetType().ToString());
 
-            context.Response.StatusCode = 404;
-            using (var response = context.Response.OutputStream)
+            info.Context.Response.StatusCode = 404;
+            using (var response = info.Context.Response.OutputStream)
             {
                 var bytes = Encoding.UTF8.GetBytes(template);
                 response.Write(bytes, 0, bytes.Length);
@@ -91,7 +91,7 @@ namespace BurnSystems.WebServer.Responses
         /// </summary>
         /// <param name="container">Container to be used</param>
         /// <param name="context">HTTP Context</param>
-        public static void Throw404(ObjectActivation.IActivates container, HttpListenerContext context, string additionalMessage = null)
+        public static void Throw404(ObjectActivation.IActivates container, ContextDispatchInformation info, string additionalMessage = null)
         {
             var errorResponse = container.Create<ErrorResponse>();
             errorResponse.Set(HttpStatusCode.NotFound);
@@ -101,7 +101,7 @@ namespace BurnSystems.WebServer.Responses
                 errorResponse.Message = additionalMessage;
             }
 
-            errorResponse.Dispatch(container, context);
+            errorResponse.Dispatch(container, info);
         }
     }
 }

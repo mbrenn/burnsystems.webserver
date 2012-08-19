@@ -25,7 +25,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// Initializes a new instance of the ControllerDispatcher class
         /// </summary>
         /// <param name="filter">Filter being used</param>
-        public ControllerDispatcher(Func<HttpListenerContext, bool> filter)
+        public ControllerDispatcher(Func<ContextDispatchInformation, bool> filter)
             : base(typeof(T), filter)
         {
         }
@@ -35,7 +35,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// </summary>
         /// <param name="filter">Filter being used</param>
         /// <param name="webPath">Virtual web path being used to strip away constant part</param>
-        public ControllerDispatcher(Func<HttpListenerContext, bool> filter, string webPath)
+        public ControllerDispatcher(Func<ContextDispatchInformation, bool> filter, string webPath)
             : base(typeof(T), filter, webPath)
         {
         }
@@ -72,7 +72,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// </summary>
         /// <param name="controllerType">Type of the controller being used</param>
         /// <param name="filter">Filter being used</param>
-        public ControllerDispatcher(Type controllerType, Func<HttpListenerContext, bool> filter)
+        public ControllerDispatcher(Type controllerType, Func<ContextDispatchInformation, bool> filter)
             : base(filter)
         {
             this.controllerType = controllerType;
@@ -85,7 +85,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <param name="controllerType">Type of the controller</param>
         /// <param name="filter">Filter being used</param>
         /// <param name="webPath">Path, where controller is stored</param>
-        public ControllerDispatcher(Type controllerType, Func<HttpListenerContext, bool> filter, string webPath)
+        public ControllerDispatcher(Type controllerType, Func<ContextDispatchInformation, bool> filter, string webPath)
             : this(controllerType, filter)
         {
             this.WebPath = webPath;
@@ -96,10 +96,10 @@ namespace BurnSystems.WebServer.Dispatcher
         /// </summary>
         /// <param name="activates">Container used for activation</param>
         /// <param name="context">Context of http</param>
-        public override void Dispatch(ObjectActivation.IActivates activates, HttpListenerContext context)
+        public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
             // Stores the absolute path
-            var absolutePath = context.Request.Url.AbsolutePath;
+            var absolutePath = info.Context.Request.Url.AbsolutePath;
             if (!string.IsNullOrEmpty(this.WebPath) && !this.WebPath.EndsWith("/"))
             {
                 this.WebPath = this.WebPath + "/";
@@ -109,7 +109,7 @@ namespace BurnSystems.WebServer.Dispatcher
             if (!absolutePath.StartsWith(this.WebPath))
             {
                 // I'm not the real responsible for this task
-                ErrorResponse.Throw404(activates, context);
+                ErrorResponse.Throw404(activates, info);
                 return;
             }
             
@@ -118,7 +118,7 @@ namespace BurnSystems.WebServer.Dispatcher
             if (string.IsNullOrEmpty(restUrl))
             {
                 // Nothing to do here... Default page. Not implemented yet
-                ErrorResponse.Throw404(activates, context);
+                ErrorResponse.Throw404(activates, info);
                 return;
             }
 
@@ -129,7 +129,7 @@ namespace BurnSystems.WebServer.Dispatcher
             var methodName = segments[0];
 
 
-            this.DispatchForWebMethod(activates, context, methodName);
+            this.DispatchForWebMethod(activates, info, methodName);
         }
 
         /// <summary>
@@ -139,23 +139,23 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <param name="context">WebContext for request</param>
         /// <param name="controller">Controller to be used</param>
         /// <param name="methodName">Requested web method</param>
-        public void DispatchForWebMethod(ObjectActivation.IActivates activates, HttpListenerContext context, string methodName)
+        public void DispatchForWebMethod(ObjectActivation.IActivates activates, ContextDispatchInformation info, string methodName)
         {
             // Creates controller
             var controller = activates.Create(this.controllerType) as Controller;
             Ensure.That(controller != null, "Unknown ControllerType: " + this.controllerType.FullName);
 
             controller.Container = activates;
-            controller.Context = context;
+            controller.Context = info.Context;
 
             // Try to find the method
-            foreach (var info in this.webMethodInfos
+            foreach (var webMethodInfo in this.webMethodInfos
                 .Where(x => x.Name == methodName))
             {
                 // Check for http Method
-                if (!string.IsNullOrEmpty(info.IfMethodIs))
+                if (!string.IsNullOrEmpty(webMethodInfo.IfMethodIs))
                 {
-                    if (info.IfMethodIs != context.Request.HttpMethod.ToLower())
+                    if (webMethodInfo.IfMethodIs != info.Context.Request.HttpMethod.ToLower())
                     {
                         // No match, 
                         continue;
@@ -163,7 +163,7 @@ namespace BurnSystems.WebServer.Dispatcher
                 }
 
                 // Ok, now look for get variables
-                var parameters = info.MethodInfo.GetParameters();
+                var parameters = webMethodInfo.MethodInfo.GetParameters();
                 var callArguments = new List<object>();
                 foreach (var parameter in parameters)
                 {
@@ -174,7 +174,7 @@ namespace BurnSystems.WebServer.Dispatcher
                     var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
                     if (postParameterAttribute != null)
                     {
-                        if (context.Request.HttpMethod.ToLower() != "post")
+                        if (info.Context.Request.HttpMethod.ToLower() != "post")
                         {
                             callArguments.Add(null);
                         }
@@ -215,7 +215,7 @@ namespace BurnSystems.WebServer.Dispatcher
                     }
 
                     // Rest is Get-Parameter
-                    var value = context.Request.QueryString[parameter.Name];
+                    var value = info.Context.Request.QueryString[parameter.Name];
                     if (value == null)
                     {
                         callArguments.Add(this.GetDefaultArgument(parameter));
@@ -226,13 +226,13 @@ namespace BurnSystems.WebServer.Dispatcher
                     }
                 }
 
-                info.MethodInfo.Invoke(controller, callArguments.ToArray());
+                webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray());
 
                 // First hit is success
                 return;
             }
 
-            ErrorResponse.Throw404(activates, context);
+            ErrorResponse.Throw404(activates, info);
             return;
         }
 

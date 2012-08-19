@@ -6,6 +6,7 @@ using BurnSystems.Logging;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Responses;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace BurnSystems.WebServer
 {
@@ -146,10 +147,12 @@ namespace BurnSystems.WebServer
 
             var webRequestContainer = new ActivationContainer("WebRequest", this.activationContainer);
             webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
+
             using (var block = new ActivationBlock("WebRequest", webRequestContainer))
             {
                 try
                 {
+                    var info = new ContextDispatchInformation(context);
                     try
                     {
                         if (context == null)
@@ -159,16 +162,16 @@ namespace BurnSystems.WebServer
 
                         foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
                         {
-                            if (dispatcher.IsResponsible(block, context))
+                            if (dispatcher.IsResponsible(block, info))
                             {
-                                dispatcher.Dispatch(block, context);
+                                dispatcher.Dispatch(block, info);
                             }
                         }
 
                         // Throw 404
                         var errorResponse = this.activationContainer.Create<ErrorResponse>();
                         errorResponse.Set(HttpStatusCode.NotFound);
-                        errorResponse.Dispatch(block, context);
+                        errorResponse.Dispatch(block, info);
 
                     }
                     catch (Exception exc)
@@ -177,7 +180,7 @@ namespace BurnSystems.WebServer
                         errorResponse.Title = "Server error";
                         errorResponse.Message = exc.ToString();
                         errorResponse.Code = 500;
-                        errorResponse.Dispatch(block, context);
+                        errorResponse.Dispatch(block, info);
                     }
                     finally
                     {

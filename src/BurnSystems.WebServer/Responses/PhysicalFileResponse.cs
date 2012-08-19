@@ -43,46 +43,46 @@ namespace BurnSystems.WebServer.Responses
             this.FileChunkSize = 64 * 1024;
         }
 
-        public bool IsResponsible(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
+        public bool IsResponsible(ObjectActivation.IActivates container, ContextDispatchInformation info)
         {
             return File.Exists(this.PhysicalPath);
         }
 
-        public void Dispatch(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
+        public void Dispatch(ObjectActivation.IActivates container, ContextDispatchInformation info)
         {
             var extension = Path.GetExtension(this.PhysicalPath);
-            var info = this.MimeTypeConverter.ConvertFromExtension(extension);
+            var mimeInfo = this.MimeTypeConverter.ConvertFromExtension(extension);
                         
             // Set some header
-            if (info != null)
+            if (mimeInfo != null)
             {
-                if (info.FileRequestDispatcher != null)
+                if (mimeInfo.FileRequestDispatcher != null)
                 {
                     // Finds file request dispatcher
-                    var fileRequestDispatcher = container.Create(info.FileRequestDispatcher) as IFileRequestDispatcher;
+                    var fileRequestDispatcher = container.Create(mimeInfo.FileRequestDispatcher) as IFileRequestDispatcher;
                     fileRequestDispatcher.PhysicalPath = this.PhysicalPath;
                     fileRequestDispatcher.VirtualPath = this.VirtualPath;
 
-                    fileRequestDispatcher.Dispatch(container, context);
+                    fileRequestDispatcher.Dispatch(container, info);
                 }
 
-                if (info.MimeType != null)
+                if (mimeInfo.MimeType != null)
                 {
-                    context.Response.ContentType = info.MimeType;
+                    info.Context.Response.ContentType = mimeInfo.MimeType;
                 }
 
-                if (info.ContentEncoding != null)
+                if (mimeInfo.ContentEncoding != null)
                 {
-                    context.Response.ContentEncoding = info.ContentEncoding;
+                    info.Context.Response.ContentEncoding = mimeInfo.ContentEncoding;
                 }
             }
 
             // File is not sent out at once, file is sent out by by chunks
-            using (var responseStream = context.Response.OutputStream)
+            using (var responseStream = info.Context.Response.OutputStream)
             {
                 using (var stream = new FileStream(this.PhysicalPath, FileMode.Open, FileAccess.Read, FileShare.Read))                
                 {
-                    context.Response.ContentLength64 = stream.Length;
+                    info.Context.Response.ContentLength64 = stream.Length;
 
                     var restSize = stream.Length;
                     var byteBuffer = new byte[this.FileChunkSize];

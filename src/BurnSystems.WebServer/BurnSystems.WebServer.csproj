@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
+    <Compile Include="Dispatcher\ContextDispatchInformation.cs" />
     <Compile Include="Dispatcher\ControllerDispatcher.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
     <Compile Include="Dispatcher\FileSystemDispatcher.cs" />

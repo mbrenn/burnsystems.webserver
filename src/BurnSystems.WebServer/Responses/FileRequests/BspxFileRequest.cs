@@ -31,8 +31,8 @@ namespace BurnSystems.WebServer.Responses.FileRequests
         /// Dispatches the object
         /// </summary>
         /// <param name="container">Container for activations</param>
-        /// <param name="context">Context being used</param>
-        public override void Dispatch(ObjectActivation.IActivates container, System.Net.HttpListenerContext context)
+        /// <param name="info">Context being used</param>
+        public override void Dispatch(ObjectActivation.IActivates container, ContextDispatchInformation info)
         {
             var viewTemplate = File.ReadAllText(this.PhysicalPath);
 
@@ -58,13 +58,13 @@ namespace BurnSystems.WebServer.Responses.FileRequests
 
                     if (controllerType == null)
                     {
-                        ErrorResponse.Throw404(container, context, "Xml-Node: DynamicPage/@ControllerType not found");
+                        ErrorResponse.Throw404(container, info, "Xml-Node: DynamicPage/@ControllerType not found");
                         return;
                     }
 
                     if (controllerWebMethod == null)
                     {
-                        ErrorResponse.Throw404(container, context, "Xml-Node: DynamicPage/@WebMethod not found");
+                        ErrorResponse.Throw404(container, info, "Xml-Node: DynamicPage/@WebMethod not found");
                         return;
                     }
 
@@ -72,7 +72,7 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                     var type = EnvironmentHelper.GetTypeByName(controllerType.Value);
                     if (type == null)
                     {
-                        ErrorResponse.Throw404(container, context, string.Format("Type for Controller: {0} not found", controllerType.Value));
+                        ErrorResponse.Throw404(container, info, string.Format("Type for Controller: {0} not found", controllerType.Value));
                         return;
                     }
 
@@ -83,7 +83,7 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                     using (var block = new ActivationBlock("BspxFileRequest", webMethodContainer, container as ActivationBlock))
                     {
                         var dispatcher = new ControllerDispatcher(type, DispatchFilter.All);
-                        dispatcher.DispatchForWebMethod(block, context, controllerWebMethod.Value);
+                        dispatcher.DispatchForWebMethod(block, info, controllerWebMethod.Value);
                     }
                 }
             }
