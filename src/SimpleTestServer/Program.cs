@@ -28,6 +28,7 @@ namespace SimpleTestServer
             
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
+            server.Add(new RelocationDispatcher("/", "/test.html"));
  
             server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));

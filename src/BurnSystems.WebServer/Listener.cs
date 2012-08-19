@@ -144,6 +144,10 @@ namespace BurnSystems.WebServer
         private void ExecuteHttpRequest(object value)
         {
             var context = value as HttpListenerContext;
+            if (context == null)
+            {
+                throw new ArgumentException("value is not HttpListenerContext");
+            }
 
             var webRequestContainer = new ActivationContainer("WebRequest", this.activationContainer);
             webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
@@ -155,23 +159,15 @@ namespace BurnSystems.WebServer
                     var info = new ContextDispatchInformation(context);
                     try
                     {
-                        if (context == null)
-                        {
-                            throw new ArgumentException("value is not HttpListenerContext");
-                        }
+                        var found = PerformDispatch(block, info);
 
-                        foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
+                        if (!found)
                         {
-                            if (dispatcher.IsResponsible(block, info))
-                            {
-                                dispatcher.Dispatch(block, info);
-                            }
+                            // Throw 404
+                            var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                            errorResponse.Set(HttpStatusCode.NotFound);
+                            errorResponse.Dispatch(block, info);
                         }
-
-                        // Throw 404
-                        var errorResponse = this.activationContainer.Create<ErrorResponse>();
-                        errorResponse.Set(HttpStatusCode.NotFound);
-                        errorResponse.Dispatch(block, info);
 
                     }
                     catch (Exception exc)
@@ -193,6 +189,29 @@ namespace BurnSystems.WebServer
                     logger.LogEntry(new LogEntry(exc.Message, LogLevel.Message));
                 }
             }
+        }
+
+        /// <summary>
+        /// Performs the dispatch for the activation block an context dispatch information
+        /// </summary>
+        /// <param name="block">Block being used</param>
+        /// <param name="info">Information about dispatching</param>
+        /// <returns>true, if dispatch has been performed</returns>
+        public static bool PerformDispatch(IActivates block, ContextDispatchInformation info)
+        {
+            info.IncrementDispatchTry();
+
+            var found = false;
+            foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
+            {
+                if (dispatcher.IsResponsible(block, info))
+                {
+                    dispatcher.Dispatch(block, info);
+                    found = true;
+                }
+            }
+
+            return found;
         }
     }
 }

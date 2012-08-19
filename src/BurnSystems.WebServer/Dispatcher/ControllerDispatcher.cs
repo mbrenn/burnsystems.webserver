@@ -99,7 +99,7 @@ namespace BurnSystems.WebServer.Dispatcher
         public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
             // Stores the absolute path
-            var absolutePath = info.Context.Request.Url.AbsolutePath;
+            var absolutePath = info.RequestUrl.AbsolutePath;
             if (!string.IsNullOrEmpty(this.WebPath) && !this.WebPath.EndsWith("/"))
             {
                 this.WebPath = this.WebPath + "/";
@@ -155,7 +155,7 @@ namespace BurnSystems.WebServer.Dispatcher
                 // Check for http Method
                 if (!string.IsNullOrEmpty(webMethodInfo.IfMethodIs))
                 {
-                    if (webMethodInfo.IfMethodIs != info.Context.Request.HttpMethod.ToLower())
+                    if (webMethodInfo.IfMethodIs != info.HttpMethod.ToLower())
                     {
                         // No match, 
                         continue;
@@ -174,7 +174,7 @@ namespace BurnSystems.WebServer.Dispatcher
                     var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
                     if (postParameterAttribute != null)
                     {
-                        if (info.Context.Request.HttpMethod.ToLower() != "post")
+                        if (info.HttpMethod.ToLower() != "post")
                         {
                             callArguments.Add(null);
                         }

@@ -39,6 +39,16 @@ namespace BurnSystems.WebServer.Dispatcher
         }
 
         /// <summary>
+        /// Stores the number of dispatch tries
+        /// </summary>
+        private int dispatchTries;
+        
+        /// <summary>
+        /// Stores the maximum number of redirections
+        /// </summary>
+        private const int MaxDispatchTries = 100;
+
+        /// <summary>
         /// Initializes a new instance of the ContextDispatchInformation 
         /// </summary>
         /// <param name="context"></param>
@@ -47,6 +57,15 @@ namespace BurnSystems.WebServer.Dispatcher
             this.Context = context;
             this.RequestUrl = context.Request.Url;
             this.HttpMethod = context.Request.HttpMethod;
+        }
+
+        internal void IncrementDispatchTry()
+        {
+            this.dispatchTries++;
+            if (this.dispatchTries > MaxDispatchTries)
+            {
+                throw new InvalidOperationException("Maximum Dispatch-Tries reached");
+            }
         }
     }
 }

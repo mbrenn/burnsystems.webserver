@@ -39,7 +39,7 @@ namespace BurnSystems.WebServer.Dispatcher
 
         public override void Dispatch(IActivates activates, ContextDispatchInformation info)
         {
-            var url = info.Context.Request.Url.AbsolutePath;
+            var url = info.RequestUrl.AbsolutePath;
 
             // Found
             IRequestDispatcher foundRequest;

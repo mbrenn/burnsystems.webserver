@@ -48,6 +48,22 @@ namespace BurnSystems.WebServer.Dispatcher
                x.RequestUrl.AbsolutePath.ToLower().StartsWith(url);
         }
 
+        /// <summary>
+        /// Checks, if the host matches (case-insensitive)
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        public static Func<ContextDispatchInformation, bool> ByExactUrl(string url)
+        {
+            if (!url.StartsWith("/"))
+            {
+                throw new ArgumentException("url does not start with '/'.");
+            }
+
+            return (x) =>
+               x.RequestUrl.AbsolutePath == url;
+        }
+
         public static Func<ContextDispatchInformation, bool> And(Func<ContextDispatchInformation, bool> f1, Func<ContextDispatchInformation, bool> f2)
         {
             return (x) => f1(x) && f2(x);
