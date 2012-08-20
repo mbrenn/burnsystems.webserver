@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using BurnSystems.Logging;
@@ -41,6 +42,11 @@ namespace BurnSystems.WebServer
         private ActivationContainer activationContainer;
 
         /// <summary>
+        /// Stores the list of request filters
+        /// </summary>
+        private List<IRequestFilter> requestFilters = new List<IRequestFilter>();
+
+        /// <summary>
         /// Initializes a new instance of the Listener instance
         /// </summary>
         /// <param name="container">Defines the activation container</param>
@@ -69,6 +75,8 @@ namespace BurnSystems.WebServer
         /// </summary>
         public void StartListening()
         {
+            this.requestFilters = this.activationContainer.GetAll<IRequestFilter>().ToList();
+
             this.running = true;
             try
             {
@@ -159,7 +167,26 @@ namespace BurnSystems.WebServer
                     var info = new ContextDispatchInformation(context);
                     try
                     {
+                        // Go through all requestfilters
+                        foreach (var filter in this.requestFilters)
+                        {
+                            var cancel = false;
+                            filter.BeforeDispatch(block, info, out cancel);
+                            if (cancel)
+                            {
+                                // Has been cancelled by request filter
+                                return;
+                            }
+                        }
+
+                        // Perform the dispatch
                         var found = PerformDispatch(block, info);
+
+                        // Go through all requestfilters
+                        foreach (var filter in this.requestFilters)
+                        {
+                            filter.AfterRequest(block, info);
+                        }
 
                         if (!found)
                         {
@@ -203,9 +230,19 @@ namespace BurnSystems.WebServer
 
             var found = false;
             foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
-            {
+            {                
                 if (dispatcher.IsResponsible(block, info))
                 {
+                    foreach (var filter in block.GetAll<IRequestFilter>())
+                    {
+                        var cancel = false;
+                        filter.AfterDispatch(block, info, out cancel);
+                        if (cancel)
+                        {
+                            return true;
+                        }
+                    }
+
                     dispatcher.Dispatch(block, info);
                     found = true;
                 }
