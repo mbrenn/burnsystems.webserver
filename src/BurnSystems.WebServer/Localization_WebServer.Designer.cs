@@ -180,5 +180,41 @@ namespace BurnSystems.WebServer {
                 return ResourceManager.GetString("ServerNotStarted", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions werden eingeladen. ähnelt.
+        /// </summary>
+        internal static string SessionsLoading {
+            get {
+                return ResourceManager.GetString("SessionsLoading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Beim Einladen der Sessions wurde folgende Ausnahme gefangen: {0} ähnelt.
+        /// </summary>
+        internal static string SessionsLoadingException {
+            get {
+                return ResourceManager.GetString("SessionsLoadingException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions werden gespeichert. ähnelt.
+        /// </summary>
+        internal static string SessionsStoring {
+            get {
+                return ResourceManager.GetString("SessionsStoring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Beim Speichern der Sessions wurde folgende Ausnahme gefangen: {0} ähnelt.
+        /// </summary>
+        internal static string SessionsStoringException {
+            get {
+                return ResourceManager.GetString("SessionsStoringException", resourceCulture);
+            }
+        }
     }
 }

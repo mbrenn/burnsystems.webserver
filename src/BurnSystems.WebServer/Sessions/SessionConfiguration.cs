@@ -21,6 +21,11 @@ namespace BurnSystems.WebServer.Sessions
         private double collectorProbability = 0.01;
 
         /// <summary>
+        /// Stores the sessions
+        /// </summary>
+        private string storagePath = "sessions\\sessions.dat";
+
+        /// <summary>
         /// Gets or sets the maximum age of a session
         /// </summary>
         public TimeSpan MaximumAge
@@ -36,6 +41,15 @@ namespace BurnSystems.WebServer.Sessions
         {
             get { return this.collectorProbability; }
             set { this.collectorProbability = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the storage path
+        /// </summary>
+        public string StoragePath
+        {
+            get { return this.storagePath; }
+            set { this.storagePath = value; }
         }
     }
 }

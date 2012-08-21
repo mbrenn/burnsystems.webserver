@@ -35,6 +35,11 @@ namespace BurnSystems.WebServer
         private ActivationContainer activationContainer;
 
         /// <summary>
+        /// Stores the activation block for the server
+        /// </summary>
+        private ActivationBlock serverBlock;
+
+        /// <summary>
         /// Gets the activation container
         /// </summary>
         public ActivationContainer ActivationContainer
@@ -86,7 +91,12 @@ namespace BurnSystems.WebServer
             activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();
 
             activationContainer.Bind<SessionConfiguration>().ToConstant(new SessionConfiguration());
-            activationContainer.Bind<SessionContainer>().ToConstant(new SessionContainer());
+            activationContainer.Bind<SessionStorage>().To<SessionStorage>().AsSingleton();
+            activationContainer.Bind<SessionContainer>().To((x) => 
+                {
+                    var result = x.Get<SessionStorage>().SessionContainer;
+                    return result;
+                });
             activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
             activationContainer.Bind<Session>().To(
                 (x) => x.Get<ISessionInterface>().GetSession());

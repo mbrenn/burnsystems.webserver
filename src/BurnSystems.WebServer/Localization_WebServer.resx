@@ -154,4 +154,16 @@ Die konkrete Fehlermeldung lautet: {0}</value>
   <data name="ServerNotStarted" xml:space="preserve">
     <value>Der Webserver wurde nicht gestartet. </value>
   </data>
+  <data name="SessionsLoading" xml:space="preserve">
+    <value>Sessions werden eingeladen.</value>
+  </data>
+  <data name="SessionsLoadingException" xml:space="preserve">
+    <value>Beim Einladen der Sessions wurde folgende Ausnahme gefangen: {0}</value>
+  </data>
+  <data name="SessionsStoring" xml:space="preserve">
+    <value>Sessions werden gespeichert.</value>
+  </data>
+  <data name="SessionsStoringException" xml:space="preserve">
+    <value>Beim Speichern der Sessions wurde folgende Ausnahme gefangen: {0}</value>
+  </data>
 </root>
