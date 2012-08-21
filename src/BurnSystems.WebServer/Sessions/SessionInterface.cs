@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using BurnSystems.ObjectActivation;
+using BurnSystems.Logging;
 
 namespace BurnSystems.WebServer.Sessions
 {
@@ -12,6 +13,11 @@ namespace BurnSystems.WebServer.Sessions
     /// </summary>
     public class SessionInterface : ISessionInterface
     {
+        /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private ILog logger = new ClassLogger(typeof(SessionInterface));
+
         /// <summary>
         /// Stores the http Listener Interface
         /// </summary>
@@ -27,14 +33,24 @@ namespace BurnSystems.WebServer.Sessions
         }
 
         /// <summary>
+        /// Gets or sets the configuration
+        /// </summary>
+        public SessionConfiguration Configuration
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the SessionInterface class.
         /// </summary>
         /// <param name="context">Http Context to be used</param>
         [Inject]
-        public SessionInterface(HttpListenerContext context, SessionContainer sessionContainer)
+        public SessionInterface(HttpListenerContext context, SessionContainer sessionContainer, SessionConfiguration configuration)
         {
             this.context = context;
             this.sessionContainer = sessionContainer;
+            this.Configuration = configuration;
         }
 
         /// <summary>
@@ -75,9 +91,38 @@ namespace BurnSystems.WebServer.Sessions
             session.IsCookieFresh = isCookieFresh;
 
             // Räumt vielleicht die Sessions auf
-            this.sessionContainer.RemovePerhapsOldSessions();
+            this.RemovePerhapsOldSessions();
             
             return session;
+        }
+
+        /// <summary>
+        /// Entfernt alle alte Sessions aus dem Speicher.
+        /// </summary>
+        public void RemoveOldSessions()
+        {
+            lock (this.sessionContainer.Sessions)
+            {
+                DateTime now = DateTime.Now;
+
+                this.sessionContainer.Sessions.RemoveAll(
+                    x => now - x.LastAccess > this.Configuration.MaximumAge);
+            }
+        }
+
+        /// <summary>
+        /// If this function is called, the garbage collection will be started with
+        /// a certain probability. This method should be called after each 
+        /// webrequest, so the GC will be executed with the configured probability. 
+        /// </summary>
+        public void RemovePerhapsOldSessions()
+        {
+            if (MathHelper.Random.NextDouble() < this.Configuration.CollectorProbability)
+            {
+                logger.LogEntry(
+                       new LogEntry(Localization_WebServer.CollectingSessions, LogLevel.Verbose));
+                this.RemoveOldSessions();
+            }
         }
     }
 }

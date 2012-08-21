@@ -125,6 +125,7 @@
     <Compile Include="Responses\Tests\TestController.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Helper\MimeTypeConverter.cs" />
+    <Compile Include="Sessions\SessionConfiguration.cs" />
     <Compile Include="Sessions\ISessionInterface.cs" />
     <Compile Include="Sessions\Session.cs" />
     <Compile Include="Sessions\SessionContainer.cs" />

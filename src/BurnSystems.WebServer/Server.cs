@@ -85,6 +85,7 @@ namespace BurnSystems.WebServer
             activationContainer.Bind<PostVariableReaderConfig>().ToConstant(new PostVariableReaderConfig());
             activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();
 
+            activationContainer.Bind<SessionConfiguration>().ToConstant(new SessionConfiguration());
             activationContainer.Bind<SessionContainer>().ToConstant(new SessionContainer());
             activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
             activationContainer.Bind<Session>().To(

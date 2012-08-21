@@ -24,28 +24,13 @@ namespace BurnSystems.WebServer.Sessions
     public class SessionContainer
     {
         /// <summary>
-        /// Speichert das maximal erlaubte Alter von Sessions
-        /// </summary>
-        private TimeSpan maximumAge = TimeSpan.FromMinutes(30);
-
-        /// <summary>
-        /// Wahrscheinlichkeit, ob beim Aufruf der Funktion 
-        /// 'RemovePerhapsOldSessions' wirklich aufgerüumt wird. 
-        /// </summary>
-        private double collectorProbability = 0.01;
-
-        /// <summary>
         /// Liste von Sessions
         /// </summary>
         private List<Session> sessions = new List<Session>();
 
-        /// <summary>
-        /// Gets or sets the maximum age of a session
-        /// </summary>
-        public TimeSpan MaximumAge
+        internal List<Session> Sessions
         {
-            get { return this.maximumAge; }
-            set { this.maximumAge = value; }
+            get { return this.sessions; }
         }
 
         /// <summary>
@@ -101,35 +86,6 @@ namespace BurnSystems.WebServer.Sessions
                     // geht auf 0
                     return this.CreateNewSession();
                 }
-            }
-        }
-
-        /// <summary>
-        /// Entfernt alle alte Sessions aus dem Speicher.
-        /// </summary>
-        public void RemoveOldSessions()
-        {
-            lock (this.sessions)
-            {
-                DateTime now = DateTime.Now;
-
-                this.sessions.RemoveAll(
-                    x => now - x.LastAccess > this.maximumAge);
-            }
-        }
-
-        /// <summary>
-        /// If this function is called, the garbage collection will be started with
-        /// a certain probability. This method should be called after each 
-        /// webrequest, so the GC will be executed with the configured probability. 
-        /// </summary>
-        public void RemovePerhapsOldSessions()
-        {
-            if (MathHelper.Random.NextDouble() < this.collectorProbability)
-            {
-                Log.TheLog.LogEntry(
-                       new LogEntry(Localization_WebServer.CollectingSessions, LogLevel.Verbose));
-                this.RemoveOldSessions();
             }
         }
     }
