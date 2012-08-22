@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Error.txt" />
+    <None Include="Resources\JQuery\jquery-1.8.0.min.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

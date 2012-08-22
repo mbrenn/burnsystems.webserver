@@ -155,6 +155,16 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*! jQuery v@1.8.0 jquery.com | jquery.org/license */
+        ///(function(a,b){function G(a){var b=F[a]={};return p.each(a.split(s),function(a,c){b[c]=!0}),b}function J(a,c,d){if(d===b&amp;&amp;a.nodeType===1){var e=&quot;data-&quot;+c.replace(I,&quot;-$1&quot;).toLowerCase();d=a.getAttribute(e);if(typeof d==&quot;string&quot;){try{d=d===&quot;true&quot;?!0:d===&quot;false&quot;?!1:d===&quot;null&quot;?null:+d+&quot;&quot;===d?+d:H.test(d)?p.parseJSON(d):d}catch(f){}p.data(a,c,d)}else d=b}return d}function K(a){var b;for(b in a){if(b===&quot;data&quot;&amp;&amp;p.isEmptyObject(a[b]))continue;if(b!==&quot;toJSON&quot;)re [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string JQuery {
+            get {
+                return ResourceManager.GetString("JQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Mail &apos;{0}&apos; wurde zu &apos;{1}&apos; versendet.  ähnelt.
         /// </summary>
         internal static string MailSent {
