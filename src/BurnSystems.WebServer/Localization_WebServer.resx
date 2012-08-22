@@ -145,6 +145,9 @@ Die konkrete Fehlermeldung lautet: {0}</value>
   <data name="InvalidMultipart" xml:space="preserve">
     <value>Das übertragene Formular wurde nicht erkannt 'multipart/form-data'</value>
   </data>
+  <data name="MailSent" xml:space="preserve">
+    <value>Mail '{0}' wurde zu '{1}' versendet. </value>
+  </data>
   <data name="MaximumPostLengthExceeded" xml:space="preserve">
     <value>Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes)</value>
   </data>
@@ -165,5 +168,8 @@ Die konkrete Fehlermeldung lautet: {0}</value>
   </data>
   <data name="SessionsStoringException" xml:space="preserve">
     <value>Beim Speichern der Sessions wurde folgende Ausnahme gefangen: {0}</value>
+  </data>
+  <data name="SkippingMail" xml:space="preserve">
+    <value>Mail zu '{0}' wird wegen inaktivem MailSender nicht gesendet. </value>
   </data>
 </root>

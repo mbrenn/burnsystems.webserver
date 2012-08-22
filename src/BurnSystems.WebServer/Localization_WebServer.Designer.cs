@@ -155,6 +155,15 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mail &apos;{0}&apos; wurde zu &apos;{1}&apos; versendet.  ähnelt.
+        /// </summary>
+        internal static string MailSent {
+            get {
+                return ResourceManager.GetString("MailSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes) ähnelt.
         /// </summary>
         internal static string MaximumPostLengthExceeded {
@@ -214,6 +223,15 @@ namespace BurnSystems.WebServer {
         internal static string SessionsStoringException {
             get {
                 return ResourceManager.GetString("SessionsStoringException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mail zu &apos;{0}&apos; wird wegen inaktivem MailSender nicht gesendet.  ähnelt.
+        /// </summary>
+        internal static string SkippingMail {
+            get {
+                return ResourceManager.GetString("SkippingMail", resourceCulture);
             }
         }
     }
