@@ -9,6 +9,7 @@ using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Responses.Tests;
 using BurnSystems.WebServer.Dispatcher.Test;
 using BurnSystems.WebServer.UnitTests.Controller;
+using BurnSystems.WebServer.Modules.MVC;
 
 namespace SimpleTestServer
 {

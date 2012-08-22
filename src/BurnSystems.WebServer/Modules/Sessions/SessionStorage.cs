@@ -8,7 +8,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using BurnSystems.Test;
 
-namespace BurnSystems.WebServer.Sessions
+namespace BurnSystems.WebServer.Modules.Sessions
 {
     /// <summary>
     /// This class is responsible to store and load the sessions

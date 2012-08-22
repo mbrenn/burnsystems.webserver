@@ -9,7 +9,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace BurnSystems.WebServer.Sessions
+namespace BurnSystems.WebServer.Modules.Sessions
 {
     using System;
     using System.Collections.Generic;

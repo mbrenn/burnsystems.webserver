@@ -6,7 +6,7 @@ using System.Net;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
 
-namespace BurnSystems.WebServer.Sessions
+namespace BurnSystems.WebServer.Modules.Sessions
 {
     /// <summary>
     /// Implements the session interface

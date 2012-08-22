@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
-using BurnSystems.WebServer.MVC;
 using System.Linq.Expressions;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
@@ -12,8 +11,9 @@ using BurnSystems.Test;
 using System.Reflection;
 using BurnSystems.WebServer.Helper;
 using BurnSystems.Extensions;
+using BurnSystems.WebServer.Dispatcher;
 
-namespace BurnSystems.WebServer.Dispatcher
+namespace BurnSystems.WebServer.Modules.MVC
 {
     /// <summary>
     /// Contains the controller dispatcher for a specific controller class

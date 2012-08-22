@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using BurnSystems.WebServer.MVC;
+using BurnSystems.WebServer.Modules.MVC;
 
 namespace BurnSystems.WebServer.Responses.Tests
 {

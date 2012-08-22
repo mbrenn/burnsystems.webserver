@@ -90,7 +90,6 @@
   <ItemGroup>
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
     <Compile Include="Dispatcher\ContextDispatchInformation.cs" />
-    <Compile Include="Dispatcher\ControllerDispatcher.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
     <Compile Include="Dispatcher\FileSystemDispatcher.cs" />
     <Compile Include="Dispatcher\IFileRequestDispatcher.cs" />
@@ -101,12 +100,13 @@
     <Compile Include="Helper\PostVariableReader.cs" />
     <Compile Include="Helper\PostVariableReaderConfig.cs" />
     <Compile Include="IRequestFilter.cs" />
-    <Compile Include="MVC\Controller.cs" />
-    <Compile Include="MVC\IfMethodIsAttribute.cs" />
-    <Compile Include="MVC\PostAttribute.cs" />
-    <Compile Include="MVC\UrlParameterAttribute.cs" />
-    <Compile Include="MVC\WebMethodAttribute.cs" />
-    <Compile Include="MVC\WebMethodInfo.cs" />
+    <Compile Include="Modules\MVC\Controller.cs" />
+    <Compile Include="Modules\MVC\ControllerDispatcher.cs" />
+    <Compile Include="Modules\MVC\IfMethodIsAttribute.cs" />
+    <Compile Include="Modules\MVC\PostAttribute.cs" />
+    <Compile Include="Modules\MVC\UrlParameterAttribute.cs" />
+    <Compile Include="Modules\MVC\WebMethodAttribute.cs" />
+    <Compile Include="Modules\MVC\WebMethodInfo.cs" />
     <Compile Include="Parser\ITemplateParser.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
@@ -125,12 +125,12 @@
     <Compile Include="Responses\Tests\TestController.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Helper\MimeTypeConverter.cs" />
-    <Compile Include="Sessions\SessionConfiguration.cs" />
-    <Compile Include="Sessions\ISessionInterface.cs" />
-    <Compile Include="Sessions\Session.cs" />
-    <Compile Include="Sessions\SessionContainer.cs" />
-    <Compile Include="Sessions\SessionInterface.cs" />
-    <Compile Include="Sessions\SessionStorage.cs" />
+    <Compile Include="Modules\Sessions\SessionConfiguration.cs" />
+    <Compile Include="Modules\Sessions\ISessionInterface.cs" />
+    <Compile Include="Modules\Sessions\Session.cs" />
+    <Compile Include="Modules\Sessions\SessionContainer.cs" />
+    <Compile Include="Modules\Sessions\SessionInterface.cs" />
+    <Compile Include="Modules\Sessions\SessionStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\BurnSystems\src\BurnSystems.csproj">

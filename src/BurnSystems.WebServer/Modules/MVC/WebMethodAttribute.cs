@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BurnSystems.WebServer.MVC
+namespace BurnSystems.WebServer.Modules.MVC
 {
     /// <summary>
     /// Used to define a webmethod

@@ -5,7 +5,7 @@ using System.Text;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Helper;
-using BurnSystems.WebServer.Sessions;
+using BurnSystems.WebServer.Modules.Sessions;
 
 namespace BurnSystems.WebServer
 {

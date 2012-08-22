@@ -5,7 +5,7 @@ using System.Text;
 using BurnSystems.ObjectActivation;
 using System.Net;
 
-namespace BurnSystems.WebServer.MVC
+namespace BurnSystems.WebServer.Modules.MVC
 {
     /// <summary>
     /// Implements the base class for all controller classes

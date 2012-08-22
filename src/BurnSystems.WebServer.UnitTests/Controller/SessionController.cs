@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BurnSystems.ObjectActivation;
-using BurnSystems.WebServer.Sessions;
 using BurnSystems.WebServer.Parser;
-using BurnSystems.WebServer.MVC;
+using BurnSystems.WebServer.Modules.Sessions;
+using BurnSystems.WebServer.Modules.MVC;
 
 namespace BurnSystems.WebServer.UnitTests.Controller
 {
     /// <summary>
     /// Defines the session controller 
     /// </summary>
-    public class SessionController : MVC.Controller
+    public class SessionController : Modules.MVC.Controller
     {
         [Inject]
         public Session Session

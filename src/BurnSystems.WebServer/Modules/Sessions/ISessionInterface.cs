@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BurnSystems.WebServer.Sessions
+namespace BurnSystems.WebServer.Modules.Sessions
 {
     /// <summary>
     /// Implements the session interface

@@ -1,13 +1,13 @@
 ﻿using BurnSystems.ObjectActivation;
-using BurnSystems.WebServer.MVC;
 using BurnSystems.WebServer.Parser;
+using BurnSystems.WebServer.Modules.MVC;
 
 namespace BurnSystems.WebServer.UnitTests.Controller
 {
     /// <summary>
     /// Demo controller for Post
     /// </summary>
-    public class PostController : MVC.Controller
+    public class PostController : Modules.MVC.Controller
     {        
         public class PostTestModel
         {

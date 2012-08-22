@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 
-namespace BurnSystems.WebServer.MVC
+namespace BurnSystems.WebServer.Modules.MVC
 {
     internal class WebMethodInfo
     {

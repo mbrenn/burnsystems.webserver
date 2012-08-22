@@ -4,7 +4,7 @@ using System.Text;
 using System.Xml.Linq;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Dispatcher;
-using BurnSystems.WebServer.MVC;
+using BurnSystems.WebServer.Modules.MVC;
 
 namespace BurnSystems.WebServer.Responses.FileRequests
 {
@@ -44,7 +44,7 @@ namespace BurnSystems.WebServer.Responses.FileRequests
                 if (endPosition != -1)
                 {
                     viewTemplate = completeFile.Substring(endPosition + 2);
-                    
+
                     // <%1234%>
                     // 01234567
                     var configuration = completeFile.Substring(2, endPosition - 2);
