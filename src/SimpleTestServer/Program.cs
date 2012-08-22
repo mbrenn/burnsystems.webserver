@@ -37,6 +37,9 @@ namespace SimpleTestServer
             Console.WriteLine("Press key to stop server");
             Console.ReadKey();
             server.Stop();
+
+            Console.WriteLine("Server stopped");
+            Console.ReadKey();
         }
     }
 }

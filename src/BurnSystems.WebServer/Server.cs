@@ -42,9 +42,9 @@ namespace BurnSystems.WebServer
         /// <summary>
         /// Gets the activation container
         /// </summary>
-        public ActivationContainer ActivationContainer
+        public ActivationBlock ActivationBlock
         {
-            get { return this.activationContainer; }
+            get { return this.serverBlock; }
         }
 
         /// <summary>
@@ -91,12 +91,8 @@ namespace BurnSystems.WebServer
             activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();
 
             activationContainer.Bind<SessionConfiguration>().ToConstant(new SessionConfiguration());
-            activationContainer.Bind<SessionStorage>().To<SessionStorage>().AsSingleton();
-            activationContainer.Bind<SessionContainer>().To((x) => 
-                {
-                    var result = x.Get<SessionStorage>().SessionContainer;
-                    return result;
-                });
+            activationContainer.Bind<SessionStorage>().To<SessionStorage>().AsScopedIn("Server");
+            activationContainer.Bind<SessionContainer>().To((x) => x.Get<SessionStorage>().SessionContainer);
             activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
             activationContainer.Bind<Session>().To(
                 (x) => x.Get<ISessionInterface>().GetSession());
@@ -143,7 +139,8 @@ namespace BurnSystems.WebServer
                 throw new InvalidOperationException(Localization_WebServer.ServerAlreadyStarted);
             }
 
-            this.listener = new Listener(this.activationContainer, this.prefixes);
+            this.serverBlock = new ActivationBlock("Server", this.activationContainer);
+            this.listener = new Listener(this.ActivationBlock, this.prefixes);
             this.listener.StartListening();
             this.isRunning = true;
         }
@@ -158,6 +155,8 @@ namespace BurnSystems.WebServer
                 throw new InvalidOperationException(Localization_WebServer.ServerAlreadyStarted);
             }
 
+            this.serverBlock.Dispose();
+            this.serverBlock = null;
             this.listener.StopListening();
             this.isRunning = false;
         }

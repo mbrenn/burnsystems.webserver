@@ -39,7 +39,7 @@ namespace BurnSystems.WebServer
         /// <summary>
         /// Stoers the activation container
         /// </summary>
-        private ActivationContainer activationContainer;
+        private ActivationBlock activationBlock;
 
         /// <summary>
         /// Stores the list of request filters
@@ -49,11 +49,11 @@ namespace BurnSystems.WebServer
         /// <summary>
         /// Initializes a new instance of the Listener instance
         /// </summary>
-        /// <param name="container">Defines the activation container</param>
+        /// <param name="activationBlock">Defines the activation container</param>
         /// <param name="prefixes">Prefixes to be listened to</param>
-        internal Listener(ActivationContainer container, IEnumerable<string> prefixes)
+        internal Listener(ActivationBlock activationBlock, IEnumerable<string> prefixes)
         {
-            this.activationContainer = container;
+            this.activationBlock = activationBlock;
             this.httpListener = new HttpListener();
             foreach (var prefix in prefixes)
             {
@@ -75,7 +75,7 @@ namespace BurnSystems.WebServer
         /// </summary>
         public void StartListening()
         {
-            this.requestFilters = this.activationContainer.GetAll<IRequestFilter>().ToList();
+            this.requestFilters = this.activationBlock.GetAll<IRequestFilter>().ToList();
 
             this.running = true;
             try
@@ -157,10 +157,10 @@ namespace BurnSystems.WebServer
                 throw new ArgumentException("value is not HttpListenerContext");
             }
 
-            var webRequestContainer = new ActivationContainer("WebRequest", this.activationContainer);
+            var webRequestContainer = new ActivationContainer("WebRequest");
             webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
 
-            using (var block = new ActivationBlock("WebRequest", webRequestContainer))
+            using (var block = new ActivationBlock("WebRequest", webRequestContainer, this.activationBlock))
             {
                 try
                 {
@@ -191,7 +191,7 @@ namespace BurnSystems.WebServer
                         if (!found)
                         {
                             // Throw 404
-                            var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                            var errorResponse = this.activationBlock.Create<ErrorResponse>();
                             errorResponse.Set(HttpStatusCode.NotFound);
                             errorResponse.Dispatch(block, info);
                         }
@@ -199,7 +199,7 @@ namespace BurnSystems.WebServer
                     }
                     catch (Exception exc)
                     {
-                        var errorResponse = this.activationContainer.Create<ErrorResponse>();
+                        var errorResponse = this.activationBlock.Create<ErrorResponse>();
                         errorResponse.Title = "Server error";
                         errorResponse.Message = exc.ToString();
                         errorResponse.Code = 500;
