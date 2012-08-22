@@ -11,7 +11,7 @@ using BurnSystems.Net;
 using System.Web;
 using BurnSystems.Test;
 
-namespace BurnSystems.WebServer.Helper
+namespace BurnSystems.WebServer.Modules.PostVariables
 {
     /// <summary>
     /// Reads the postvariables from Http-Context and offers them as a dictionary

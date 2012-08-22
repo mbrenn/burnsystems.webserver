@@ -97,8 +97,8 @@
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
-    <Compile Include="Helper\PostVariableReader.cs" />
-    <Compile Include="Helper\PostVariableReaderConfig.cs" />
+    <Compile Include="Modules\PostVariables\PostVariableReader.cs" />
+    <Compile Include="Modules\PostVariables\PostVariableReaderConfig.cs" />
     <Compile Include="IRequestFilter.cs" />
     <Compile Include="Modules\MVC\Controller.cs" />
     <Compile Include="Modules\MVC\ControllerDispatcher.cs" />

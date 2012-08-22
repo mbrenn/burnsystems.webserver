@@ -6,6 +6,7 @@ using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Helper;
 using BurnSystems.WebServer.Modules.Sessions;
+using BurnSystems.WebServer.Modules.PostVariables;
 
 namespace BurnSystems.WebServer
 {
