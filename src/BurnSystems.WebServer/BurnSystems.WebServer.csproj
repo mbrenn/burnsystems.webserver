@@ -112,6 +112,7 @@
     <Compile Include="Modules\MVC\WebMethodAttribute.cs" />
     <Compile Include="Modules\MVC\WebMethodInfo.cs" />
     <Compile Include="Parser\ITemplateParser.cs" />
+    <Compile Include="Resources\Files.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="IRequestDispatcher.cs" />

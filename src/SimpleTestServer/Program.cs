@@ -10,6 +10,8 @@ using BurnSystems.WebServer.Responses.Tests;
 using BurnSystems.WebServer.Dispatcher.Test;
 using BurnSystems.WebServer.UnitTests.Controller;
 using BurnSystems.WebServer.Modules.MVC;
+using BurnSystems.WebServer.Responses;
+using BurnSystems.WebServer.Resources;
 
 namespace SimpleTestServer
 {
@@ -30,6 +32,7 @@ namespace SimpleTestServer
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
             server.Add(new RelocationDispatcher("/", "/test.html"));
+            server.Add(new StaticContentResponse(DispatchFilter.ByExactUrl("/js/jquery.js"), "text/javascript", Encoding.UTF8.GetBytes(Files.JQuery)));
  
             server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
