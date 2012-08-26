@@ -26,20 +26,11 @@ namespace BurnSystems.WebServer.UnitTests.Controller
             }
         }
 
-        public class SumResult
-        {
-            public double Sum
-            {
-                get;
-                set;
-            }
-        }
-
         [WebMethod()]
         [IfMethodIs("post")]
         public void Sum([PostModel] SumData sum)
         {
-            this.Json(new SumResult()
+            this.Json(new 
             {
                 Sum = sum.Summand1 + sum.Summand2
             });
