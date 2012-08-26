@@ -5,6 +5,7 @@ using System.Text;
 using BurnSystems.ObjectActivation;
 using System.Net;
 using System.Web.Script.Serialization;
+using BurnSystems.WebServer.Parser;
 
 namespace BurnSystems.WebServer.Modules.MVC
 {
@@ -41,6 +42,24 @@ namespace BurnSystems.WebServer.Modules.MVC
             this.Context.Response.ContentType = "text/html";
 
             this.SendResult(result);
+        }
+
+        /// <summary>
+        /// Returns html to browser and uses the Template parser as stored in container and
+        /// PageTemplate as stored in container
+        /// </summary>
+        /// <typeparam name="T">Type of the model</typeparam>
+        /// <param name="model">Model to be set</param>
+        public void Template<T>(T model)
+        {
+            var template = this.Container.GetByName("PageTemplate");
+            var templateParser = this.Container.Get<ITemplateParser>();
+            if (template == null)
+            {
+                throw new InvalidOperationException("PageTemplate not set");
+            }
+
+            this.Html(templateParser.Parse<T>(template.ToString(), model, null, this.Context.Request.Url.ToString()));
         }
 
         /// <summary>

@@ -32,9 +32,9 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         }
 
         [WebMethod]
-        public void PostTest([PostModel] PostTestModel model, [Inject("PageTemplate")] string template)
+        public void PostTest([PostModel] PostTestModel model)
         {
-            this.Html(this.TemplateParser.Parse<PostTestModel>(template, model, null, "PostController"));
+            this.Template(model);
         }
     }
 }

@@ -78,7 +78,7 @@ namespace BurnSystems.WebServer.UnitTests
             }
         }
 
-        private static string GetCookie()
+        public static string GetCookie()
         {
             string cookie;
 
