@@ -38,9 +38,19 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             this.CheckForSending();
 
+            this.Context.Response.ContentType = "text/html";
+
+            this.SendResult(result);
+        }
+
+        /// <summary>
+        /// Sends the result
+        /// </summary>
+        /// <param name="result"></param>
+        private void SendResult(string result)
+        {
             var bytes = Encoding.UTF8.GetBytes(result);
             this.Context.Response.ContentEncoding = Encoding.UTF8;
-            this.Context.Response.ContentType = "text/html";
             this.Context.Response.ContentLength64 = bytes.LongLength;
 
             using (var stream = this.Context.Response.OutputStream)
@@ -60,18 +70,9 @@ namespace BurnSystems.WebServer.Modules.MVC
             this.CheckForSending();
 
             var serializer = new JavaScriptSerializer();
-            
-            var bytes = Encoding.UTF8.GetBytes(serializer.Serialize(result));
-            this.Context.Response.ContentEncoding = Encoding.UTF8;
             this.Context.Response.ContentType = "application/json";
-            this.Context.Response.ContentLength64 = bytes.LongLength;
-
-            using (var stream = this.Context.Response.OutputStream)
-            {
-                stream.Write(bytes, 0, bytes.Length);
-            }
-
-            this.finishedSending = true;
+            
+            this.SendResult(serializer.Serialize(result));            
         }
 
         /// <summary>
