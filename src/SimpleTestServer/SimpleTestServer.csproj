@@ -119,10 +119,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="htdocs\ajax.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="htdocs\css\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="htdocs\img\image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="htdocs\js\ajaxtest.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="htdocs\test.html">

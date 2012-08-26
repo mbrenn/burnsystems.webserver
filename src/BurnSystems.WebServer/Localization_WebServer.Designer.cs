@@ -116,6 +116,15 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Ausnahme während WebRequest &apos;{0}&apos;: {1} ähnelt.
+        /// </summary>
+        internal static string ExceptionDuringWebRequest {
+            get {
+                return ResourceManager.GetString("ExceptionDuringWebRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Das Hochladen von Dateien wird nicht unterstützt. ähnelt.
         /// </summary>
         internal static string FileUploadNotSupported {

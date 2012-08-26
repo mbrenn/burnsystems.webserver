@@ -28,7 +28,8 @@ namespace SimpleTestServer
             var server = Server.CreateDefaultServer(activationContainer);
             server.AddPrefix("http://127.0.0.1:8081/");
             server.AddPrefix("http://localhost:8081/");
-            
+
+            server.Add(new ControllerDispatcher<CalcController>(DispatchFilter.ByUrl("/controller/Calculator"), "/controller/Calculator/"));
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
             server.Add(new RelocationDispatcher("/", "/test.html"));

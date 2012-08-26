@@ -40,6 +40,8 @@ namespace BurnSystems.WebServer.Dispatcher
                 throw new ArgumentException("url does not start with '/'.");
             }
 
+            url = url.ToLower();
+
             return (x) =>
                x.RequestUrl.AbsolutePath.ToLower().StartsWith(url);
         }

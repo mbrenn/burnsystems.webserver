@@ -204,6 +204,12 @@ namespace BurnSystems.WebServer
                         errorResponse.Message = exc.ToString();
                         errorResponse.Code = 500;
                         errorResponse.Dispatch(block, info);
+
+                        logger.LogEntry(LogEntry.Format(
+                            LogLevel.Fail,
+                            Localization_WebServer.ExceptionDuringWebRequest,
+                            context.Request.Url.ToString(),
+                            exc.Message));
                     }
                     finally
                     {
@@ -230,7 +236,7 @@ namespace BurnSystems.WebServer
 
             var found = false;
             foreach (var dispatcher in block.GetAll<IRequestDispatcher>())
-            {                
+            {
                 if (dispatcher.IsResponsible(block, info))
                 {
                     foreach (var filter in block.GetAll<IRequestFilter>())
@@ -245,6 +251,7 @@ namespace BurnSystems.WebServer
 
                     dispatcher.Dispatch(block, info);
                     found = true;
+                    break;
                 }
             }
 

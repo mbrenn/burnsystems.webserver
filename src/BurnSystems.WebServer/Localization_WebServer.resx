@@ -130,6 +130,9 @@
   <data name="ExceptionDuringListening" xml:space="preserve">
     <value>Ausnahme während des Listen-Vorgangs: {0}</value>
   </data>
+  <data name="ExceptionDuringWebRequest" xml:space="preserve">
+    <value>Ausnahme während WebRequest '{0}': {1}</value>
+  </data>
   <data name="FileUploadNotSupported" xml:space="preserve">
     <value>Das Hochladen von Dateien wird nicht unterstützt.</value>
   </data>

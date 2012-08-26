@@ -7,7 +7,6 @@ namespace BurnSystems.WebServer.Modules.MVC
 {
     /// <summary>
     /// Defines that this parameter shall be filled by POST-Content.
-    /// 
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, Inherited = false, AllowMultiple = false)]
     public sealed class PostModelAttribute : Attribute
