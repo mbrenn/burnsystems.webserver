@@ -1,6 +1,9 @@
 ﻿using System.Net;
+using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Modules.MVC;
+using BurnSystems.WebServer.Modules.UserManagement;
+using BurnSystems.WebServer.Modules.UserManagement.InMemory;
 using BurnSystems.WebServer.Responses.Tests;
 using NUnit.Framework;
 
@@ -11,9 +14,22 @@ namespace BurnSystems.WebServer.UnitTests
     {
         public static Server CreateServer()
         {
-            var server = Server.Default;
+            // Container storing all the plugins, activities and filters
+            var activationContainer = new ActivationContainer("Server");
+
+            // In Memory-UserManagement
+            var userStorage = new UserStorage();
+            userStorage.Users.Add(new User(1, "Karl", "Heinz"));
+            userStorage.Users.Add(new User(2, "Wilhelm", "Otto"));
+
+            activationContainer.Bind<UserStorage>().ToConstant(userStorage);
+            activationContainer.Bind<IUserManagement>().To<BurnSystems.WebServer.Modules.UserManagement.InMemory.UserManagement>();
+            activationContainer.Bind<IAuthentication>().To<Authentication>();
+            var server = Server.CreateDefaultServer(activationContainer);
+
             server.AddPrefix("http://localhost:8081/");
 
+            server.Add(new ControllerDispatcher<UserManagementController>(DispatchFilter.ByUrl("/controller/Users"), "/controller/Users/"));
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new FileSystemDispatcher(DispatchFilter.ByUrl("/file"), "htdocs/", "/file/"));
             server.Add(new RelocationDispatcher("/", "/file/test.txt"));

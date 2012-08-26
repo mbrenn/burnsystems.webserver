@@ -50,16 +50,23 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// </summary>
         /// <typeparam name="T">Type of the model</typeparam>
         /// <param name="model">Model to be set</param>
-        public void Template<T>(T model)
+        public void TemplateOrAjax<T>(T model)
         {
             var template = this.Container.GetByName("PageTemplate");
-            var templateParser = this.Container.Get<ITemplateParser>();
             if (template == null)
             {
-                throw new InvalidOperationException("PageTemplate not set");
+                this.Json(model);
             }
+            else
+            {
+                var templateParser = this.Container.Get<ITemplateParser>();
+                if (template == null)
+                {
+                    throw new InvalidOperationException("PageTemplate not set");
+                }
 
-            this.Html(templateParser.Parse<T>(template.ToString(), model, null, this.Context.Request.Url.ToString()));
+                this.Html(templateParser.Parse<T>(template.ToString(), model, null, this.Context.Request.Url.ToString()));
+            }
         }
 
         /// <summary>

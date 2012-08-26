@@ -12,6 +12,8 @@ using BurnSystems.WebServer.UnitTests.Controller;
 using BurnSystems.WebServer.Modules.MVC;
 using BurnSystems.WebServer.Responses;
 using BurnSystems.WebServer.Resources;
+using BurnSystems.WebServer.Modules.UserManagement.InMemory;
+using BurnSystems.WebServer.Modules.UserManagement;
 
 namespace SimpleTestServer
 {
@@ -25,11 +27,18 @@ namespace SimpleTestServer
             // Container storing all the plugins, activities and filters
             var activationContainer = new ActivationContainer("Server");
 
+            // In Memory-UserManagement
+            var userStorage = new UserStorage();
+            activationContainer.Bind<UserStorage>().ToConstant(userStorage);
+            activationContainer.Bind<IUserManagement>().To<UserManagement>();
+
+            // Creates server
             var server = Server.CreateDefaultServer(activationContainer);
             server.AddPrefix("http://127.0.0.1:8081/");
             server.AddPrefix("http://localhost:8081/");
 
             server.Add(new ControllerDispatcher<CalcController>(DispatchFilter.ByUrl("/controller/Calculator"), "/controller/Calculator/"));
+            server.Add(new ControllerDispatcher<UserManagementController>(DispatchFilter.ByUrl("/controller/Users"), "/controller/Users/"));
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
             server.Add(new RelocationDispatcher("/", "/test.html"));
@@ -37,6 +46,7 @@ namespace SimpleTestServer
  
             server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
+
             server.Start();
             
             Console.WriteLine("Press key to stop server");

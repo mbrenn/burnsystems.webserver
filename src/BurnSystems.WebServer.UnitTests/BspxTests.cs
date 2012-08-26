@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using System.Net;
+using System.Web.Script.Serialization;
+using BurnSystems.WebServer.Modules.UserManagement;
 
 namespace BurnSystems.WebServer.UnitTests
 {
@@ -62,8 +64,9 @@ namespace BurnSystems.WebServer.UnitTests
                 var cookie = GetCookie();
 
                 // Check, if we got our session
-                var request = WebRequest.Create("http://localhost:8081/file/session.bspx");
-                request.Headers["Cookie"] = "SessionId=" + cookie;
+                var url = "http://localhost:8081/file/session.bspx";
+                
+                var request = GetSessionRequest(cookie, url);
                 var response = request.GetResponse();
 
                 using (var outputStream = response.GetResponseStream())
@@ -76,6 +79,61 @@ namespace BurnSystems.WebServer.UnitTests
                     Assert.That(data.Contains("Wurst"));
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the response for a web request, including a cookie
+        /// </summary>
+        /// <param name="cookie">Cookie of the session</param>
+        /// <param name="url">Url to be called</param>
+        /// <returns>Webresponse</returns>
+        public static WebRequest GetSessionRequest(string cookie, string url)
+        {
+            var request = WebRequest.Create(url);
+            request.Headers["Cookie"] = "SessionId=" + cookie;
+            return request;
+        }
+
+        /// <summary>
+        /// Gets the response for a web request, including a cookie
+        /// </summary>
+        /// <param name="cookie">Cookie of the session</param>
+        /// <param name="url">Url to be called</param>
+        /// <returns>Webresponse</returns>
+        public static WebRequest GetSessionRequest(string cookie, string url, string post)
+        {
+            var request = WebRequest.Create(url);
+            request.Method = "POST";
+            request.Headers["Cookie"] = "SessionId=" + cookie;
+
+            using (var inputStream = request.GetRequestStream())
+            {
+                var bytes = Encoding.UTF8.GetBytes(post);
+                inputStream.Write(bytes, 0, bytes.Length);
+            }
+
+            return request;
+        }
+
+        public static string GetResponseText(WebRequest request)
+        {
+            var response = request.GetResponse();
+
+            using (var outputStream = response.GetResponseStream())
+            {
+                var totalLength = Convert.ToInt32(response.ContentLength);
+                var responseBytes = new byte[totalLength];
+                outputStream.Read(responseBytes, 0, totalLength);
+
+                return Encoding.UTF8.GetString(responseBytes);
+            }
+        }
+
+        public static T GetResponseObject<T>(WebRequest request)
+        {
+            var value = GetResponseText(request);
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<T>(value);
         }
 
         public static string GetCookie()

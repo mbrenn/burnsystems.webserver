@@ -14,6 +14,12 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             private set;
         }
 
+        public string Username
+        {
+            get;
+            set;
+        }
+
         public Guid TokenId
         {
             get;
@@ -22,20 +28,29 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
 
         public TokenSet TokenSet
         {
-            get;
-            private set;
+            get
+            {
+                return this.CreateTokenSetForUser();
+            }
         }
 
-        public string Username
+        private string EncryptedPassword
         {
             get;
             set;
         }
 
-        public string EncryptedPassword
+        public User(long id)
         {
-            get;
-            set;
+            this.Id = id;
+            this.TokenId = Guid.NewGuid();
+        }
+
+        public User(long id, string username, string password)
+            : this ( id )
+        {
+            this.Username = username;
+            this.SetPassword(password);
         }
 
         public bool IsPasswordCorrect(string password)
@@ -49,17 +64,11 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             this.EncryptedPassword = (this.Username + password).Sha1();
         }
 
-        public User(long id, TokenSet tokenSet)
-        {
-            this.Id = id;
-            this.TokenSet = tokenSet;
-        }
-
         /// <summary>
         /// Creates the token for the user
         /// </summary>
         /// <returns>Token of the user</returns>
-        public Token CreateTokenForUser()
+        public TokenSet CreateTokenSetForUser()
         {
             var token = new Token()
             {
@@ -67,7 +76,10 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
                 Name = this.Username
             };
 
-            return token;
+            var set = new TokenSet();
+            set.Add(token);
+
+            return set;
         }
     }
 }

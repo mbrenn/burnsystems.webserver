@@ -17,19 +17,13 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             set;
         }
 
-        [Inject]
-        public ITemplateParser TemplateParser
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Performs the login
         /// </summary>
         /// <param name="loginData">Data of login</param>
         /// <param name="template">Template being shown to user</param>
-        public void Login([PostModel] LoginData loginData, [Inject("PageTemplate")] string template)
+        [WebMethod]
+        public void Login([PostModel] LoginData loginData)
         {
             var user = this.Authentication.LoginUser(loginData.Username, loginData.Password);
 
@@ -38,14 +32,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 Success = user != null
             };
 
-            if (template == null)
-            {
-                this.Json(result);
-            }
-            else
-            {
-                this.Template(result);
-            }
+            this.TemplateOrAjax(result);
         }
 
         public class LoginData
@@ -57,6 +44,15 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             }
 
             public string Password
+            {
+                get;
+                set;
+            }
+        }
+
+        public class LoginResult
+        {
+            public bool Success
             {
                 get;
                 set;
