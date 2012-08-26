@@ -94,6 +94,7 @@
     <Compile Include="Controller\SessionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerTests.cs" />
+    <Compile Include="UserManagement\TokenTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="htdocs\post.bspx">
