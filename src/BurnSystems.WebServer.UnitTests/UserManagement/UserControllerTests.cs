@@ -22,7 +22,7 @@ namespace BurnSystems.WebServer.UnitTests.UserManagement
                     "Username=no&Password=Yes");
 
                 var responseValue = BspxTests.GetResponseObject<UserManagementController.LoginResult>(webRequest);
-                Assert.That(responseValue, Is.False);                
+                Assert.That(responseValue.Success, Is.False);                
             }
         }
 
@@ -38,7 +38,7 @@ namespace BurnSystems.WebServer.UnitTests.UserManagement
                     "Username=Karl&Password=Heinz");
 
                 var responseValue = BspxTests.GetResponseObject<UserManagementController.LoginResult>(webRequest);
-                Assert.That(responseValue, Is.True);
+                Assert.That(responseValue.Success, Is.True);
             }
         }
 
