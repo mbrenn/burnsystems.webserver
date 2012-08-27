@@ -32,7 +32,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 Success = user != null
             };
 
-            this.TemplateOrAjax(result);
+            this.TemplateOrJson(result);
         }
 
         public class LoginData
@@ -58,8 +58,5 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 set;
             }
         }
-
-
-
     }
 }

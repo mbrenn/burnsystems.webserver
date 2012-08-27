@@ -34,7 +34,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         [WebMethod]
         public void PostTest([PostModel] PostTestModel model)
         {
-            this.TemplateOrAjax(model);
+            this.TemplateOrJson(model);
         }
     }
 }

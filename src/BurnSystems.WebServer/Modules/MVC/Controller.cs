@@ -50,7 +50,7 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// </summary>
         /// <typeparam name="T">Type of the model</typeparam>
         /// <param name="model">Model to be set</param>
-        public void TemplateOrAjax<T>(T model)
+        public void TemplateOrJson<T>(T model)
         {
             var template = this.Container.GetByName("PageTemplate");
             if (template == null)
