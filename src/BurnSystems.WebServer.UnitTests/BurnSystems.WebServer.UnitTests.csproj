@@ -97,6 +97,7 @@
     <Compile Include="ServerTests.cs" />
     <Compile Include="UserManagement\TokenTests.cs" />
     <Compile Include="UserManagement\UserControllerTests.cs" />
+    <Compile Include="UserManagement\UserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="htdocs\post.bspx">
