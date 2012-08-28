@@ -119,6 +119,7 @@
     <Compile Include="Modules\UserManagement\IUser.cs" />
     <Compile Include="Modules\UserManagement\IUserManagement.cs" />
     <Compile Include="Modules\UserManagement\Token.cs" />
+    <Compile Include="Modules\UserManagement\TokenFinder.cs" />
     <Compile Include="Modules\UserManagement\TokenSet.cs" />
     <Compile Include="Modules\UserManagement\InMemory\User.cs" />
     <Compile Include="Modules\UserManagement\UserManagementController.cs" />

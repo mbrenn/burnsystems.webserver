@@ -22,12 +22,38 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         }
 
         /// <summary>
+        /// Initializes a new instance of the TokenSet class.
+        /// </summary>
+        public TokenSet()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new set of token and adds the given token to the set
+        /// </summary>
+        /// <param name="tokens">Tokens to be added</param>
+        public TokenSet(params Token[] tokens)
+        {
+            this.tokens.AddRange(tokens);
+        }
+
+        /// <summary>
         /// Adds a token
         /// </summary>
         /// <param name="token">Token to be added</param>
         public void Add(Token token)
         {
             this.tokens.Add(token);
+        }
+
+        /// <summary>
+        /// Checks, if the given token is in tokenset
+        /// </summary>
+        /// <param name="token">Token to be checked</param>
+        /// <returns>true, if token is in tokenset</returns>
+        public bool Contains(Token token)
+        {
+            return this.tokens.Any(x => x.Id == token.Id);
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             }
 
             this.Session["Authentication.Username"] = user.Username;
-            this.Session["Authentication.TokenSet"] = user.TokenSet;
+            this.Session["Authentication.TokenSet"] = user.CredentialTokenSet;
 
             return user;
         }

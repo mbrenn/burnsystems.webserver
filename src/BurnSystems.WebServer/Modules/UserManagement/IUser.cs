@@ -17,7 +17,18 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             get;
         }
 
-        TokenSet TokenSet
+        /// <summary>
+        /// Gets the token of the user, which impersonates the user
+        /// </summary>
+        Token Token
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the tokenset of at the user which stores all the available credentials
+        /// </summary>
+        TokenSet CredentialTokenSet
         {
             get;
         }

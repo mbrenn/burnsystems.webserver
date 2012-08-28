@@ -26,11 +26,12 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             private set;
         }
 
-        public TokenSet TokenSet
+        public TokenSet CredentialTokenSet
         {
             get
             {
-                return this.CreateTokenSetForUser();
+                return new TokenSet (
+                    this.Token); ;
             }
         }
 
@@ -68,18 +69,16 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
         /// Creates the token for the user
         /// </summary>
         /// <returns>Token of the user</returns>
-        public TokenSet CreateTokenSetForUser()
+        public Token Token
         {
-            var token = new Token()
+            get
             {
-                Id = this.TokenId,
-                Name = this.Username
-            };
-
-            var set = new TokenSet();
-            set.Add(token);
-
-            return set;
+                return new Token()
+                {
+                    Id = this.TokenId,
+                    Name = this.Username
+                };
+            }
         }
     }
 }
