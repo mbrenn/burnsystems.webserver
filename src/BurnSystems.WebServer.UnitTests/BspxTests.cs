@@ -103,13 +103,16 @@ namespace BurnSystems.WebServer.UnitTests
         public static WebRequest GetSessionRequest(string cookie, string url, string post)
         {
             var request = WebRequest.Create(url);
-            request.Method = "POST";
             request.Headers["Cookie"] = "SessionId=" + cookie;
 
-            using (var inputStream = request.GetRequestStream())
+            if (post != null)
             {
-                var bytes = Encoding.UTF8.GetBytes(post);
-                inputStream.Write(bytes, 0, bytes.Length);
+                request.Method = "POST";
+                using (var inputStream = request.GetRequestStream())
+                {
+                    var bytes = Encoding.UTF8.GetBytes(post);
+                    inputStream.Write(bytes, 0, bytes.Length);
+                }
             }
 
             return request;
@@ -131,6 +134,14 @@ namespace BurnSystems.WebServer.UnitTests
 
         public static T GetResponseObject<T>(WebRequest request)
         {
+            var value = GetResponseText(request);
+            var serializer = new JavaScriptSerializer();
+            return serializer.Deserialize<T>(value);
+        }
+
+        public static T GetResponseObject<T>(string cookie, string url, string post = null)
+        {
+            var request = GetSessionRequest(cookie, url, post);
             var value = GetResponseText(request);
             var serializer = new JavaScriptSerializer();
             return serializer.Deserialize<T>(value);

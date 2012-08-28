@@ -35,6 +35,58 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             this.TemplateOrJson(result);
         }
 
+        [WebMethod]
+        public void Logout()
+        {
+            this.Authentication.LogoutUser();
+            var result = new
+            {
+                Success = true
+            };
+
+            this.TemplateOrJson(result);
+        }
+
+        [WebMethod]
+        public void IsUserLoggedIn()
+        {
+            var loggedIn = this.Authentication.IsUserLoggedIn();
+
+            var result = new
+            {
+                IsUserLoggedIn = loggedIn
+            };
+
+            this.TemplateOrJson(result);
+        }
+
+        [WebMethod]
+        public void CurrentUser()
+        {
+            var user = this.Authentication.GetLoggedInUser();
+
+            object result;
+
+            if (user == null)
+            {
+                result = new
+                {
+                    IsUserLoggedIn = false
+                };
+            }
+            else
+            {
+                result = new
+                {
+                    IsUserLoggedIn = true,
+                    UserId = user.Id,
+                    Username = user.Username
+                };
+            }
+
+            this.TemplateOrJson(result);
+        }
+
         public class LoginData
         {
             public string Username
@@ -53,6 +105,36 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         public class LoginResult
         {
             public bool Success
+            {
+                get;
+                set;
+            }
+        }
+
+        public class IsUserLoggedInResult
+        {
+            public bool IsUserLoggedIn
+            {
+                get;
+                set;
+            }
+        }
+
+        public class GetLoggedInUserResult
+        {
+            public bool IsUserLoggedIn
+            {
+                get;
+                set;
+            }
+
+            public long UserId
+            {
+                get;
+                set;
+            }
+
+            public string Username
             {
                 get;
                 set;

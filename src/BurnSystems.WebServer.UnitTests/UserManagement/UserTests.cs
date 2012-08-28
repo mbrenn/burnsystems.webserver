@@ -34,13 +34,13 @@ namespace BurnSystems.WebServer.UnitTests.UserManagement
 
             var user1 = new User(1);
             var user2 = new User(2, "Karl", "Heinz");
-            
-            userDb.Storage.Users.Add ( user1);
-            userDb.Storage.Users.Add ( user2);
+
+            userDb.Storage.Users.Add(user1);
+            userDb.Storage.Users.Add(user2);
 
             var userFound = userDb.GetUser("Karl");
             Assert.That(userFound, Is.Not.Null);
-            Assert.That(userFound.IsPasswordCorrect ( "Heinz"), Is.True);
+            Assert.That(userFound.IsPasswordCorrect("Heinz"), Is.True);
 
             userFound = userDb.GetUser("Otto");
             Assert.That(userFound, Is.Null);
