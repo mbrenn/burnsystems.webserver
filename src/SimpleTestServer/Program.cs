@@ -29,8 +29,12 @@ namespace SimpleTestServer
 
             // In Memory-UserManagement
             var userStorage = new UserStorage();
+            var karl = new User(1, "Karl", "Heinz");
+            userStorage.Users.Add(karl);
+            userStorage.Users.Add(new User(2, "Wilhelm", "Otto"));
             activationContainer.Bind<UserStorage>().ToConstant(userStorage);
             activationContainer.Bind<IUserManagement>().To<UserManagement>();
+            activationContainer.Bind<IAuthentication>().To<Authentication>();
 
             // Creates server
             var server = Server.CreateDefaultServer(activationContainer);
@@ -47,7 +51,12 @@ namespace SimpleTestServer
             server.Add(new ExceptionDispatcher(DispatchFilter.ByUrl("/exception")));
             server.Add(new FileSystemDispatcher(DispatchFilter.All, "htdocs\\"));
 
-            server.Start();
+            // Web Auth
+            var webAuth = new WebAuthorisation();
+            webAuth.RestrictTo(DispatchFilter.ByUrl("/controller/Calculator"), karl.Token);
+            activationContainer.Bind<IRequestFilter>().ToConstant(webAuth);
+
+            server.Start();            
             
             Console.WriteLine("Press key to stop server");
             Console.ReadKey();

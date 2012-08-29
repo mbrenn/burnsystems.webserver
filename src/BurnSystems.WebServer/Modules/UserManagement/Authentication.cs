@@ -12,7 +12,6 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <summary>
         /// Gets or sets the current session
         /// </summary>
-        [Inject]
         public Session Session
         {
             get;
@@ -22,11 +21,17 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <summary>
         /// Gets or sets the current session
         /// </summary>
-        [Inject]
         public IUserManagement UserManagement
         {
             get;
             set;
+        }
+
+        [Inject]
+        public Authentication(Session session, IUserManagement usermanagement)
+        {
+            this.Session = session;
+            this.UserManagement = usermanagement;
         }
 
         public IUser LoginUser(string username, string password)

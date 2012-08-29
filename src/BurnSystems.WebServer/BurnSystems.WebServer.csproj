@@ -124,6 +124,8 @@
     <Compile Include="Modules\UserManagement\TokenSet.cs" />
     <Compile Include="Modules\UserManagement\InMemory\User.cs" />
     <Compile Include="Modules\UserManagement\UserManagementController.cs" />
+    <Compile Include="Modules\UserManagement\WebAuthorisation.cs" />
+    <Compile Include="Modules\UserManagement\WebAuthorisationEntry.cs" />
     <Compile Include="Parser\ITemplateParser.cs" />
     <Compile Include="Resources\Files.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
