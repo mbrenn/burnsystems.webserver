@@ -11,5 +11,10 @@ namespace BurnSystems.WebServer.Resources
         {
             get { return Localization_WebServer.JQuery; }
         }
+
+        public static string Require
+        {
+            get { return Localization_WebServer.RequireJS; }
+        }
     }
 }

@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Error.txt" />
+    <Content Include="Resources\Require\require.js" />
     <None Include="Resources\JQuery\jquery-1.8.0.min.js" />
   </ItemGroup>
   <ItemGroup />

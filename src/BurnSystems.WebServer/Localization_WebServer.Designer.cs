@@ -192,6 +192,21 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*
+        /// RequireJS 2.0.6 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+        /// Available via the MIT or new BSD license.
+        /// see: http://github.com/jrburke/requirejs for details
+        ///*/
+        ///var requirejs,require,define;
+        ///(function(Z){function x(b){return J.call(b)===&quot;[object Function]&quot;}function E(b){return J.call(b)===&quot;[object Array]&quot;}function o(b,e){if(b){var f;for(f=0;f&lt;b.length;f+=1)if(b[f]&amp;&amp;e(b[f],f,b))break}}function M(b,e){if(b){var f;for(f=b.length-1;f&gt;-1;f-=1)if(b[f]&amp;&amp;e(b[f],f,b))break}}function y(b,e){f [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string RequireJS {
+            get {
+                return ResourceManager.GetString("RequireJS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Der Webserver wurde bereits gestartet. ähnelt.
         /// </summary>
         internal static string ServerAlreadyStarted {

@@ -30,6 +30,15 @@ namespace BurnSystems.WebServer.Responses
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the ErrorResponse class.
+        /// </summary>
+        public ErrorResponse(HttpStatusCode code)
+            : base(DispatchFilter.None)
+        {
+            this.Set(code);
+        }
+
         public int Code
         {
             get;
