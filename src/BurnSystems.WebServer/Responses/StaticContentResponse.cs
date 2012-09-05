@@ -24,7 +24,7 @@ namespace BurnSystems.WebServer.Responses
         /// <summary>
         /// Gets or sets the content encoding
         /// </summary>
-        public Encoding ContentEncoding
+        public Encoding CharSet
         {
             get;
             set;
@@ -47,17 +47,20 @@ namespace BurnSystems.WebServer.Responses
         {
             this.ContentType = contentType;
             this.Content = Encoding.UTF8.GetBytes(content);
-            this.ContentEncoding = Encoding.UTF8;
+            this.CharSet = Encoding.UTF8;
         }
 
         public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
             info.Context.Response.ContentLength64 = this.Content.Length;
-            info.Context.Response.ContentType = this.ContentType;
 
-            if (this.ContentEncoding != null)
+            if (this.CharSet != null)
             {
-                info.Context.Response.Headers["Content-Encoding"] = this.ContentEncoding.WebName;
+                info.Context.Response.ContentType = string.Format("{0}; charset={1}", this.ContentType, this.CharSet.WebName);
+            }
+            else
+            {
+                info.Context.Response.ContentType = this.ContentType;
             }
 
             using (var responseStream = info.Context.Response.OutputStream)
