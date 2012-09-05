@@ -57,7 +57,7 @@ namespace BurnSystems.WebServer.Responses
 
             if (this.ContentEncoding != null)
             {
-                info.Context.Response.ContentEncoding = this.ContentEncoding;
+                info.Context.Response.Headers["Content-Encoding"] = this.ContentEncoding.WebName;
             }
 
             using (var responseStream = info.Context.Response.OutputStream)
