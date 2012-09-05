@@ -19,7 +19,7 @@ namespace BurnSystems.WebServer.Helper
             private set;
         }
 
-        public Encoding ContentEncoding
+        public Encoding CharsetEncoding
         {
             get;
             set;
@@ -48,7 +48,7 @@ namespace BurnSystems.WebServer.Helper
         public MimeTypeInfo(string fileExtension, string mimeType, Encoding contentEncoding)
             : this(fileExtension, mimeType)
         {
-            this.ContentEncoding = contentEncoding;
+            this.CharsetEncoding = contentEncoding;
         }
 
         public MimeTypeInfo(string fileExtension, Type fileDispatcher)

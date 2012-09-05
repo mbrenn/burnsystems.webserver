@@ -68,12 +68,15 @@ namespace BurnSystems.WebServer.Responses
 
                 if (mimeInfo.MimeType != null)
                 {
-                    info.Context.Response.ContentType = mimeInfo.MimeType;
-                }
-
-                if (mimeInfo.ContentEncoding != null)
-                {
-                    info.Context.Response.ContentEncoding = mimeInfo.ContentEncoding;
+                    if (mimeInfo.CharsetEncoding != null)
+                    {
+                        info.Context.Response.ContentType = string.Format("{0}; charset={1}", mimeInfo.MimeType, mimeInfo.CharsetEncoding.WebName);
+                        
+                    }
+                    else
+                    {
+                        info.Context.Response.ContentType = mimeInfo.MimeType;
+                    }
                 }
             }
 
