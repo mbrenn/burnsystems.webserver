@@ -70,8 +70,7 @@ namespace BurnSystems.WebServer.Responses
                 {
                     if (mimeInfo.CharsetEncoding != null)
                     {
-                        info.Context.Response.ContentType = string.Format("{0}; charset={1}", mimeInfo.MimeType, mimeInfo.CharsetEncoding.WebName);
-                        
+                        info.Context.Response.ContentType = string.Format("{0}; charset={1}", mimeInfo.MimeType, mimeInfo.CharsetEncoding.WebName);                        
                     }
                     else
                     {
