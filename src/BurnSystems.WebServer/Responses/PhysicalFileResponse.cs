@@ -99,5 +99,9 @@ namespace BurnSystems.WebServer.Responses
                 }
             }
         }
+
+        public void FinishDispatch(IActivates container, ContextDispatchInformation context)
+        {
+        }
     }
 }

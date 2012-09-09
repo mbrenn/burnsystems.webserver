@@ -26,5 +26,9 @@ namespace BurnSystems.WebServer.Dispatcher
         }
 
         public abstract void Dispatch(IActivates container, ContextDispatchInformation context);
+
+        public virtual void FinishDispatch(IActivates container, ContextDispatchInformation context)
+        {
+        }
     }
 }

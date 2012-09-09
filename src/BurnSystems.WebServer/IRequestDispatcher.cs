@@ -25,5 +25,14 @@ namespace BurnSystems.WebServer
         /// </summary>
         /// <param name="context">Context of the request</param>
         void Dispatch(IActivates container, ContextDispatchInformation information);
+
+        /// <summary>
+        /// This method is called after having called <c>Dispatch</c>.
+        /// Purpose of the method is to offer an override of Dispatch, where several datastructures
+        /// are built up and can be send during <c>FinishDispatch</c>. 
+        /// </summary>
+        /// <param name="container">Activation container</param>
+        /// <param name="information">Information about the request</param>
+        void FinishDispatch(IActivates container, ContextDispatchInformation information);
     }
 }

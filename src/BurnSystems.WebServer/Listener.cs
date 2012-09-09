@@ -250,6 +250,7 @@ namespace BurnSystems.WebServer
                     }
 
                     dispatcher.Dispatch(block, info);
+                    dispatcher.FinishDispatch(block, info);
                     found = true;
                     break;
                 }
