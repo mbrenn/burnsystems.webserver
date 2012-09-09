@@ -92,6 +92,7 @@
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
     <Compile Include="Dispatcher\ContextDispatchInformation.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
+    <Compile Include="Dispatcher\FactoryDispatcher.cs" />
     <Compile Include="Dispatcher\FileSystemDispatcher.cs" />
     <Compile Include="Dispatcher\IFileRequestDispatcher.cs" />
     <Compile Include="Dispatcher\RelocationDispatcher.cs" />
