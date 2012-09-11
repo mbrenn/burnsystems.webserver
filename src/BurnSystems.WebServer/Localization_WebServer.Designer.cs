@@ -164,12 +164,42 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die /*! jQuery v@1.8.0 jquery.com | jquery.org/license */
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*! jQuery v@1.8.1 jquery.com | jquery.org/license */
         ///(function(a,b){function G(a){var b=F[a]={};return p.each(a.split(s),function(a,c){b[c]=!0}),b}function J(a,c,d){if(d===b&amp;&amp;a.nodeType===1){var e=&quot;data-&quot;+c.replace(I,&quot;-$1&quot;).toLowerCase();d=a.getAttribute(e);if(typeof d==&quot;string&quot;){try{d=d===&quot;true&quot;?!0:d===&quot;false&quot;?!1:d===&quot;null&quot;?null:+d+&quot;&quot;===d?+d:H.test(d)?p.parseJSON(d):d}catch(f){}p.data(a,c,d)}else d=b}return d}function K(a){var b;for(b in a){if(b===&quot;data&quot;&amp;&amp;p.isEmptyObject(a[b]))continue;if(b!==&quot;toJSON&quot;)re [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string JQuery {
             get {
                 return ResourceManager.GetString("JQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /*!
+        /// * jQuery JavaScript Library v1.8.1
+        /// * http://jquery.com/
+        /// *
+        /// * Includes Sizzle.js
+        /// * http://sizzlejs.com/
+        /// *
+        /// * Copyright 2012 jQuery Foundation and other contributors
+        /// * Released under the MIT license
+        /// * http://jquery.org/license
+        /// *
+        /// * Date: Thu Aug 30 2012 17:17:22 GMT-0400 (Eastern Daylight Time)
+        /// */
+        ///(function( window, undefined ) {
+        ///var
+        ///	// A central reference to the root jQuery(document)
+        ///	rootjQuery,
+        ///
+        ///	// The deferred used on DOM ready
+        ///	readyList,
+        ///
+        ///	// Use the correct document accordingly with wind [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string JQueryDebug {
+            get {
+                return ResourceManager.GetString("JQueryDebug", resourceCulture);
             }
         }
         
@@ -203,6 +233,25 @@ namespace BurnSystems.WebServer {
         internal static string RequireJS {
             get {
                 return ResourceManager.GetString("RequireJS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die /** vim: et:ts=4:sw=4:sts=4
+        /// * @license RequireJS 2.0.6 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+        /// * Available via the MIT or new BSD license.
+        /// * see: http://github.com/jrburke/requirejs for details
+        /// */
+        /////Not using strict: uneven strict support in browsers, #392, and causes
+        /////problems with requirejs.exec()/transpiler plugins that may not be strict.
+        ////*jslint regexp: true, nomen: true, sloppy: true */
+        ////*global window, navigator, document, importScripts, jQuery, setTimeout, opera */
+        ///
+        ///va [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        /// </summary>
+        internal static string RequireJSDebug {
+            get {
+                return ResourceManager.GetString("RequireJSDebug", resourceCulture);
             }
         }
         

@@ -149,7 +149,10 @@ Die konkrete Fehlermeldung lautet: {0}</value>
     <value>Das übertragene Formular wurde nicht erkannt 'multipart/form-data'</value>
   </data>
   <data name="JQuery" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\JQuery\jquery-1.8.0.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Resources\JQuery\jquery-1.8.1.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="JQueryDebug" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\JQuery\jquery-1.8.1.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="MailSent" xml:space="preserve">
     <value>Mail '{0}' wurde zu '{1}' versendet. </value>
@@ -158,6 +161,9 @@ Die konkrete Fehlermeldung lautet: {0}</value>
     <value>Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes)</value>
   </data>
   <data name="RequireJS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Require\require.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="RequireJSDebug" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\require\require.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ServerAlreadyStarted" xml:space="preserve">

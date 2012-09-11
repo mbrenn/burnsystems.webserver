@@ -168,8 +168,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Error.txt" />
+    <None Include="Resources\Require\require.min.js" />
+    <None Include="Resources\JQuery\jquery-1.8.1.js" />
+    <None Include="Resources\JQuery\jquery-1.8.1.min.js" />
     <Content Include="Resources\Require\require.js" />
-    <None Include="Resources\JQuery\jquery-1.8.0.min.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

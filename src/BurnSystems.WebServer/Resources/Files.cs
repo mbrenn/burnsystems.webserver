@@ -9,12 +9,26 @@ namespace BurnSystems.WebServer.Resources
     {
         public static string JQuery
         {
-            get { return Localization_WebServer.JQuery; }
+            get {
+#if DEBUG
+                return Localization_WebServer.JQueryDebug; 
+#else
+                return Localization_WebServer.JQuery; 
+#endif
+            }
         }
 
         public static string Require
         {
-            get { return Localization_WebServer.RequireJS; }
+            get
+            {
+
+#if DEBUG
+                return Localization_WebServer.RequireJSDebug;
+#else
+                return Localization_WebServer.RequireJS; 
+#endif
+            }
         }
     }
 }
