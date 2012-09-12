@@ -124,9 +124,9 @@ namespace BurnSystems.WebServer
                     var context = this.httpListener.GetContext();
                     try
                     {
-                        this.ExecuteHttpRequest(context);
+                        //this.ExecuteHttpRequest(context);
 
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(this.ExecuteHttpRequest), context);
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(this.ExecuteHttpRequest), context);
                     }
                     catch (Exception exc)
                     {

@@ -55,7 +55,7 @@ namespace BurnSystems.WebServer.Responses
 
         public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
-            if (info.CheckForCache(lastCacheUpdate))
+            if (info.CheckForCache(lastCacheUpdate, this.Content))
             {
                 return;
             }

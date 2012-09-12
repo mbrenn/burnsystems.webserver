@@ -2,6 +2,7 @@
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Helper;
+using System.Text;
 
 namespace BurnSystems.WebServer.Responses
 {
@@ -80,7 +81,7 @@ namespace BurnSystems.WebServer.Responses
             }
 
             // File is not sent out at once, file is sent out by by chunks
-            if (info.CheckForCache(File.GetLastWriteTime(this.PhysicalPath)))
+            if (info.CheckForCache(File.GetLastWriteTime(this.PhysicalPath), Encoding.UTF8.GetBytes(this.PhysicalPath)))
             {
                 // File has not been modified
                 return;

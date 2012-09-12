@@ -23,16 +23,17 @@ namespace BurnSystems.WebServer.Helper
             context.Response.AddHeader("Cache-Control", "post-check=0, pre-check=0");
         }
 
-        public static bool CheckForCache(this ContextDispatchInformation info, DateTime fileDate)
+        public static bool CheckForCache(this ContextDispatchInformation info, DateTime localModificationDate, byte[] content)
         {
             var done = false;
+            localModificationDate = localModificationDate.ToUniversalTime();
 
             var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
             if (isModifiedSince != null)
             {
                 var cacheDate = DateTime.Parse(isModifiedSince);
 
-                if ((fileDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
                 {
                     info.Context.Response.StatusCode = 304;
                     done = true; ;
@@ -42,10 +43,15 @@ namespace BurnSystems.WebServer.Helper
             // Fügt den Header hinzu
             info.Context.Response.AddHeader(
                 "Last-Modified",
-                fileDate.ToString("r"));
+                localModificationDate.ToString("r"));
             info.Context.Response.AddHeader(
                 "ETag",
-                StringManipulation.Sha1(fileDate.Ticks.ToString(CultureInfo.InvariantCulture)));
+                string.Format(
+                    "\"{0}\"",
+                    StringManipulation.Sha1(content)));
+            info.Context.Response.AddHeader(
+                "Date",
+                DateTime.Now.ToUniversalTime().ToString("r"));
             return done;
         }
     }
