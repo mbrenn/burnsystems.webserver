@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using BurnSystems.WebServer.Dispatcher;
-using System.Net;
+using BurnSystems.WebServer.Helper;
 
 namespace BurnSystems.WebServer.Responses
 {
     public class StaticContentResponse : BaseDispatcher
     {
+        /// <summary>
+        /// Stores the value for the last cache update
+        /// </summary>
+        private static DateTime lastCacheUpdate = DateTime.Now;
+
         public string ContentType
         {
             get;
@@ -52,6 +55,11 @@ namespace BurnSystems.WebServer.Responses
 
         public override void Dispatch(ObjectActivation.IActivates activates, ContextDispatchInformation info)
         {
+            if (info.CheckForCache(lastCacheUpdate))
+            {
+                return;
+            }
+
             info.Context.Response.ContentLength64 = this.Content.Length;
 
             if (this.CharSet != null)

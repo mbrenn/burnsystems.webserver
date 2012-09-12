@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Globalization;
 using System.Net;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace BurnSystems.WebServer.Helper
 {
@@ -22,6 +21,32 @@ namespace BurnSystems.WebServer.Helper
             context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
             context.Response.Headers["Pragma"] = "no-cache";
             context.Response.AddHeader("Cache-Control", "post-check=0, pre-check=0");
+        }
+
+        public static bool CheckForCache(this ContextDispatchInformation info, DateTime fileDate)
+        {
+            var done = false;
+
+            var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
+            if (isModifiedSince != null)
+            {
+                var cacheDate = DateTime.Parse(isModifiedSince);
+
+                if ((fileDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                {
+                    info.Context.Response.StatusCode = 304;
+                    done = true; ;
+                }
+            }
+
+            // Fügt den Header hinzu
+            info.Context.Response.AddHeader(
+                "Last-Modified",
+                fileDate.ToString("r"));
+            info.Context.Response.AddHeader(
+                "ETag",
+                StringManipulation.Sha1(fileDate.Ticks.ToString(CultureInfo.InvariantCulture)));
+            return done;
         }
     }
 }

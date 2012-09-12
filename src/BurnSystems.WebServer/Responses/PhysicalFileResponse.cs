@@ -52,7 +52,7 @@ namespace BurnSystems.WebServer.Responses
         {
             var extension = Path.GetExtension(this.PhysicalPath);
             var mimeInfo = this.MimeTypeConverter.ConvertFromExtension(extension);
-                        
+
             // Set some header
             if (mimeInfo != null)
             {
@@ -70,7 +70,7 @@ namespace BurnSystems.WebServer.Responses
                 {
                     if (mimeInfo.CharsetEncoding != null)
                     {
-                        info.Context.Response.ContentType = string.Format("{0}; charset={1}", mimeInfo.MimeType, mimeInfo.CharsetEncoding.WebName);                        
+                        info.Context.Response.ContentType = string.Format("{0}; charset={1}", mimeInfo.MimeType, mimeInfo.CharsetEncoding.WebName);
                     }
                     else
                     {
@@ -80,9 +80,15 @@ namespace BurnSystems.WebServer.Responses
             }
 
             // File is not sent out at once, file is sent out by by chunks
+            if (info.CheckForCache(File.GetLastWriteTime(this.PhysicalPath)))
+            {
+                // File has not been modified
+                return;
+            }
+
             using (var responseStream = info.Context.Response.OutputStream)
             {
-                using (var stream = new FileStream(this.PhysicalPath, FileMode.Open, FileAccess.Read, FileShare.Read))                
+                using (var stream = new FileStream(this.PhysicalPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     info.Context.Response.ContentLength64 = stream.Length;
 
