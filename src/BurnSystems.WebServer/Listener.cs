@@ -14,7 +14,7 @@ namespace BurnSystems.WebServer
     /// <summary>
     /// Listener receiving the http requests and dispatching them to the correct place
     /// </summary>
-    internal class Listener
+    internal class Listener : IDisposable
     {
         /// <summary>
         /// Defines the class logger
@@ -32,9 +32,9 @@ namespace BurnSystems.WebServer
         private Thread httpThread;
 
         /// <summary>
-        /// Flag, ob der Webserver noch laufen soll
+        /// Value indicating whether the webserver is currently running
         /// </summary>
-        private volatile bool running = false;
+        private volatile bool isRunning = false;
 
         /// <summary>
         /// Stoers the activation container
@@ -66,18 +66,13 @@ namespace BurnSystems.WebServer
         }
 
         /// <summary>
-        /// Stores the template parser
-        /// </summary>
-        private TemplateParser templateParser = new TemplateParser();
-
-        /// <summary>
         /// Starts listening
         /// </summary>
         public void StartListening()
         {
             this.requestFilters = this.activationBlock.GetAll<IRequestFilter>().ToList();
 
-            this.running = true;
+            this.isRunning = true;
             try
             {
                 this.httpListener.Start();
@@ -104,7 +99,7 @@ namespace BurnSystems.WebServer
         public void StopListening()
         {
             this.httpListener.Stop();
-            this.running = false;
+            this.isRunning = false;
             if (this.httpThread != null)
             {
                 this.httpThread.Join();
@@ -119,7 +114,7 @@ namespace BurnSystems.WebServer
         {
             try
             {
-                while (this.running)
+                while (this.isRunning)
                 {
                     var context = this.httpListener.GetContext();
                     try
@@ -257,6 +252,19 @@ namespace BurnSystems.WebServer
             }
 
             return found;
+        }
+
+        public void Dispose()
+        {
+            if (this.isRunning)
+            {
+                this.StopListening();
+            }
+
+            if ((this.httpListener as IDisposable)!= null)
+            {
+                (this.httpListener as IDisposable).Dispose();
+            }
         }
     }
 }

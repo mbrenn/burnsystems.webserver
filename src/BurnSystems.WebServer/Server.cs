@@ -172,6 +172,12 @@ namespace BurnSystems.WebServer
             {
                 this.Stop();
             }
+
+            if (this.listener != null)
+            {
+                this.listener.Dispose();
+                this.listener = null;
+            }
         }
     }
 }
