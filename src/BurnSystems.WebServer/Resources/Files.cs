@@ -30,5 +30,17 @@ namespace BurnSystems.WebServer.Resources
 #endif
             }
         }
+
+        public static string DateFormat
+        {
+            get
+            {
+#if DEBUG
+                return Localization_WebServer.DateFormatDebug;
+#else
+                return Localization_WebServer.DateFormat; 
+#endif
+            }
+        }
     }
 }
