@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -172,8 +173,15 @@
     <Content Include="Resources\DateFormat\dateformat.min.js" />
     <Content Include="Resources\Error.txt" />
     <None Include="Resources\Require\require.min.js" />
-    <None Include="Resources\JQuery\jquery-1.8.1.js" />
+    <Content Include="Resources\JQuery\jquery-1.8.1.js" />
     <None Include="Resources\JQuery\jquery-1.8.1.min.js" />
+    <Content Include="Resources\JQuery\jquery.cookie.js" />
+    <Content Include="Resources\JQuery\jquery.hotkeys.js" />
+    <Content Include="Resources\JSTree\jquery.jstree.js" />
+    <Content Include="Resources\JSTree\themes\default\d.gif" />
+    <Content Include="Resources\JSTree\themes\default\d.png" />
+    <Content Include="Resources\JSTree\themes\default\style.css" />
+    <Content Include="Resources\JSTree\themes\default\throbber.gif" />
     <Content Include="Resources\Require\require.js" />
   </ItemGroup>
   <ItemGroup />

@@ -18,6 +18,22 @@ namespace BurnSystems.WebServer.Resources
             }
         }
 
+        public static string JQueryCookie
+        {
+            get
+            {
+                return Localization_WebServer.JQueryCookie;
+            }
+        }
+
+        public static string JQueryHotkey
+        {
+            get
+            {
+                return Localization_WebServer.JQueryHotkeys;
+            }
+        }
+
         public static string Require
         {
             get

@@ -124,6 +124,12 @@
     <value>Sessions werden aufgeräumt.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="d" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jstree\themes\default\d.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="d1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jstree\themes\default\d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DateFormat" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\dateformat\dateformat.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -157,8 +163,17 @@ Die konkrete Fehlermeldung lautet: {0}</value>
   <data name="JQuery" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\JQuery\jquery-1.8.1.min.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="JQueryCookie" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jquery\jquery.cookie.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="JQueryDebug" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\JQuery\jquery-1.8.1.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="JQueryHotkeys" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jquery\jquery.hotkeys.js;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="JSTree_CSS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jstree\themes\default\style.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="MailSent" xml:space="preserve">
     <value>Mail '{0}' wurde zu '{1}' versendet. </value>
@@ -192,5 +207,8 @@ Die konkrete Fehlermeldung lautet: {0}</value>
   </data>
   <data name="SkippingMail" xml:space="preserve">
     <value>Mail zu '{0}' wird wegen inaktivem MailSender nicht gesendet. </value>
+  </data>
+  <data name="throbber" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\jstree\themes\default\throbber.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
