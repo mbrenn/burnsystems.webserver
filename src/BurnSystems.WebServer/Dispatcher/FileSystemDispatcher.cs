@@ -32,13 +32,8 @@ namespace BurnSystems.WebServer.Dispatcher
             set;
         }
 
-        public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter)
-            : base(filter)
-        {
-        }
-
         public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath)
-            : this(filter)
+            : base(filter)
         {
             this.PhysicalRootPath = physicalRootPath;
         }

@@ -254,6 +254,9 @@ namespace BurnSystems.WebServer
             return found;
         }
 
+        /// <summary>
+        /// Disposes the webserver
+        /// </summary>
         public void Dispose()
         {
             if (this.isRunning)
