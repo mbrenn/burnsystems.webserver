@@ -79,26 +79,6 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap d {
-            get {
-                object obj = ResourceManager.GetObject("d", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap d1 {
-            get {
-                object obj = ResourceManager.GetObject("d1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
         ///       &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;
         ///&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
@@ -261,16 +241,6 @@ namespace BurnSystems.WebServer {
         internal static string SkippingMail {
             get {
                 return ResourceManager.GetString("SkippingMail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap throbber {
-            get {
-                object obj = ResourceManager.GetObject("throbber", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
