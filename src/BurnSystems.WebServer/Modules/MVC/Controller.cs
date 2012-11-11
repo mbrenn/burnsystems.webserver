@@ -46,7 +46,7 @@ namespace BurnSystems.WebServer.Modules.MVC
 
         /// <summary>
         /// Returns html to browser and uses the Template parser as stored in container and
-        /// PageTemplate as stored in container
+        /// PageTemplate as stored in container. If no template is given, return as json
         /// </summary>
         /// <typeparam name="T">Type of the model</typeparam>
         /// <param name="model">Model to be set</param>
@@ -65,7 +65,7 @@ namespace BurnSystems.WebServer.Modules.MVC
                     throw new InvalidOperationException("PageTemplate not set");
                 }
 
-                this.Html(templateParser.Parse<T>(template.ToString(), model, null, this.Context.Request.Url.ToString()));
+                this.Html(templateParser.Parse<T>(template.ToString(), model, null));
             }
         }
 
@@ -96,8 +96,8 @@ namespace BurnSystems.WebServer.Modules.MVC
 
             var serializer = new JavaScriptSerializer();
             this.Context.Response.ContentType = "application/json";
-            
-            this.SendResult(serializer.Serialize(result));            
+
+            this.SendResult(serializer.Serialize(result));
         }
 
         /// <summary>

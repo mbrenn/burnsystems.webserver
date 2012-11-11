@@ -85,7 +85,7 @@ namespace BurnSystems.WebServer.Responses
                 Code = this.Code.ToString()
             };
 
-            var template = this.TemplateParser.Parse(content, model, null, this.GetType().ToString());
+            var template = this.TemplateParser.Parse(content, model, null);
 
             info.Context.Response.StatusCode = 404;
             using (var response = info.Context.Response.OutputStream)

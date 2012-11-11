@@ -71,18 +71,11 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RazorEngine">
-      <HintPath>..\..\dependencies\RazorEngine\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\dependencies\RazorEngine\System.Web.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -155,6 +148,10 @@
     <Compile Include="Modules\Sessions\SessionStorage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BurnSystems.Parser\src\BurnSystems.Parser.csproj">
+      <Project>{24fc6cc7-afef-456d-8056-96712d1b7909}</Project>
+      <Name>BurnSystems.Parser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\BurnSystems\src\BurnSystems.csproj">
       <Project>{42023D16-AFD1-4D99-BC39-9EF46982EB54}</Project>
       <Name>BurnSystems</Name>
