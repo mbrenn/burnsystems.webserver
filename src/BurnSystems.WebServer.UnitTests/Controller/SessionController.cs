@@ -41,7 +41,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
                 SessionValue = this.Session["Test"]
             };
 
-            this.Html(this.TemplateParser.Parse(template, model, null, "SessonController"));
+            this.Html(this.TemplateParser.Parse(template, model, null));
         }
         
         /// <summary>
