@@ -72,10 +72,10 @@ namespace BurnSystems.WebServer
         {
             this.requestFilters = this.activationBlock.GetAll<IRequestFilter>().ToList();
 
-            this.isRunning = true;
             try
             {
                 this.httpListener.Start();
+                this.isRunning = true;
 
                 this.httpThread = new Thread(new ThreadStart(this.HttpThreadEntry));
                 this.httpThread.Start();
@@ -98,12 +98,15 @@ namespace BurnSystems.WebServer
         /// </summary>
         public void StopListening()
         {
-            this.httpListener.Stop();
-            this.isRunning = false;
-            if (this.httpThread != null)
+            if (this.isRunning)
             {
-                this.httpThread.Join();
-                this.httpThread = null;
+                this.httpListener.Stop();
+                this.isRunning = false;
+                if (this.httpThread != null)
+                {
+                    this.httpThread.Join();
+                    this.httpThread = null;
+                }
             }
         }
 
