@@ -23,7 +23,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <param name="loginData">Data of login</param>
         /// <param name="template">Template being shown to user</param>
         [WebMethod]
-        public void Login([PostModel] LoginData loginData)
+        public IActionResult Login([PostModel] LoginData loginData)
         {
             var user = this.Authentication.LoginUser(loginData.Username, loginData.Password);
 
@@ -32,11 +32,11 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 Success = user != null
             };
 
-            this.TemplateOrJson(result);
+            return this.TemplateOrJson(result);
         }
 
         [WebMethod]
-        public void Logout()
+        public IActionResult Logout()
         {
             this.Authentication.LogoutUser();
             var result = new
@@ -44,11 +44,11 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 Success = true
             };
 
-            this.TemplateOrJson(result);
+            return this.TemplateOrJson(result);
         }
 
         [WebMethod]
-        public void IsUserLoggedIn()
+        public IActionResult IsUserLoggedIn()
         {
             var loggedIn = this.Authentication.IsUserLoggedIn();
 
@@ -57,11 +57,11 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 IsUserLoggedIn = loggedIn
             };
 
-            this.TemplateOrJson(result);
+            return this.TemplateOrJson(result);
         }
 
         [WebMethod]
-        public void CurrentUser()
+        public IActionResult CurrentUser()
         {
             var user = this.Authentication.GetLoggedInUser();
 
@@ -84,7 +84,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 };
             }
 
-            this.TemplateOrJson(result);
+            return this.TemplateOrJson(result);
         }
 
         public class LoginData

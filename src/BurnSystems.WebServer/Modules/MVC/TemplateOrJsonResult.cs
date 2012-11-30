@@ -22,6 +22,11 @@ namespace BurnSystems.WebServer.Modules.MVC
             set;
         }
 
+        public TemplateOrJsonResult(T resultObject)
+        {
+            this.ReturnObject = resultObject;
+        }
+
         public void Execute(System.Net.HttpListenerContext listenerContext, IActivates container)
         {
             listenerContext.Response.ContentEncoding = Encoding.UTF8;;

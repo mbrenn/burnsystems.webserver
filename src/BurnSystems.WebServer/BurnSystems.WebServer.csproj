@@ -103,6 +103,7 @@
     <Compile Include="Modules\MailSender\MailSenderConfig.cs" />
     <Compile Include="Modules\MailSender\MailSenderHandler.cs" />
     <Compile Include="Modules\MVC\BaseActionResult.cs" />
+    <Compile Include="Modules\MVC\Extensions.cs" />
     <Compile Include="Modules\MVC\HtmlActionResult.cs" />
     <Compile Include="Modules\MVC\IActionResult.cs" />
     <Compile Include="Modules\MVC\JsonActionResult.cs" />

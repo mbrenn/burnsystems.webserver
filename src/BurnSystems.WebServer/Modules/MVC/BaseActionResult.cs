@@ -26,6 +26,8 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <param name="result">Result to be sent</param>
         protected void SendResult(HttpListenerContext listenerContext, string result)
         {
+            this.CheckForSending();
+
             var bytes = Encoding.UTF8.GetBytes(result);
             listenerContext.Response.ContentEncoding = Encoding.UTF8;
             listenerContext.Response.ContentLength64 = bytes.LongLength;
@@ -36,6 +38,18 @@ namespace BurnSystems.WebServer.Modules.MVC
             }
 
             this.HasFinishedSending = true;
+        }
+
+        /// <summary>
+        /// Checks, whether an additional sending is allowed
+        /// </summary>
+        private void CheckForSending()
+        {
+            if (this.HasFinishedSending)
+            {
+                throw new InvalidOperationException(
+                    Localization_WebServer.FinishedSending);
+            }
         }
     }
 }
