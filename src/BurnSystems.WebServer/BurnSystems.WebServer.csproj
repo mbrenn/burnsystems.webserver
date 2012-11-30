@@ -102,6 +102,13 @@
     <Compile Include="Modules\MailSender\IMailSender.cs" />
     <Compile Include="Modules\MailSender\MailSenderConfig.cs" />
     <Compile Include="Modules\MailSender\MailSenderHandler.cs" />
+    <Compile Include="Modules\MVC\BaseActionResult.cs" />
+    <Compile Include="Modules\MVC\HtmlActionResult.cs" />
+    <Compile Include="Modules\MVC\IActionResult.cs" />
+    <Compile Include="Modules\MVC\JsonActionResult.cs" />
+    <Compile Include="Modules\MVC\StreamActionResult.cs" />
+    <Compile Include="Modules\MVC\TemplateOrJsonResult.cs" />
+    <Compile Include="Modules\MVC\TextActionResult.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReader.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReaderConfig.cs" />
     <Compile Include="IRequestFilter.cs" />

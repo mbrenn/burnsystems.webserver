@@ -223,7 +223,15 @@ namespace BurnSystems.WebServer.Modules.MVC
                     }
                 }
 
-                webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray());
+                var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
+                if (result == null)
+                {
+                    logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
+                }
+                else
+                {
+                    result.Execute(info.Context, activates);
+                }
 
                 // First hit is success
                 return;
