@@ -6,7 +6,7 @@ using System.Text;
 namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
 {
     [Serializable]
-    public class User : IUser
+    public class User : IWebUser
     {
         public long Id
         {

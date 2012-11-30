@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BurnSystems.WebServer.Modules.UserManagement
 {
-    public interface IUserManagement
+    public interface IWebUserManagement
     {
-        IUser GetUser(string username);
-        IUser GetUser(string username, string password);
+        IWebUser GetUser(string username);
+        IWebUser GetUser(string username, string password);
     }
 }

@@ -8,6 +8,7 @@ using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Responses;
 using BurnSystems.WebServer.Dispatcher;
+using System.Web.Script.Serialization;
 
 namespace BurnSystems.WebServer
 {
@@ -82,7 +83,7 @@ namespace BurnSystems.WebServer
             }
             catch (HttpListenerException exc)
             {
-                // Der Benutzer braucht Administorrechte
+                // User requires administrator rights
                 string message = string.Format(
                     Localization_WebServer.HttpListenerException,
                     exc.Message);
@@ -122,8 +123,6 @@ namespace BurnSystems.WebServer
                     var context = this.httpListener.GetContext();
                     try
                     {
-                        //this.ExecuteHttpRequest(context);
-
                         ThreadPool.QueueUserWorkItem(new WaitCallback(this.ExecuteHttpRequest), context);
                     }
                     catch (Exception exc)
@@ -198,9 +197,8 @@ namespace BurnSystems.WebServer
                     catch (Exception exc)
                     {
                         var errorResponse = this.activationBlock.Create<ErrorResponse>();
-                        errorResponse.Title = "Server error";
+                        errorResponse.Set(HttpStatusCode.ServerError);
                         errorResponse.Message = exc.ToString();
-                        errorResponse.Code = 500;
                         errorResponse.Dispatch(block, info);
 
                         logger.LogEntry(LogEntry.Format(

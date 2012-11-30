@@ -13,7 +13,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>Found user, if successful, otherwise null</returns>
-        IUser LoginUser(string username, string password);
+        IWebUser LoginUser(string username, string password);
 
         /// <summary>
         /// Performs logout of the user
@@ -30,7 +30,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// Gets the currently logged in user
         /// </summary>
         /// <returns>User, who is logged in</returns>
-        IUser GetLoggedInUser();
+        IWebUser GetLoggedInUser();
 
         /// <summary>
         /// Gets a list of tokens of the current user

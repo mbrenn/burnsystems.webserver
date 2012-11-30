@@ -112,8 +112,8 @@
     <Compile Include="Modules\UserManagement\IAuthentication.cs" />
     <Compile Include="Modules\UserManagement\InMemory\UserManagement.cs" />
     <Compile Include="Modules\UserManagement\InMemory\UserStorage.cs" />
-    <Compile Include="Modules\UserManagement\IUser.cs" />
-    <Compile Include="Modules\UserManagement\IUserManagement.cs" />
+    <Compile Include="Modules\UserManagement\IWebUser.cs" />
+    <Compile Include="Modules\UserManagement\IWebUserManagement.cs" />
     <Compile Include="Modules\UserManagement\Token.cs" />
     <Compile Include="Modules\UserManagement\TokenCheckpoint.cs" />
     <Compile Include="Modules\UserManagement\TokenFinder.cs" />

@@ -7,6 +7,7 @@ using BurnSystems.WebServer.Parser;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Test;
 using BurnSystems.WebServer.Dispatcher;
+using System.Web.Script.Serialization;
 
 namespace BurnSystems.WebServer.Responses
 {
@@ -85,12 +86,22 @@ namespace BurnSystems.WebServer.Responses
                 Code = this.Code.ToString()
             };
 
-            var template = this.TemplateParser.Parse(content, model, null);
+            string resultText;
+            if (info.Context.Request.Headers["X-Requested-With"].Contains("XMLHttpRequest"))
+            {
+                var serializer = new JavaScriptSerializer();
+                resultText = serializer.Serialize(model);
+                info.Context.Response.ContentType = "application/json";
+            }
+            else
+            {
+                resultText = this.TemplateParser.Parse(content, model, null);
+            }
 
-            info.Context.Response.StatusCode = 404;
+            info.Context.Response.StatusCode = this.Code;
             using (var response = info.Context.Response.OutputStream)
             {
-                var bytes = Encoding.UTF8.GetBytes(template);
+                var bytes = Encoding.UTF8.GetBytes(resultText);
                 response.Write(bytes, 0, bytes.Length);
             }
         }

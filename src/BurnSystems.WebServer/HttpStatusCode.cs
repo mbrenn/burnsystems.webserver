@@ -33,6 +33,8 @@ namespace BurnSystems.WebServer
 
         public static readonly HttpStatusCode NotFound = new HttpStatusCode(404, "Not Found");
 
+        public static readonly HttpStatusCode ServerError = new HttpStatusCode(500, "Server Error");
+
         public static HttpStatusCode Convert(int code)
         {
             switch (code)
@@ -43,6 +45,8 @@ namespace BurnSystems.WebServer
                     return Unauthorized;
                 case 403:
                     return Forbidden;
+                case 500:
+                    return ServerError;
                 default:
                     throw new ArgumentException("Value of 'code' is not known");
             }

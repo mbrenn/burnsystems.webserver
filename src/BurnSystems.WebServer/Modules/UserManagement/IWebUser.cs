@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BurnSystems.WebServer.Modules.UserManagement
 {
-    public interface IUser
+    public interface IWebUser
     {
         long Id
         {

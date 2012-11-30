@@ -12,7 +12,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
     public class TokenFinder
     {
         [Inject]
-        public IUserManagement UserManagement
+        public IWebUserManagement UserManagement
         {
             get;
             set;
@@ -22,7 +22,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         {
         }
 
-        public TokenFinder(IUserManagement userManagement)
+        public TokenFinder(IWebUserManagement userManagement)
         {
             this.UserManagement = userManagement;
         }

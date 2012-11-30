@@ -6,7 +6,7 @@ using BurnSystems.ObjectActivation;
 
 namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
 {
-    public class UserManagement : IUserManagement
+    public class UserManagement : IWebUserManagement
     {
         [Inject]
         public UserStorage Storage
@@ -15,7 +15,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             set;
         }
 
-        public IUser GetUser(string username)
+        public IWebUser GetUser(string username)
         {
             lock (this.Storage)
             {
@@ -25,7 +25,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             }
         }
 
-        public IUser GetUser(string username, string password)
+        public IWebUser GetUser(string username, string password)
         {
             lock (this.Storage)
             {

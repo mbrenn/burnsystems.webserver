@@ -21,20 +21,20 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <summary>
         /// Gets or sets the current session
         /// </summary>
-        public IUserManagement UserManagement
+        public IWebUserManagement UserManagement
         {
             get;
             set;
         }
 
         [Inject]
-        public Authentication(Session session, IUserManagement usermanagement)
+        public Authentication(Session session, IWebUserManagement usermanagement)
         {
             this.Session = session;
             this.UserManagement = usermanagement;
         }
 
-        public IUser LoginUser(string username, string password)
+        public IWebUser LoginUser(string username, string password)
         {
             var user = this.UserManagement.GetUser(username, password);
             if (user == null)
@@ -61,7 +61,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             return this.Session["Authentication.Username"] != null;
         }
 
-        public IUser GetLoggedInUser()
+        public IWebUser GetLoggedInUser()
         {
             if (!this.IsUserLoggedIn())
             {
