@@ -32,7 +32,7 @@ namespace SimpleTestServer
             userStorage.Users.Add(karl);
             userStorage.Users.Add(new User(2, "Wilhelm", "Otto"));
             activationContainer.Bind<UserStorage>().ToConstant(userStorage);
-            activationContainer.Bind<IUserManagement>().To<UserManagement>();
+            activationContainer.Bind<IWebUserManagement>().To<UserManagement>();
             activationContainer.Bind<IAuthentication>().To<Authentication>();
 
             // Creates server

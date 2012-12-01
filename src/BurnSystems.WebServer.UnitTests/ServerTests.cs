@@ -23,7 +23,7 @@ namespace BurnSystems.WebServer.UnitTests
             userStorage.Users.Add(new User(2, "Wilhelm", "Otto"));
 
             activationContainer.Bind<UserStorage>().ToConstant(userStorage);
-            activationContainer.Bind<IUserManagement>().To<BurnSystems.WebServer.Modules.UserManagement.InMemory.UserManagement>();
+            activationContainer.Bind<IWebUserManagement>().To<BurnSystems.WebServer.Modules.UserManagement.InMemory.UserManagement>();
             activationContainer.Bind<IAuthentication>().To<Authentication>();
             var server = Server.CreateDefaultServer(activationContainer);
 
