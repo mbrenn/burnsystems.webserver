@@ -98,6 +98,14 @@
     <Compile Include="Modules\MailSender\IMailSender.cs" />
     <Compile Include="Modules\MailSender\MailSenderConfig.cs" />
     <Compile Include="Modules\MailSender\MailSenderHandler.cs" />
+    <Compile Include="Modules\MVC\BaseActionResult.cs" />
+    <Compile Include="Modules\MVC\Extensions.cs" />
+    <Compile Include="Modules\MVC\HtmlActionResult.cs" />
+    <Compile Include="Modules\MVC\IActionResult.cs" />
+    <Compile Include="Modules\MVC\JsonActionResult.cs" />
+    <Compile Include="Modules\MVC\StreamActionResult.cs" />
+    <Compile Include="Modules\MVC\TemplateOrJsonResult.cs" />
+    <Compile Include="Modules\MVC\TextActionResult.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReader.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReaderConfig.cs" />
     <Compile Include="IRequestFilter.cs" />
@@ -148,7 +156,7 @@
     <Compile Include="Modules\Sessions\SessionStorage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BurnSystems.Parser\src\BurnSystems.Parser.csproj">
+    <ProjectReference Include="..\..\dependencies\BurnSystems.Parser\src\BurnSystems.Parser.csproj">
       <Project>{24fc6cc7-afef-456d-8056-96712d1b7909}</Project>
       <Name>BurnSystems.Parser</Name>
     </ProjectReference>

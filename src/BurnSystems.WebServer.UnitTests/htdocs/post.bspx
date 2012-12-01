@@ -4,7 +4,18 @@
 %>
 <html>
 	<body>
-		@if(Model==null) {
+		@[IF:Model]
+			<table>
+				<tr>
+					<td>Vorname:</td>
+					<td>@[=Model->Prename]</td>
+				</tr>
+				<tr>
+					<td>Nachname:</td>
+					<td>@[=Model->Name]</td>
+				</tr>
+			</table>
+		@[ELSE])
 			<form action="?" method="POST">
 				<fieldset>
 					Vorname: <input type="text" name="Prename" /><br />
@@ -12,17 +23,6 @@
 					<input type="submit" value="Abschicken" />
 				</fieldset>
 			</form>
-		} else {
-			<table>
-				<tr>
-					<td>Vorname:</td>
-					<td>@Model.Prename</td>
-				</tr>
-				<tr>
-					<td>Nachname:</td>
-					<td>@Model.Name</td>
-				</tr>
-			</table>
-		}
+		@[ENDIF]
 	</body>
 </html>

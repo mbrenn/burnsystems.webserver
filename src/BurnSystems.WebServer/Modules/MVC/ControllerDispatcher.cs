@@ -125,7 +125,6 @@ namespace BurnSystems.WebServer.Modules.MVC
             // First segment is method name
             var methodName = segments[0];
 
-
             this.DispatchForWebMethod(activates, info, methodName);
         }
 
@@ -140,10 +139,7 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             // Creates controller
             var controller = activates.Create(this.controllerType) as Controller;
-            Ensure.That(controller != null, "Unknown ControllerType: " + this.controllerType.FullName);
-
-            controller.Container = activates;
-            controller.Context = info.Context;
+            Ensure.That(controller != null, "Not a ControllerType: " + this.controllerType.FullName);
 
             // Try to find the method
             foreach (var webMethodInfo in this.webMethodInfos
@@ -223,7 +219,15 @@ namespace BurnSystems.WebServer.Modules.MVC
                     }
                 }
 
-                webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray());
+                var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
+                if (result == null)
+                {
+                    logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
+                }
+                else
+                {
+                    result.Execute(info.Context, activates);
+                }
 
                 // First hit is success
                 return;

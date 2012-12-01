@@ -28,9 +28,9 @@ namespace BurnSystems.WebServer.UnitTests.Controller
 
         [WebMethod()]
         [IfMethodIs("post")]
-        public void Sum([PostModel] SumData sum)
+        public IActionResult Sum([PostModel] SumData sum)
         {
-            this.Json(new 
+            return this.Json(new 
             {
                 Sum = sum.Summand1 + sum.Summand2
             });

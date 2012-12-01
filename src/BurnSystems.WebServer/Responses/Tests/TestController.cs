@@ -9,33 +9,33 @@ namespace BurnSystems.WebServer.Responses.Tests
     public class TestController : Controller
     {
         [WebMethod]
-        public void Today()
+        public IActionResult Today()
         {
-            this.Html(DateTime.Now.ToString());
+            return this.Html(DateTime.Now.ToString());
         }
 
         [WebMethod]
-        public void Test()
+        public IActionResult Test()
         {
-            this.Html("Test");
+            return this.Html("Test");
         }
 
         [WebMethod]
-        public void Greet(string name)
+        public IActionResult Greet(string name)
         {
-            this.Html("Hello " + name);
+            return this.Html("Hello " + name);
         }
 
         [WebMethod]
-        public void Add(int a, int b)
+        public IActionResult Add(int a, int b)
         {
-            this.Html(string.Format("{0} + {1} = {2}", a, b, a + b));
+            return this.Html(string.Format("{0} + {1} = {2}", a, b, a + b));
         }
 
         [WebMethod(Name = "Subtract")]
-        public void Minus(int a, int b)
+        public IActionResult Minus(int a, int b)
         {
-            this.Html(string.Format("{0} - {1} = {2}", a, b, a - b));
+            return this.Html(string.Format("{0} - {1} = {2}", a, b, a - b));
         }
     }
 }
