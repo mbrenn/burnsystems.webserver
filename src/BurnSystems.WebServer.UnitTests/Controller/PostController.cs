@@ -32,9 +32,9 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         }
 
         [WebMethod]
-        public void PostTest([PostModel] PostTestModel model)
+        public IActionResult PostTest([PostModel] PostTestModel model)
         {
-            this.TemplateOrJson(model);
+            return this.TemplateOrJson(model);
         }
     }
 }

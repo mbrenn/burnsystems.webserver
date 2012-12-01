@@ -29,7 +29,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
         }
 
         [WebMethod]
-        public void SessionTest([PostModel] SessionPostModel postModel, [Inject("PageTemplate")] string template)
+        public IActionResult SessionTest([PostModel] SessionPostModel postModel, [Inject("PageTemplate")] string template)
         {
             if (postModel != null)
             {
@@ -41,7 +41,7 @@ namespace BurnSystems.WebServer.UnitTests.Controller
                 SessionValue = this.Session["Test"]
             };
 
-            this.Html(this.TemplateParser.Parse(template, model, null, "SessonController"));
+            return this.Html(this.TemplateParser.Parse(template, model, null, "SessonController"));
         }
         
         /// <summary>
