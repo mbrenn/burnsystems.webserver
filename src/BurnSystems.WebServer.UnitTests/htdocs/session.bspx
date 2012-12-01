@@ -16,7 +16,7 @@
 		<table>
 			<tr>
 				<td>Wert:</td>
-				<td>@Model.SessionValue</td>
+				<td>@[=Model->SessionValue]</td>
 			</tr>
 		</table>		
 	</body>

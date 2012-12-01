@@ -46,7 +46,7 @@ namespace BurnSystems.WebServer.Modules.MVC
                 }
 
                 new HtmlActionResult(
-                    templateParser.Parse<T>(template.ToString(), this.ReturnObject, null, listenerContext.Request.Url.ToString()))
+                    templateParser.Parse<T>(template.ToString(), this.ReturnObject, null))
                     .Execute(listenerContext, container);
             }
         }

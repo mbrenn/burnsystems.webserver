@@ -71,11 +71,17 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\dependencies\RazorEngine\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\dependencies\RazorEngine\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -86,13 +92,11 @@
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
     <Compile Include="Dispatcher\ContextDispatchInformation.cs" />
     <Compile Include="Dispatcher\DispatchFilter.cs" />
-    <Compile Include="Dispatcher\FactoryDispatcher.cs" />
     <Compile Include="Dispatcher\FileSystemDispatcher.cs" />
     <Compile Include="Dispatcher\IFileRequestDispatcher.cs" />
     <Compile Include="Dispatcher\RelocationDispatcher.cs" />
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
-    <Compile Include="Helper\ContextHelper.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
     <Compile Include="Modules\MailSender\DummyMailSenderHandler.cs" />
     <Compile Include="Modules\MailSender\IMailSender.cs" />
@@ -131,6 +135,7 @@
     <Compile Include="Modules\UserManagement\WebAuthorisation.cs" />
     <Compile Include="Modules\UserManagement\WebAuthorisationEntry.cs" />
     <Compile Include="Parser\ITemplateParser.cs" />
+    <Compile Include="Resources\Files.cs" />
     <Compile Include="Responses\ErrorResponse.cs" />
     <Compile Include="HttpStatusCode.cs" />
     <Compile Include="IRequestDispatcher.cs" />
@@ -156,10 +161,6 @@
     <Compile Include="Modules\Sessions\SessionStorage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\BurnSystems.Parser\src\BurnSystems.Parser.csproj">
-      <Project>{24fc6cc7-afef-456d-8056-96712d1b7909}</Project>
-      <Name>BurnSystems.Parser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\dependencies\BurnSystems\src\BurnSystems.csproj">
       <Project>{42023D16-AFD1-4D99-BC39-9EF46982EB54}</Project>
       <Name>BurnSystems</Name>
@@ -173,20 +174,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\DateFormat\dateformat.js" />
-    <Content Include="Resources\DateFormat\dateformat.min.js" />
     <Content Include="Resources\Error.txt" />
-    <None Include="Resources\Require\require.min.js" />
-    <Content Include="Resources\JQuery\jquery.js" />
-    <None Include="Resources\JQuery\jquery.min.js" />
-    <Content Include="Resources\JQuery\jquery.cookie.js" />
-    <Content Include="Resources\JQuery\jquery.hotkeys.js" />
-    <Content Include="Resources\JSTree\jquery.jstree.js" />
-    <Content Include="Resources\JSTree\themes\default\d.gif" />
-    <Content Include="Resources\JSTree\themes\default\d.png" />
-    <Content Include="Resources\JSTree\themes\default\style.css" />
-    <Content Include="Resources\JSTree\themes\default\throbber.gif" />
-    <Content Include="Resources\Require\require.js" />
+    <None Include="Resources\JQuery\jquery-1.8.0.min.js" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
