@@ -28,7 +28,7 @@ namespace BurnSystems.WebServer.Helper
             return
                 this.infos
                     .Where(x => x.FileExtension == fileExtension)
-                    .FirstOrDefault();                    
+                    .FirstOrDefault();
         }
 
         /// <summary>
@@ -45,6 +45,8 @@ namespace BurnSystems.WebServer.Helper
                 result.Add(new MimeTypeInfo(".htm", "text/html", Encoding.UTF8));
 
                 result.Add(new MimeTypeInfo(".css", "text/css", Encoding.UTF8));
+
+                result.Add(new MimeTypeInfo(".js", "application/javascript", Encoding.UTF8));
 
                 result.Add(new MimeTypeInfo(".jpg", "image/jpeg"));
                 result.Add(new MimeTypeInfo(".png", "image/png"));

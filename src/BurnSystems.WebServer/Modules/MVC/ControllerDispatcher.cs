@@ -219,14 +219,41 @@ namespace BurnSystems.WebServer.Modules.MVC
                     }
                 }
 
-                var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
-                if (result == null)
+                try
                 {
-                    logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
+                    var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
+                    if (result == null)
+                    {
+                        logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
+                    }
+                    else
+                    {
+                        result.Execute(info.Context, activates);
+                    }
                 }
-                else
+                catch (TargetInvocationException targetInvocation)
                 {
-                    result.Execute(info.Context, activates);
+                    var exception = targetInvocation.InnerException as MVCProcessException;
+                    if (exception != null)
+                    {
+                        // We have an MVC Exception, create datastructure and return errormessage
+                        var result = new
+                        {
+                            success = false,
+                            error = new
+                            {
+                                type = "MVCProcessException", 
+                                code = exception.Code,
+                                message = exception.Message
+                            }
+                        };
+
+                        new JsonActionResult(result).Execute(info.Context, activates);
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
 
                 // First hit is success
