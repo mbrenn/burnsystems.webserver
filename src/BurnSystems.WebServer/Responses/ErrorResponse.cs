@@ -80,10 +80,10 @@ namespace BurnSystems.WebServer.Responses
 
             var model = new
             {
-                Title = this.Title,
-                Url = info.Context.Request.Url.ToString(),
-                Message = this.Message,
-                Code = this.Code.ToString()
+                title = this.Title,
+                url = info.Context.Request.Url.ToString(),
+                message = this.Message,
+                code = this.Code.ToString()
             };
 
             string resultText;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
+using BurnSystems.Test;
 
 namespace BurnSystems.WebServer.Modules.Sessions
 {
@@ -48,6 +49,10 @@ namespace BurnSystems.WebServer.Modules.Sessions
         [Inject]
         public SessionInterface(HttpListenerContext context, SessionContainer sessionContainer, SessionConfiguration configuration)
         {
+            Ensure.IsNotNull(context, "HttpListenerContext is null");
+            Ensure.IsNotNull(sessionContainer, "SessionContainer is null");
+            Ensure.IsNotNull(configuration, "SessionConfiguration is null");
+
             this.context = context;
             this.sessionContainer = sessionContainer;
             this.Configuration = configuration;
@@ -59,7 +64,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// the old session will be restored.
         /// </summary>
         public Session GetSession()
-        {            
+        {
             var cookie = this.context.Request.Cookies["SessionId"];
             var sessionId = string.Empty;
             var isCookieFresh = false;
@@ -92,7 +97,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
 
             // Räumt vielleicht die Sessions auf
             this.RemovePerhapsOldSessions();
-            
+
             return session;
         }
 

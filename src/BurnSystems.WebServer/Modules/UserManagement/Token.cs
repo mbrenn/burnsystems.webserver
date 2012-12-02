@@ -7,6 +7,16 @@ namespace BurnSystems.WebServer.Modules.UserManagement
 {
     public class Token
     {
+        public Token()
+        {
+        }
+
+        public Token(Guid guid, string name)
+        {
+            this.Id = guid;
+            this.Name = name;
+        }
+
         public Guid Id
         {
             get;

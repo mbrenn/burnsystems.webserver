@@ -31,7 +31,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             {
                 return this.Storage.Users
                     .Where(x => x.Username == username && x.IsPasswordCorrect(password))
-                    .FirstOrDefault();                        
+                    .FirstOrDefault();
             }
         }
     }

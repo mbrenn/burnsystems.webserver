@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Modules.Sessions;
+using BurnSystems.Test;
 
 namespace BurnSystems.WebServer.Modules.UserManagement
 {
@@ -30,6 +31,9 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         [Inject]
         public Authentication(Session session, IWebUserManagement usermanagement)
         {
+            Ensure.That(session != null);
+            Ensure.That(usermanagement != null);
+
             this.Session = session;
             this.UserManagement = usermanagement;
         }

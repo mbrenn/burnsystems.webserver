@@ -104,6 +104,7 @@
     <Compile Include="Modules\MVC\IActionResult.cs" />
     <Compile Include="Modules\MVC\JsonActionResult.cs" />
     <Compile Include="Modules\MVC\MVCProcessException.cs" />
+    <Compile Include="Modules\MVC\RedirectActionResult.cs" />
     <Compile Include="Modules\MVC\StreamActionResult.cs" />
     <Compile Include="Modules\MVC\TemplateOrJsonResult.cs" />
     <Compile Include="Modules\MVC\TextActionResult.cs" />
