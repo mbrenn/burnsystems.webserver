@@ -31,7 +31,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             get
             {
                 return new TokenSet (
-                    this.Token); ;
+                    this.Token);
             }
         }
 
