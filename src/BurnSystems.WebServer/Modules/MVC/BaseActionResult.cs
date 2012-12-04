@@ -21,6 +21,15 @@ namespace BurnSystems.WebServer.Modules.MVC
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this request may be cached. Per default: No cache
+        /// </summary>
+        public bool MayBeCached
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Sends the result to webserver
         /// </summary>
         /// <param name="result">Result to be sent</param>
@@ -31,6 +40,15 @@ namespace BurnSystems.WebServer.Modules.MVC
             var bytes = Encoding.UTF8.GetBytes(result);
             listenerContext.Response.ContentEncoding = Encoding.UTF8;
             listenerContext.Response.ContentLength64 = bytes.LongLength;
+
+            if (!this.MayBeCached)
+            {
+                listenerContext.Response.Headers["Last-Modified"] = "no-cache";
+                listenerContext.Response.Headers["Expires"] = "Mon, 26 Jul 1997 05:00:00 GMT";
+                listenerContext.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
+                listenerContext.Response.Headers["Pragma"] = "no-cache";
+                listenerContext.Response.AddHeader("Cache-Control", "post-check=0, pre-check=0");
+            }
 
             using (var stream = listenerContext.Response.OutputStream)
             {
