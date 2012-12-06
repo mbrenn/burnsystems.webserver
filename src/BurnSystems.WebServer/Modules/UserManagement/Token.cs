@@ -5,6 +5,7 @@ using System.Text;
 
 namespace BurnSystems.WebServer.Modules.UserManagement
 {
+    [Serializable]
     public class Token
     {
         public Token()
