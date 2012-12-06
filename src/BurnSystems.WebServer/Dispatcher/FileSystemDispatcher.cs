@@ -17,7 +17,7 @@ namespace BurnSystems.WebServer.Dispatcher
         /// <summary>
         /// Gets or sets the physical root path
         /// </summary>
-        public string PhysicalRootPath
+        public List<string> PhysicalRootPaths
         {
             get;
             set;
@@ -35,13 +35,25 @@ namespace BurnSystems.WebServer.Dispatcher
         public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath)
             : base(filter)
         {
-            this.PhysicalRootPath = physicalRootPath;
+            this.PhysicalRootPaths = new List<string>();
+            this.PhysicalRootPaths.Add(physicalRootPath);
         }
 
         public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath, string webPrefix)
             : this(filter, physicalRootPath)
         {
             this.WebPrefix = webPrefix;
+        }
+
+        /// <summary>
+        /// Adds a physical root path
+        /// </summary>
+        /// <param name="physicalRootPath">Physical root path to be added</param>
+        /// <returns>The current instance</returns>
+        public FileSystemDispatcher AddPhysicalRootPath(string physicalRootPath)
+        {
+            this.PhysicalRootPaths.Add(physicalRootPath);
+            return this;
         }
 
         public override void Dispatch(IActivates container, ContextDispatchInformation info)
@@ -69,25 +81,32 @@ namespace BurnSystems.WebServer.Dispatcher
                 }
             }
 
-            var physicalPath = Path.Combine(this.PhysicalRootPath, relativePath);
-
-            if (relativePath.Contains("..") || Path.IsPathRooted(relativePath) || !physicalPath.StartsWith(this.PhysicalRootPath))
+            var found = false;
+            foreach (var physicalRootPath in this.PhysicalRootPaths)
             {
-                var errorResponse = container.Create<ErrorResponse>();
-                errorResponse.Set(HttpStatusCode.Forbidden);
-                errorResponse.Dispatch(container, info);
+                var physicalPath = Path.Combine(physicalRootPath, relativePath);
 
-                return;
+                if (relativePath.Contains("..") || Path.IsPathRooted(relativePath) || !physicalPath.StartsWith(physicalRootPath))
+                {
+                    var errorResponse = container.Create<ErrorResponse>();
+                    errorResponse.Set(HttpStatusCode.Forbidden);
+                    errorResponse.Dispatch(container, info);
+
+                    return;
+                }
+
+                if (File.Exists(physicalPath))
+                {
+                    var physicalFileResponse = container.Create<PhysicalFileResponse>();
+                    physicalFileResponse.PhysicalPath = physicalPath;
+                    physicalFileResponse.VirtualPath = "/" + relativePath;
+                    physicalFileResponse.Dispatch(container, info);
+                    found = true;
+                    break;
+                }
             }
 
-            if (File.Exists(physicalPath))
-            {
-                var physicalFileResponse = container.Create<PhysicalFileResponse>();
-                physicalFileResponse.PhysicalPath = physicalPath;
-                physicalFileResponse.VirtualPath = "/" + relativePath;
-                physicalFileResponse.Dispatch(container, info);
-            }
-            else
+            if (!found)
             {
                 var errorResponse = container.Create<ErrorResponse>();
                 errorResponse.Set(HttpStatusCode.NotFound);

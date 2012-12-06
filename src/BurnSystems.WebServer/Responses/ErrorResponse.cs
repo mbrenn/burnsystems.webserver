@@ -87,7 +87,8 @@ namespace BurnSystems.WebServer.Responses
             };
 
             string resultText;
-            if (info.Context.Request.Headers["X-Requested-With"].Contains("XMLHttpRequest"))
+            var requestedWithHeader = info.Context.Request.Headers["X-Requested-With"];
+            if (requestedWithHeader != null && requestedWithHeader.Contains("XMLHttpRequest"))
             {
                 var serializer = new JavaScriptSerializer();
                 resultText = serializer.Serialize(model);

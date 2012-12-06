@@ -65,6 +65,9 @@ namespace BurnSystems.WebServer.Responses
                     fileRequestDispatcher.VirtualPath = this.VirtualPath;
 
                     fileRequestDispatcher.Dispatch(container, info);
+
+                    // Everything is done
+                    return;
                 }
 
                 if (mimeInfo.MimeType != null)
