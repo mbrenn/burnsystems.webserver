@@ -94,10 +94,6 @@
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
     <Compile Include="Helper\ContextHelper.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
-    <Compile Include="Modules\MailSender\DummyMailSenderHandler.cs" />
-    <Compile Include="Modules\MailSender\IMailSender.cs" />
-    <Compile Include="Modules\MailSender\MailSenderConfig.cs" />
-    <Compile Include="Modules\MailSender\MailSenderHandler.cs" />
     <Compile Include="Modules\MVC\BaseActionResult.cs" />
     <Compile Include="Modules\MVC\Extensions.cs" />
     <Compile Include="Modules\MVC\HtmlActionResult.cs" />

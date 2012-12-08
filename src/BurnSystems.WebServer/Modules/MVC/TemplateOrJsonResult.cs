@@ -38,13 +38,12 @@ namespace BurnSystems.WebServer.Modules.MVC
             }
             else
             {
-                listenerContext.Response.ContentType = "text/html";
                 var templateParser = container.Get<ITemplateParser>();
                 if (templateParser == null)
                 {
                     throw new InvalidOperationException("ITemplateParser not set");
                 }
-
+                
                 new HtmlActionResult(
                     templateParser.Parse<T>(template.ToString(), this.ReturnObject, null))
                     .Execute(listenerContext, container);

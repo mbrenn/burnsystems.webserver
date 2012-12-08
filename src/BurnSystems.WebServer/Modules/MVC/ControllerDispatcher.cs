@@ -260,7 +260,7 @@ namespace BurnSystems.WebServer.Modules.MVC
                 return;
             }
 
-            ErrorResponse.Throw404(activates, info);
+            ErrorResponse.Throw404(activates, info, "No Webmethod for '" + methodName + "' found");
             return;
         }
 
@@ -353,6 +353,11 @@ namespace BurnSystems.WebServer.Modules.MVC
                 return 0.0;
             }
 
+            if (parameter.ParameterType == typeof(long))
+            {
+                return 0L;
+            }
+
             throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);
         }
 
@@ -364,7 +369,6 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <returns>Converted Argument</returns>
         private object ConvertToArgument(string value, System.Reflection.ParameterInfo parameter)
         {
-
             if (parameter.ParameterType == typeof(string))
             {
                 return value;
@@ -378,6 +382,11 @@ namespace BurnSystems.WebServer.Modules.MVC
             if (parameter.ParameterType == typeof(double))
             {
                 return Convert.ToDouble(value);
+            }
+
+            if (parameter.ParameterType == typeof(long))
+            {
+                return Convert.ToInt64(value);
             }
 
             throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace BurnSystems.WebServer.Modules.MVC
 {
-    public class TextActionResult :BaseActionResult, IActionResult
+    public class TextActionResult : BaseActionResult, IActionResult
     {
         /// <summary>
         /// Gets or sets the mimetype
