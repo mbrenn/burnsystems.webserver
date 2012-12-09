@@ -31,12 +31,12 @@ namespace BurnSystems.WebServer.Helper
             var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
             if (isModifiedSince != null)
             {
-                var cacheDate = DateTime.Parse(isModifiedSince);
+                var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
 
                 if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
                 {
                     info.Context.Response.StatusCode = 304;
-                    done = true; ;
+                    done = true;
                 }
             }
 
@@ -52,6 +52,9 @@ namespace BurnSystems.WebServer.Helper
             info.Context.Response.AddHeader(
                 "Date",
                 DateTime.Now.ToUniversalTime().ToString("r"));
+            info.Context.Response.AddHeader(
+                "Cache-Control",
+                "max-age=0");
             return done;
         }
     }

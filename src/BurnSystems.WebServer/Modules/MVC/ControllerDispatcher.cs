@@ -248,7 +248,7 @@ namespace BurnSystems.WebServer.Modules.MVC
                             }
                         };
 
-                        new JsonActionResult(result).Execute(info.Context, activates);
+                        new TemplateOrJsonResult<object>(result).Execute(info.Context, activates);
                     }
                     else
                     {
