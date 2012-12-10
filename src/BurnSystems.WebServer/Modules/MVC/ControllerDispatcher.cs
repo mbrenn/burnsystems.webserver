@@ -184,16 +184,23 @@ namespace BurnSystems.WebServer.Modules.MVC
                     var injectParameterAttribute = parameterAttributes.Where(x => x is InjectAttribute).Cast<InjectAttribute>().FirstOrDefault();
                     if (injectParameterAttribute != null)
                     {
+                        object argument;
                         if (string.IsNullOrEmpty(injectParameterAttribute.ByName))
                         {
                             // Ok, we are NOT by name, injection by type
-                            callArguments.Add(activates.Get(parameter.ParameterType));
+                            argument = activates.Get(parameter.ParameterType);
                         }
                         else
                         {
-                            callArguments.Add(activates.GetByName(injectParameterAttribute.ByName));
+                            argument = activates.GetByName(injectParameterAttribute.ByName);
                         }
 
+                        if (argument == null && injectParameterAttribute.IsMandatory)
+                        {
+                            throw new InvalidOperationException("Parameter '" + injectParameterAttribute.ByName + "' is required as mandatory but has not been set");
+                        }
+
+                        callArguments.Add(argument);
                         continue;
                     }
 
