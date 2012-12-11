@@ -39,6 +39,13 @@ namespace BurnSystems.WebServer.Helper
                 var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
                 if (isModifiedSince != null)
                 {
+                    var positionSemicolon = isModifiedSince.IndexOf(";");
+
+                    if (positionSemicolon != -1)
+                    {
+                        isModifiedSince = isModifiedSince.Substring(0, positionSemicolon);
+                    }
+
                     var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
 
                     if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
