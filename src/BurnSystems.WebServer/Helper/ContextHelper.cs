@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net;
 using BurnSystems.WebServer.Dispatcher;
+using BurnSystems.Logging;
 
 namespace BurnSystems.WebServer.Helper
 {
@@ -10,6 +11,11 @@ namespace BurnSystems.WebServer.Helper
     /// </summary>
     public static class ContextHelper
     {
+        /// <summary>
+        /// Logging for this class
+        /// </summary>
+        private static ClassLogger logger = new ClassLogger(typeof(ContextHelper));
+
         /// <summary>
         /// Disables the browser cache, so page will be 
         /// always refreshed
@@ -25,37 +31,52 @@ namespace BurnSystems.WebServer.Helper
 
         public static bool CheckForCache(this ContextDispatchInformation info, DateTime localModificationDate, byte[] content)
         {
-            var done = false;
-            localModificationDate = localModificationDate.ToUniversalTime();
-
-            var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
-            if (isModifiedSince != null)
+            try
             {
-                var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
+                var done = false;
+                localModificationDate = localModificationDate.ToUniversalTime();
 
-                if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                var isModifiedSince = info.Context.Request.Headers["If-Modified-Since"];
+                if (isModifiedSince != null)
                 {
-                    info.Context.Response.StatusCode = 304;
-                    done = true;
-                }
-            }
+                    var positionSemicolon = isModifiedSince.IndexOf(";");
 
-            // Fügt den Header hinzu
-            info.Context.Response.AddHeader(
-                "Last-Modified",
-                localModificationDate.ToString("r"));
-            info.Context.Response.AddHeader(
-                "ETag",
-                string.Format(
-                    "\"{0}\"",
-                    StringManipulation.Sha1(content)));
-            info.Context.Response.AddHeader(
-                "Date",
-                DateTime.Now.ToUniversalTime().ToString("r"));
-            info.Context.Response.AddHeader(
-                "Cache-Control",
-                "max-age=0");
-            return done;
+                    if (positionSemicolon != -1)
+                    {
+                        isModifiedSince = isModifiedSince.Substring(0, positionSemicolon);
+                    }
+
+                    var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
+
+                    if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                    {
+                        info.Context.Response.StatusCode = 304;
+                        done = true;
+                    }
+                }
+
+                // Fügt den Header hinzu
+                info.Context.Response.AddHeader(
+                    "Last-Modified",
+                    localModificationDate.ToString("r"));
+                info.Context.Response.AddHeader(
+                    "ETag",
+                    string.Format(
+                        "\"{0}\"",
+                        StringManipulation.Sha1(content)));
+                info.Context.Response.AddHeader(
+                    "Date",
+                    DateTime.Now.ToUniversalTime().ToString("r"));
+                info.Context.Response.AddHeader(
+                    "Cache-Control",
+                    "max-age=0");
+                return done;
+            }
+            catch (Exception)
+            {
+                logger.LogEntry(LogLevel.Message, "Error during test of cache: If-Modified-Since: " + info.Context.Request.Headers["If-Modified-Since"]);
+                return false;
+            }
         }
     }
 }
