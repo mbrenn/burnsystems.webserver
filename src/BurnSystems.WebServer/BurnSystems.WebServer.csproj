@@ -92,6 +92,8 @@
     <Compile Include="Dispatcher\RelocationDispatcher.cs" />
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
+    <Compile Include="Filters\DenyAllFilter.cs" />
+    <Compile Include="Filters\DenyByUrlFilter.cs" />
     <Compile Include="Helper\ContextHelper.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
     <Compile Include="Modules\MVC\BaseActionResult.cs" />
