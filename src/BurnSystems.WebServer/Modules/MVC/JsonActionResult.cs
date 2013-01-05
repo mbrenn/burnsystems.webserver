@@ -36,7 +36,7 @@ namespace BurnSystems.WebServer.Modules.MVC
             var serializer = new JavaScriptSerializer();
             listenerContext.Response.ContentType = "application/json";
 
-            this.SendResult(listenerContext, serializer.Serialize(this.ReturnObject));            
+            this.SendResult(listenerContext, serializer.Serialize(this.ReturnObject));
         }
     }
 }
