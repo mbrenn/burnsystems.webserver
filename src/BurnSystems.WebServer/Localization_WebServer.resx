@@ -118,58 +118,59 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddedPrefix" xml:space="preserve">
-    <value>HTTP-Präfix: {0}</value>
+    <value>HTTP-Prefix: {0}</value>
   </data>
   <data name="CollectingSessions" xml:space="preserve">
-    <value>Sessions werden aufgeräumt.</value>
+    <value>Sessions are collected</value>
   </data>
   <data name="ExceptionDuringListening" xml:space="preserve">
-    <value>Ausnahme während des Listen-Vorgangs: {0}</value>
+    <value>Exception while listening: {0}</value>
   </data>
   <data name="ExceptionDuringWebRequest" xml:space="preserve">
-    <value>Ausnahme während WebRequest '{0}': {1}</value>
+    <value>Exception during Webrequest '{0}': {1}</value>
   </data>
   <data name="FileUploadNotSupported" xml:space="preserve">
-    <value>Das Hochladen von Dateien wird nicht unterstützt.</value>
+    <value>Upload of files is currently not supported</value>
   </data>
   <data name="FinishedSending" xml:space="preserve">
-    <value>Es wurde bereits ein Inhalt versandt. Ein weiteres Versenden ist nicht zulässig.</value>
+    <value>Content already had been sent to server. A second sending is not allowed</value>
   </data>
   <data name="HttpListenerException" xml:space="preserve">
-    <value>Beim Starten des Webservers ist ein Fehler aufgetreten. Überprüfen Sie bitte ob folgende Dinge erfüllt sind:
-- Programm läuft mit Administratorrechte
-- Die angeforderte Website wird bereits von einer anderen Anwendung belegt.
-Die konkrete Fehlermeldung lautet: {0}</value>
+    <value>An exception occured during start-up. Please check the following preconditions:
+- Application has privileged execution rights
+- The website is already reserved by another application/server
+
+The error: {0}</value>
   </data>
   <data name="InvalidMultipart" xml:space="preserve">
-    <value>Das übertragene Formular wurde nicht erkannt 'multipart/form-data'</value>
+    <value>The sent form was not recognized: 'multipart/form-data'</value>
   </data>
   <data name="MailSent" xml:space="preserve">
-    <value>Mail '{0}' wurde zu '{1}' versendet. </value>
+    <value>Mail '{0}' has been sent to '{1}'.</value>
   </data>
   <data name="MaximumPostLengthExceeded" xml:space="preserve">
-    <value>Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes)</value>
+    <value>Maximum length of request exceeded: {0} Bytes (allowed: {1} Bytes)</value>
   </data>
   <data name="ServerAlreadyStarted" xml:space="preserve">
-    <value>Der Webserver wurde bereits gestartet.</value>
+    <value>Webserver had been started. </value>
   </data>
   <data name="ServerNotStarted" xml:space="preserve">
-    <value>Der Webserver wurde nicht gestartet. </value>
+    <value>Webserver was not started.</value>
   </data>
   <data name="SessionsLoading" xml:space="preserve">
-    <value>Sessions werden eingeladen.</value>
+    <value>Loading of sessions</value>
   </data>
   <data name="SessionsLoadingException" xml:space="preserve">
-    <value>Beim Einladen der Sessions wurde folgende Ausnahme gefangen: {0}</value>
+    <value>Exception occured during loading of sessions: {0}</value>
   </data>
   <data name="SessionsStoring" xml:space="preserve">
-    <value>Sessions werden gespeichert.</value>
+    <value>Storing of sessions</value>
   </data>
   <data name="SessionsStoringException" xml:space="preserve">
-    <value>Beim Speichern der Sessions wurde folgende Ausnahme gefangen: {0}</value>
+    <value>Exception occured during storing of sessions: {0}</value>
   </data>
   <data name="SkippingMail" xml:space="preserve">
-    <value>Mail zu '{0}' wird wegen inaktivem MailSender nicht gesendet. </value>
+    <value>Mail to '{0}' was not send due to inactivation of mailsender by configuration.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Error" type="System.Resources.ResXFileRef, System.Windows.Forms">

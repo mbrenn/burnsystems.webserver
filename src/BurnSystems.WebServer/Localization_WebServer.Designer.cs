@@ -61,7 +61,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP-Präfix: {0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die HTTP-Prefix: {0} ähnelt.
         /// </summary>
         internal static string AddedPrefix {
             get {
@@ -70,7 +70,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions werden aufgeräumt. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions are collected ähnelt.
         /// </summary>
         internal static string CollectingSessions {
             get {
@@ -95,10 +95,10 @@ namespace BurnSystems.WebServer {
         ///		&lt;/style&gt;
         ///	&lt;/head&gt;
         ///	&lt;body&gt;
-        ///		&lt;h1&gt;@Model.Title&lt;/h1&gt;
-        ///		&lt;p&gt;@Model.Url&lt;/p&gt;
-        ///		&lt;p&gt;@Model.Message&lt;/p&gt;
-        ///		@if(!string.IsNullOrE [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
+        ///		&lt;h1&gt;@[=Model-&gt;title]&lt;/h1&gt;
+        ///		&lt;p&gt;@[=Model-&gt;url]&lt;/p&gt;
+        ///		&lt;p&gt;@[=Model-&gt;message]&lt;/p&gt;
+        ///		@[IF:Mode [Rest der Zeichenfolge wurde abgeschnitten]&quot;; ähnelt.
         /// </summary>
         internal static string Error {
             get {
@@ -107,7 +107,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Ausnahme während des Listen-Vorgangs: {0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Exception while listening: {0} ähnelt.
         /// </summary>
         internal static string ExceptionDuringListening {
             get {
@@ -116,7 +116,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Ausnahme während WebRequest &apos;{0}&apos;: {1} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Exception during Webrequest &apos;{0}&apos;: {1} ähnelt.
         /// </summary>
         internal static string ExceptionDuringWebRequest {
             get {
@@ -125,7 +125,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Das Hochladen von Dateien wird nicht unterstützt. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Upload of files is currently not supported ähnelt.
         /// </summary>
         internal static string FileUploadNotSupported {
             get {
@@ -134,7 +134,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Es wurde bereits ein Inhalt versandt. Ein weiteres Versenden ist nicht zulässig. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Content already had been sent to server. A second sending is not allowed ähnelt.
         /// </summary>
         internal static string FinishedSending {
             get {
@@ -143,10 +143,11 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Beim Starten des Webservers ist ein Fehler aufgetreten. Überprüfen Sie bitte ob folgende Dinge erfüllt sind:
-        ///- Programm läuft mit Administratorrechte
-        ///- Die angeforderte Website wird bereits von einer anderen Anwendung belegt.
-        ///Die konkrete Fehlermeldung lautet: {0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die An exception occured during start-up. Please check the following preconditions:
+        ///- Application has privileged execution rights
+        ///- The website is already reserved by another application/server
+        ///
+        ///The error: {0} ähnelt.
         /// </summary>
         internal static string HttpListenerException {
             get {
@@ -155,7 +156,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Das übertragene Formular wurde nicht erkannt &apos;multipart/form-data&apos; ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die The sent form was not recognized: &apos;multipart/form-data&apos; ähnelt.
         /// </summary>
         internal static string InvalidMultipart {
             get {
@@ -164,7 +165,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Mail &apos;{0}&apos; wurde zu &apos;{1}&apos; versendet.  ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mail &apos;{0}&apos; has been sent to &apos;{1}&apos;. ähnelt.
         /// </summary>
         internal static string MailSent {
             get {
@@ -173,7 +174,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Maximale Länge des Requests überschritten: {0} Bytes (erlaubt: {1} Bytes) ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Maximum length of request exceeded: {0} Bytes (allowed: {1} Bytes) ähnelt.
         /// </summary>
         internal static string MaximumPostLengthExceeded {
             get {
@@ -182,7 +183,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Der Webserver wurde bereits gestartet. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Webserver had been started.  ähnelt.
         /// </summary>
         internal static string ServerAlreadyStarted {
             get {
@@ -191,7 +192,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Der Webserver wurde nicht gestartet.  ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Webserver was not started. ähnelt.
         /// </summary>
         internal static string ServerNotStarted {
             get {
@@ -200,7 +201,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions werden eingeladen. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading of sessions ähnelt.
         /// </summary>
         internal static string SessionsLoading {
             get {
@@ -209,7 +210,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Beim Einladen der Sessions wurde folgende Ausnahme gefangen: {0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Exception occured during loading of sessions: {0} ähnelt.
         /// </summary>
         internal static string SessionsLoadingException {
             get {
@@ -218,7 +219,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Sessions werden gespeichert. ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Storing of sessions ähnelt.
         /// </summary>
         internal static string SessionsStoring {
             get {
@@ -227,7 +228,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Beim Speichern der Sessions wurde folgende Ausnahme gefangen: {0} ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Exception occured during storing of sessions: {0} ähnelt.
         /// </summary>
         internal static string SessionsStoringException {
             get {
@@ -236,7 +237,7 @@ namespace BurnSystems.WebServer {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Mail zu &apos;{0}&apos; wird wegen inaktivem MailSender nicht gesendet.  ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Mail to &apos;{0}&apos; was not send due to inactivation of mailsender by configuration. ähnelt.
         /// </summary>
         internal static string SkippingMail {
             get {
