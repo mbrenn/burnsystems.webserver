@@ -84,7 +84,7 @@ namespace BurnSystems.WebServer
         public static Server CreateDefaultServer(ObjectActivation.ActivationContainer activationContainer)
         {
             activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
-            activationContainer.Bind<ITemplateParser>().ToConstant(parser);
+            activationContainer.Bind<ITemplateParser>().To(() => new TemplateParser());
 
             activationContainer.Bind<MimeTypeConverter>().ToConstant(MimeTypeConverter.Default);
 
