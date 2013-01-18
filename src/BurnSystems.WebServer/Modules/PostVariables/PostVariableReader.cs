@@ -16,7 +16,7 @@ namespace BurnSystems.WebServer.Modules.PostVariables
     /// <summary>
     /// Reads the postvariables from Http-Context and offers them as a dictionary
     /// </summary>
-    public class PostVariableReader
+    public class PostVariableReader : IEnumerable<KeyValuePair<string, string>>
     {
         /// <summary>
         /// Gets or sets the http Listener context
@@ -67,7 +67,7 @@ namespace BurnSystems.WebServer.Modules.PostVariables
         /// <summary>
         /// Reads the post variables from inputstream
         /// </summary>
-        public void ReadPostVariables()
+        private void ReadPostVariables()
         {
             if (this.ListenerContext.Request.ContentType != null &&
                 this.ListenerContext.Request.ContentType.StartsWith("multipart/form-data"))
@@ -217,6 +217,16 @@ namespace BurnSystems.WebServer.Modules.PostVariables
                         HttpUtility.UrlDecode(rightPart);
                 }
             }
+        }
+
+        IEnumerator<KeyValuePair<string, string>> IEnumerable<KeyValuePair<string, string>>.GetEnumerator()
+        {
+            return this.postVariables.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.postVariables.GetEnumerator();
         }
     }
 }
