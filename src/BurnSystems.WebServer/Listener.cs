@@ -162,6 +162,8 @@ namespace BurnSystems.WebServer
                 try
                 {
                     var info = new ContextDispatchInformation(context);
+                    webRequestContainer.Bind<ContextDispatchInformation>().ToConstant(info);
+
                     try
                     {
                         // Go through all requestfilters
