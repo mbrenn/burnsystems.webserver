@@ -38,5 +38,19 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             return new JsonActionResult(result);
         }
+
+        /// <summary>
+        /// Returns a success object
+        /// </summary>
+        /// <param name="controller">Controller to be used</param>
+        /// <returns>The succes object</returns>
+        public static IActionResult SuccessJson(this Controller controller)
+        {
+            return controller.Json(
+                new
+                {
+                    success = true
+                });
+        }
     }
 }
