@@ -9,6 +9,7 @@ using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Responses;
 using BurnSystems.WebServer.Dispatcher;
 using System.Web.Script.Serialization;
+using System.Threading.Tasks;
 
 namespace BurnSystems.WebServer
 {
@@ -123,7 +124,7 @@ namespace BurnSystems.WebServer
                     var context = this.httpListener.GetContext();
                     try
                     {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(this.ExecuteHttpRequest), context);
+                        Task.Factory.StartNew(() => this.ExecuteHttpRequest(context));
                     }
                     catch (Exception exc)
                     {
