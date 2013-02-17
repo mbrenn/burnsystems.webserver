@@ -137,138 +137,147 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <param name="methodName">Requested web method</param>
         public void DispatchForWebMethod(ObjectActivation.IActivates activates, ContextDispatchInformation info, string methodName)
         {
-            // Creates controller
-            var controller = activates.Create(this.controllerType) as Controller;
-            Ensure.That(controller != null, "Not a ControllerType: " + this.controllerType.FullName);
-
-            // Try to find the method
-            foreach (var webMethodInfo in this.webMethodInfos
-                .Where(x => x.Name == methodName))
+            try
             {
-                // Check for http Method
-                if (!string.IsNullOrEmpty(webMethodInfo.IfMethodIs))
+                // Creates controller
+                var controller = activates.Create(this.controllerType) as Controller;
+                Ensure.That(controller != null, "Not a ControllerType: " + this.controllerType.FullName);
+
+                // Try to find the method
+                foreach (var webMethodInfo in this.webMethodInfos
+                    .Where(x => x.Name == methodName))
                 {
-                    if (webMethodInfo.IfMethodIs != info.HttpMethod.ToLower())
+                    // Check for http Method
+                    if (!string.IsNullOrEmpty(webMethodInfo.IfMethodIs))
                     {
-                        // No match, 
-                        continue;
+                        if (webMethodInfo.IfMethodIs != info.HttpMethod.ToLower())
+                        {
+                            // No match, 
+                            continue;
+                        }
                     }
-                }
 
-                // Ok, now look for get variables
-                var parameters = webMethodInfo.MethodInfo.GetParameters();
-                var callArguments = new List<object>();
-                foreach (var parameter in parameters)
-                {
-                    var parameterAttributes = parameter.GetCustomAttributes(false);
-
-                    /////////////////////////////////
-                    // Check for POST-Parameter
-                    var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
-                    if (postParameterAttribute != null)
+                    // Ok, now look for get variables
+                    var parameters = webMethodInfo.MethodInfo.GetParameters();
+                    var callArguments = new List<object>();
+                    foreach (var parameter in parameters)
                     {
-                        if (info.HttpMethod.ToLower() != "post")
+                        var parameterAttributes = parameter.GetCustomAttributes(false);
+
+                        /////////////////////////////////
+                        // Check for POST-Parameter
+                        var postParameterAttribute = parameterAttributes.Where(x => x is PostModelAttribute).Cast<PostModelAttribute>().FirstOrDefault();
+                        if (postParameterAttribute != null)
+                        {
+                            if (info.HttpMethod.ToLower() != "post")
+                            {
+                                callArguments.Add(null);
+                            }
+                            else
+                            {
+                                callArguments.Add(
+                                    this.CreatePostModel(activates, parameter));
+                            }
+                            continue;
+                        }
+
+                        /////////////////////////////////
+                        // Check for injection parameter
+                        var injectParameterAttribute = parameterAttributes.Where(x => x is InjectAttribute).Cast<InjectAttribute>().FirstOrDefault();
+                        if (injectParameterAttribute != null)
+                        {
+                            object argument;
+                            if (string.IsNullOrEmpty(injectParameterAttribute.ByName))
+                            {
+                                // Ok, we are NOT by name, injection by type
+                                argument = activates.Get(parameter.ParameterType);
+                            }
+                            else
+                            {
+                                argument = activates.GetByName(injectParameterAttribute.ByName);
+                            }
+
+                            if (argument == null && injectParameterAttribute.IsMandatory)
+                            {
+                                throw new InvalidOperationException("Parameter '" + injectParameterAttribute.ByName + "' is required as mandatory but has not been set");
+                            }
+
+                            callArguments.Add(argument);
+                            continue;
+                        }
+
+                        /////////////////////////////////
+                        // Check for Url-Parameter
+                        var urlParameterAttributes = parameterAttributes.Where(x => x is UrlParameterAttribute).FirstOrDefault();
+                        if (urlParameterAttributes != null)
                         {
                             callArguments.Add(null);
+                            // Is a url parameter attribute, do not like this
+                            continue;
+                        }
+
+                        // Rest is Get-Parameter
+                        var value = info.Context.Request.QueryString[parameter.Name];
+                        if (value == null)
+                        {
+                            callArguments.Add(this.GetDefaultArgument(parameter));
                         }
                         else
                         {
-                            callArguments.Add(
-                                this.CreatePostModel(activates, parameter));
+                            callArguments.Add(this.ConvertToArgument(value, parameter));
                         }
-                        continue;
                     }
 
-                    /////////////////////////////////
-                    // Check for injection parameter
-                    var injectParameterAttribute = parameterAttributes.Where(x => x is InjectAttribute).Cast<InjectAttribute>().FirstOrDefault();
-                    if (injectParameterAttribute != null)
+                    try
                     {
-                        object argument;
-                        if (string.IsNullOrEmpty(injectParameterAttribute.ByName))
+                        var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
+                        if (result == null)
                         {
-                            // Ok, we are NOT by name, injection by type
-                            argument = activates.Get(parameter.ParameterType);
+                            logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
                         }
                         else
                         {
-                            argument = activates.GetByName(injectParameterAttribute.ByName);
+                            result.Execute(info.Context, activates);
                         }
-
-                        if (argument == null && injectParameterAttribute.IsMandatory)
+                    }
+                    catch (TargetInvocationException targetInvocation)
+                    {
+                        var exception = targetInvocation.InnerException as MVCProcessException;
+                        if (exception != null)
                         {
-                            throw new InvalidOperationException("Parameter '" + injectParameterAttribute.ByName + "' is required as mandatory but has not been set");
-                        }
-
-                        callArguments.Add(argument);
-                        continue;
-                    }
-
-                    /////////////////////////////////
-                    // Check for Url-Parameter
-                    var urlParameterAttributes = parameterAttributes.Where(x => x is UrlParameterAttribute).FirstOrDefault();
-                    if (urlParameterAttributes != null)
-                    {
-                        callArguments.Add(null);
-                        // Is a url parameter attribute, do not like this
-                        continue;
-                    }
-
-                    // Rest is Get-Parameter
-                    var value = info.Context.Request.QueryString[parameter.Name];
-                    if (value == null)
-                    {
-                        callArguments.Add(this.GetDefaultArgument(parameter));
-                    }
-                    else
-                    {
-                        callArguments.Add(this.ConvertToArgument(value, parameter));
-                    }
-                }
-
-                try
-                {
-                    var result = webMethodInfo.MethodInfo.Invoke(controller, callArguments.ToArray()) as IActionResult;
-                    if (result == null)
-                    {
-                        logger.LogEntry(LogEntry.Format(LogLevel.Message, "WebMethod '{0}' does not return IActionResult", methodName));
-                    }
-                    else
-                    {
-                        result.Execute(info.Context, activates);
-                    }
-                }
-                catch (TargetInvocationException targetInvocation)
-                {
-                    var exception = targetInvocation.InnerException as MVCProcessException;
-                    if (exception != null)
-                    {
-                        // We have an MVC Exception, create datastructure and return errormessage
-                        var result = new
-                        {
-                            success = false,
-                            error = new
+                            // We have an MVC Exception, create datastructure and return errormessage
+                            var result = new
                             {
-                                type = "MVCProcessException", 
-                                code = exception.Code,
-                                message = exception.Message
-                            }
-                        };
+                                success = false,
+                                error = new
+                                {
+                                    type = "MVCProcessException",
+                                    code = exception.Code,
+                                    message = exception.Message
+                                }
+                            };
 
-                        new TemplateOrJsonResult<object>(result).Execute(info.Context, activates);
+                            new TemplateOrJsonResult<object>(result).Execute(info.Context, activates);
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    // First hit is success
+                    return;
                 }
 
-                // First hit is success
+                ErrorResponse.Throw404(activates, info, "No Webmethod for '" + methodName + "' found");
                 return;
             }
-
-            ErrorResponse.Throw404(activates, info, "No Webmethod for '" + methodName + "' found");
-            return;
+            catch (Exception exc)
+            {
+                throw new InvalidOperationException(
+                    string.Format("Exception occured during execution of '" + methodName + "': " + exc.Message),
+                    exc);
+            }
         }
 
         /// <summary>
