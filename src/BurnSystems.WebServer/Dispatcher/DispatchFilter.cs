@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BurnSystems.Logging;
+using System;
 
 namespace BurnSystems.WebServer.Dispatcher
 {
@@ -7,6 +8,8 @@ namespace BurnSystems.WebServer.Dispatcher
     /// </summary>
     public static class DispatchFilter
     {
+        private static ILog logger = new ClassLogger(typeof(DispatchFilter));
+
         public static Func<ContextDispatchInformation, bool> All
         {
             get { return (x) => true; }
@@ -38,6 +41,11 @@ namespace BurnSystems.WebServer.Dispatcher
             if (!url.StartsWith("/"))
             {
                 throw new ArgumentException("url does not start with '/'.");
+            }
+
+            if (!url.EndsWith("/"))
+            {
+                logger.LogEntry(LogLevel.Verbose, "Url does not end with '/': " + url);
             }
 
             url = url.ToLower();
