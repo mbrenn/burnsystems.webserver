@@ -44,12 +44,12 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// </summary>
         /// <param name="controller">Controller to be used</param>
         /// <returns>The succes object</returns>
-        public static IActionResult SuccessJson(this Controller controller)
+        public static IActionResult SuccessJson(this Controller controller, bool success = true)
         {
             return controller.Json(
                 new
                 {
-                    success = true
+                    success = success
                 });
         }
     }
