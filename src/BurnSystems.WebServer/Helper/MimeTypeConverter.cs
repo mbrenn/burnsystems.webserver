@@ -54,6 +54,7 @@ namespace BurnSystems.WebServer.Helper
                 result.Add(new MimeTypeInfo(".svg", "image/svg+xml"));
 
                 result.Add(new MimeTypeInfo(".bspx", typeof(BspxFileRequest)));
+                result.Add(new MimeTypeInfo(".less", typeof(LessFileRequest)));
 
                 return result;
             }
