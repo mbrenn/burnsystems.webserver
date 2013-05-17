@@ -75,7 +75,7 @@ namespace BurnSystems.WebServer.Modules.MVC
             this.controllerType = controllerType;
             this.InitializeWebMethods();
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the ControllerDispatcher class
         /// </summary>
@@ -109,7 +109,7 @@ namespace BurnSystems.WebServer.Modules.MVC
                 ErrorResponse.Throw404(activates, info);
                 return;
             }
-            
+
             // Now try to find the correct method and call the function
             var restUrl = absolutePath.Substring(this.WebPath.Length);
             if (string.IsNullOrEmpty(restUrl))
@@ -253,7 +253,8 @@ namespace BurnSystems.WebServer.Modules.MVC
                                 {
                                     type = "MVCProcessException",
                                     code = exception.Code,
-                                    message = exception.Message
+                                    message = exception.Message,
+                                    success = false
                                 }
                             };
 
@@ -285,7 +286,7 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// </summary>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        private object CreatePostModel(IActivates activates,  System.Reflection.ParameterInfo parameter)
+        private object CreatePostModel(IActivates activates, System.Reflection.ParameterInfo parameter)
         {
             var parameterType = parameter.ParameterType;
             var instance = Activator.CreateInstance(parameterType);
@@ -301,13 +302,13 @@ namespace BurnSystems.WebServer.Modules.MVC
 
                 property.SetValue(
                     instance,
-                    value.ConvertTo(property.PropertyType), 
+                    value.ConvertTo(property.PropertyType),
                     null);
             }
 
             return instance;
         }
-        
+
         /// <summary>
         /// Initializes the webmethods and stores the webmethods into 
         /// </summary>
@@ -315,16 +316,16 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             // Try to find method
             var foundMethods = this.controllerType.GetMethods(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public)
-                .Select (x=> new 
+                .Select(x => new
                 {
                     Method = x,
-                    WebMethodAttribute = (WebMethodAttribute) x.GetCustomAttributes(typeof(WebMethodAttribute), false).FirstOrDefault()
+                    WebMethodAttribute = (WebMethodAttribute)x.GetCustomAttributes(typeof(WebMethodAttribute), false).FirstOrDefault()
                 })
                 .Where(x => x.WebMethodAttribute != null);
 
             // Convert methods into predefined data structures
             foreach (var info in foundMethods)
-            {                
+            {
                 var name = info.Method.Name;
                 if (!string.IsNullOrEmpty(info.WebMethodAttribute.Name))
                 {
