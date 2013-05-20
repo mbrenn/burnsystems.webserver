@@ -185,6 +185,7 @@
     <None Include="Resources\JQuery\jquery.min.js" />
     <Content Include="Resources\JQuery\jquery.cookie.js" />
     <Content Include="Resources\JQuery\jquery.hotkeys.js" />
+    <Content Include="Resources\JQuery\jquery.scrollto.js" />
     <Content Include="Resources\JSTree\jquery.jstree.js" />
     <Content Include="Resources\JSTree\themes\default\d.gif" />
     <Content Include="Resources\JSTree\themes\default\d.png" />
