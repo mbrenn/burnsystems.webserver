@@ -180,7 +180,9 @@
     <Content Include="Resources\DateFormat\dateformat.js" />
     <Content Include="Resources\DateFormat\dateformat.min.js" />
     <Content Include="Resources\Error.txt" />
+    <Content Include="Resources\JQuery\jquery.endless-scroll.js" />
     <None Include="Resources\Require\require.min.js" />
+    <Content Include="Resources\JQuery\jquery.infinitescroll.js" />
     <Content Include="Resources\JQuery\jquery.js" />
     <None Include="Resources\JQuery\jquery.min.js" />
     <Content Include="Resources\JQuery\jquery.cookie.js" />
