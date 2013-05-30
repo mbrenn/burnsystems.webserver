@@ -9,6 +9,7 @@ using BurnSystems.Test;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Modules.PostVariables;
 using BurnSystems.WebServer.Responses;
+using System.IO;
 
 namespace BurnSystems.WebServer.Modules.MVC
 {
@@ -178,6 +179,29 @@ namespace BurnSystems.WebServer.Modules.MVC
                                 callArguments.Add(
                                     this.CreatePostModel(activates, parameter));
                             }
+
+                            continue;
+                        }
+
+                        /////////////////////////////////
+                        // Check for RawPost
+                        var rawPostAttribute = parameterAttributes.Where(x => x is RawPostAttribute).Cast<RawPostAttribute>().FirstOrDefault();
+                        if (rawPostAttribute != null)
+                        {
+                            using (var requestStream = info.Context.Request.InputStream)
+                            {
+                                using (var reader = new BinaryReader(requestStream))
+                                {
+                                    var length = (int)info.Context.Request.ContentLength64;
+                                    Ensure.That(info.Context.Response.ContentLength64 < 10 * 1024 * 1024);
+
+                                    var data = new byte[length];
+
+                                    reader.Read(data, 0, length);
+                                    callArguments.Add(data);
+                                }
+                            }
+
                             continue;
                         }
 
