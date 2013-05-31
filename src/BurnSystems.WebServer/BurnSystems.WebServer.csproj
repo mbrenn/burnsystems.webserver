@@ -104,6 +104,7 @@
     <Compile Include="Modules\MVC\HtmlActionResult.cs" />
     <Compile Include="Modules\MVC\IActionResult.cs" />
     <Compile Include="Modules\MVC\JsonActionResult.cs" />
+    <Compile Include="Modules\MVC\BinaryActionResult.cs" />
     <Compile Include="Modules\MVC\MVCProcessException.cs" />
     <Compile Include="Modules\MVC\RawPostAttribute.cs" />
     <Compile Include="Modules\MVC\RedirectActionResult.cs" />

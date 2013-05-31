@@ -52,5 +52,18 @@ namespace BurnSystems.WebServer.Modules.MVC
                     success = success
                 });
         }
+
+        /// <summary>
+        /// Returns the bytes to the browser
+        /// </summary>
+        /// <param name="controller">Controller to be used</param>
+        /// <param name="bytes">Bytes to be sent</param>
+        /// <param name="contentType">Content-Type that will be sent to browser</param>
+        /// <returns>Action result being used</returns>
+        public static IActionResult Bytes(this Controller controller, byte[] bytes, string contentType)
+        {
+            return new BinaryActionResult(bytes, contentType);
+        }
+
     }
 }

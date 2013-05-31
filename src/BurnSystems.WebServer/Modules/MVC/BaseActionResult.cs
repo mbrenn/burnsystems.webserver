@@ -39,6 +39,13 @@ namespace BurnSystems.WebServer.Modules.MVC
 
             var bytes = Encoding.UTF8.GetBytes(result);
             listenerContext.Response.ContentEncoding = Encoding.UTF8;
+            this.SendResult(listenerContext, bytes);
+
+            this.HasFinishedSending = true;
+        }
+
+        protected void SendResult(HttpListenerContext listenerContext, byte[] bytes)
+        {
             listenerContext.Response.ContentLength64 = bytes.LongLength;
 
             if (!this.MayBeCached)
@@ -54,8 +61,6 @@ namespace BurnSystems.WebServer.Modules.MVC
             {
                 stream.Write(bytes, 0, bytes.Length);
             }
-
-            this.HasFinishedSending = true;
         }
 
         /// <summary>
