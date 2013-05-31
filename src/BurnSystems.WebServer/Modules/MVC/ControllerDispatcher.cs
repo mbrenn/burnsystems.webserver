@@ -193,11 +193,21 @@ namespace BurnSystems.WebServer.Modules.MVC
                                 using (var reader = new BinaryReader(requestStream))
                                 {
                                     var length = (int)info.Context.Request.ContentLength64;
-                                    Ensure.That(info.Context.Response.ContentLength64 < 10 * 1024 * 1024);
+                                    Ensure.That(info.Context.Request.ContentLength64 < 10 * 1024 * 1024);
 
                                     var data = new byte[length];
+                                    var toBeRead = length;
+                                    var alreadyRead = 0;
 
-                                    reader.Read(data, 0, length);
+                                    while (toBeRead > 0)
+                                    {
+                                        var read = reader.Read(data, alreadyRead, length - alreadyRead);
+                                        Ensure.That(read > 0, "Less bytes read than expected");
+
+                                        toBeRead -= read;
+                                        alreadyRead += read;
+                                    }
+
                                     callArguments.Add(data);
                                 }
                             }

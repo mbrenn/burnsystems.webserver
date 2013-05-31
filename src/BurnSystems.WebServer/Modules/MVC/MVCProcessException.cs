@@ -29,5 +29,16 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             this.Code = code;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the MVCException 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="message"></param>
+        public MVCProcessException(string code, string message, Exception innerException)
+            : base(message, innerException)
+        {
+            this.Code = code;
+        }
     }
 }
