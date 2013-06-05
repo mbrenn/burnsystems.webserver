@@ -121,6 +121,7 @@
     <Compile Include="Modules\MVC\UrlParameterAttribute.cs" />
     <Compile Include="Modules\MVC\WebMethodAttribute.cs" />
     <Compile Include="Modules\MVC\WebMethodInfo.cs" />
+    <Compile Include="Modules\PostVariables\WebFile.cs" />
     <Compile Include="Modules\UserManagement\Authentication.cs" />
     <Compile Include="Modules\UserManagement\IAuthentication.cs" />
     <Compile Include="Modules\UserManagement\InMemory\UserManagement.cs" />

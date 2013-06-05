@@ -328,16 +328,28 @@ namespace BurnSystems.WebServer.Modules.MVC
 
             foreach (var property in parameterType.GetProperties(BindingFlags.SetField | BindingFlags.Instance | BindingFlags.Public))
             {
-                var value = postVariables[property.Name];
-                if (value == null)
+                // Checks, if type is Webfile and reads from files
+                if (property.PropertyType == typeof(WebFile))
                 {
-                    continue;
+                    property.SetValue(
+                        instance,
+                        postVariables.Files[property.Name],
+                        null);
                 }
+                else
+                {
+                     // Reads normal post variable
+                    var value = postVariables[property.Name];
+                    if (value == null)
+                    {
+                        continue;
+                    }
 
-                property.SetValue(
-                    instance,
-                    value.ConvertTo(property.PropertyType),
-                    null);
+                    property.SetValue(
+                        instance,
+                        value.ConvertTo(property.PropertyType),
+                        null);
+                }
             }
 
             return instance;

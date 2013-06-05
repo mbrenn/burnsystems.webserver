@@ -21,7 +21,7 @@ namespace BurnSystems.WebServer.Modules.PostVariables
         /// </summary>
         public PostVariableReaderConfig()
         {
-            this.MaxPostLength = 4 * 1024 * 1024;
+            this.MaxPostLength = 16 * 1024 * 1024;
         }
     }
 }

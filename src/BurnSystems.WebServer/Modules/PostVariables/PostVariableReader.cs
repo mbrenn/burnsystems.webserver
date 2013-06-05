@@ -40,6 +40,12 @@ namespace BurnSystems.WebServer.Modules.PostVariables
         /// Gets the post variables
         /// </summary>
         private NiceDictionary<string, string> postVariables = new NiceDictionary<string, string>();
+        
+        /// <summary>
+        /// Stores the uploaded files
+        /// </summary>
+        private NiceDictionary<string, WebFile> files =
+            new NiceDictionary<string, WebFile>();
 
         /// <summary>
         /// Gets post variable
@@ -49,6 +55,14 @@ namespace BurnSystems.WebServer.Modules.PostVariables
         public string this[string key]
         {
             get { return this.postVariables[key]; }
+        }
+
+        /// <summary>
+        /// Gets the uploaded files
+        /// </summary>
+        public NiceDictionary<string, WebFile> Files
+        {
+            get { return this.files; }
         }
 
         [Inject]
@@ -97,7 +111,7 @@ namespace BurnSystems.WebServer.Modules.PostVariables
         /// </summary>
         private void ReadPostFromFormData()
         {
-            // Holt die Boundary
+            // Retrieves the boundary from form data
             var contentTypes =
                 this.ListenerContext.Request.ContentType.Split(new[] { ';' });
             var boundary = string.Empty;
@@ -118,26 +132,26 @@ namespace BurnSystems.WebServer.Modules.PostVariables
                 }
             }
 
-            // Die Grenze
-            if (boundary == string.Empty)
+            // Checks if boundary is found
+            if (string.IsNullOrEmpty(boundary)) 
             {
                 throw new InvalidOperationException(
                     Localization_WebServer.InvalidMultipart);
             }
 
-            // Liest nun den eigentlichen Stream ein
+            // Reads the complete stream
             using (var stream = this.ListenerContext.Request.InputStream)
             {
                 var multipartReader = new MultipartFormDataReader(boundary);
                 multipartReader.MaxStreamSize = this.Config.MaxPostLength;
-
                 var data = multipartReader.ReadStream(stream);
+
                 foreach (var part in data.Parts)
                 {
                     if (string.IsNullOrEmpty(
                         part.ContentDisposition["name"]))
                     {
-                        // Kein Name, kein Eintrag
+                        // Form data without name cannot be handled
                         continue;
                     }
 
@@ -150,19 +164,18 @@ namespace BurnSystems.WebServer.Modules.PostVariables
                     if (string.IsNullOrEmpty(
                         part.ContentDisposition["filename"]))
                     {
-                        // Normale Formvariable
+                        // Just a normal POST-Variable
                         var content = UTF8Encoding.UTF8.GetString(part.Content);
                         this.postVariables[name] =
                             content.Trim();
                     }
                     else
                     {
-                        // Datei 
-                        throw new InvalidOperationException(Localization_WebServer.FileUploadNotSupported);
-                        /*var webFile = new WebFile(
+                        // A complete file 
+                        var webFile = new WebFile(
                             part.ContentDisposition["filename"],
                             part.Content);
-                        this.files[name] = webFile;*/
+                        this.files[name] = webFile;
                     }
                 }
             }
