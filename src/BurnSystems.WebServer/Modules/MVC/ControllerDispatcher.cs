@@ -310,7 +310,7 @@ namespace BurnSystems.WebServer.Modules.MVC
             catch (Exception exc)
             {
                 throw new InvalidOperationException(
-                    string.Format("Exception occured during execution of '" + methodName + "': " + exc.Message),
+                    string.Format("Exception occured during execution of '" + methodName + "': " + exc.Message + "|" + exc.ToString()),
                     exc);
             }
         }
