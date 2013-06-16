@@ -12,8 +12,10 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// </summary>
         /// <param name="username">Name of the user</param>
         /// <param name="password">Password of the user</param>
+        /// <param name="isPersistant">Gets or sets a value indicating whether the login shall be persistant,
+        /// even if browser had been closed</param>
         /// <returns>Found user, if successful, otherwise null</returns>
-        IWebUser LoginUser(string username, string password);
+        IWebUser LoginUser(string username, string password, bool isPersistant = false);
 
         /// <summary>
         /// Performs logout of the user

@@ -34,5 +34,21 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
                     .FirstOrDefault();
             }
         }
+
+
+        public void SetPersistantCookie(IWebUser user, string series, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckPersistantCookie(IWebUser user, string series, string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeletePersistantCookie(IWebUser user, string series)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

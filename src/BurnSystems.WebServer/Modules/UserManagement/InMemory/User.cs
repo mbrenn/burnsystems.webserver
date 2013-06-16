@@ -30,7 +30,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
         {
             get
             {
-                return new TokenSet (
+                return new TokenSet(
                     this.Token);
             }
         }
@@ -48,7 +48,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
         }
 
         public User(long id, string username, string password)
-            : this ( id )
+            : this(id)
         {
             this.Username = username;
             this.SetPassword(password);

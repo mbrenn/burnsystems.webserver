@@ -18,7 +18,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// <summary>
         /// Defines a new logger
         /// </summary>
-        private ClassLogger logger = new ClassLogger(typeof(SessionStorage));
+        private static ClassLogger logger = new ClassLogger(typeof(SessionStorage));
 
         /// <summary>
         /// Stores the configuration
@@ -48,7 +48,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         {
             get
             {
-                lock (this.logger)
+                lock (logger)
                 {
                     if (this.container == null)
                     {
@@ -64,7 +64,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// Loads the container
         /// </summary>
         /// <returns>Session container to be loaded</returns>
-        public SessionContainer Load()
+        private SessionContainer Load()
         {
             try
             {
@@ -83,6 +83,8 @@ namespace BurnSystems.WebServer.Modules.Sessions
             {
                 logger.LogEntry(
                     LogEntry.Format(LogLevel.Fail, Localization_WebServer.SessionsLoadingException, exc.Message));
+                throw new InvalidOperationException
+                    ("Exception occured during loading, delete " + this.configuration.StoragePath + ", if this error occurs more often");
             }
 
             if (this.container == null)
@@ -93,7 +95,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
             return this.container;
         }
 
-        public void Store()
+        private void Store()
         {
             if (this.container == null)
             {
