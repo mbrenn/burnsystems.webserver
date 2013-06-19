@@ -87,6 +87,11 @@ namespace BurnSystems.WebServer.Modules.MVC
             : this(controllerType, filter)
         {
             this.WebPath = webPath;
+
+            if (!webPath.EndsWith("/"))
+            {
+                logger.Fail("WebPath '" + webPath + "' does not end with trailing slash '/'");
+            }
         }
 
         /// <summary>
