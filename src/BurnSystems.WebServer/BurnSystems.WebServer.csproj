@@ -99,6 +99,8 @@
     <Compile Include="Filters\DenyByUrlFilter.cs" />
     <Compile Include="Helper\ContextHelper.cs" />
     <Compile Include="Helper\MimeTypeInfo.cs" />
+    <Compile Include="Modules\Cookies\Rfc6265CookieManagement.cs" />
+    <Compile Include="Modules\Cookies\ICookieManagement.cs" />
     <Compile Include="Modules\MVC\BaseActionResult.cs" />
     <Compile Include="Modules\MVC\Extensions.cs" />
     <Compile Include="Modules\MVC\HtmlActionResult.cs" />

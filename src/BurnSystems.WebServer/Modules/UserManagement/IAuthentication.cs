@@ -23,7 +23,9 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         void LogoutUser();
 
         /// <summary>
-        /// Checks, if a user is logged in
+        /// Checks, if a user is logged in.
+        /// This function does not perform a check by persistent cookie!
+        /// Use IsLoggedInByPersistentCookie. This function also performs the login
         /// </summary>
         /// <returns>Checks, if user is logged in</returns>
         bool IsUserLoggedIn();
@@ -39,5 +41,12 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// </summary>
         /// <returns>List of Tokens</returns>
         TokenSet GetTokensOfLogin();
+
+        /// <summary>
+        /// Checks, if the user is logged in via persistent cookie.
+        /// This function also performs the login
+        /// </summary>
+        /// <returns>true, if user is logged in by persistent cookie</returns>
+        bool IsLoggedInByPersistentCookie();
     }
 }

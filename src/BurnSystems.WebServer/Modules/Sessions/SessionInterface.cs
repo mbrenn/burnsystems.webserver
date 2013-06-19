@@ -6,6 +6,7 @@ using System.Net;
 using BurnSystems.ObjectActivation;
 using BurnSystems.Logging;
 using BurnSystems.Test;
+using BurnSystems.WebServer.Modules.Cookies;
 
 namespace BurnSystems.WebServer.Modules.Sessions
 {
@@ -17,16 +18,32 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// <summary>
         /// Defines the logger
         /// </summary>
-        private ILog logger = new ClassLogger(typeof(SessionInterface));
+        private static ILog logger = new ClassLogger(typeof(SessionInterface));
+
+        /// <summary>
+        /// Gets or sets the cookiemanagement
+        /// </summary>
+        [Inject(IsMandatory = true)]
+        public ICookieManagement Cookies
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Stores the http Listener Interface
         /// </summary>
-        private HttpListenerContext context;
+        [Inject(IsMandatory=true)]
+        public HttpListenerContext Context
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Stores the sessioncontainer
         /// </summary>
+        [Inject(IsMandatory=true)]
         public SessionContainer sessionContainer
         {
             get;
@@ -36,26 +53,11 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// <summary>
         /// Gets or sets the configuration
         /// </summary>
+        [Inject(IsMandatory = true)]
         public SessionConfiguration Configuration
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the SessionInterface class.
-        /// </summary>
-        /// <param name="context">Http Context to be used</param>
-        [Inject]
-        public SessionInterface(HttpListenerContext context, SessionContainer sessionContainer, SessionConfiguration configuration)
-        {
-            Ensure.IsNotNull(context, "HttpListenerContext is null");
-            Ensure.IsNotNull(sessionContainer, "SessionContainer is null");
-            Ensure.IsNotNull(configuration, "SessionConfiguration is null");
-
-            this.context = context;
-            this.sessionContainer = sessionContainer;
-            this.Configuration = configuration;
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// </summary>
         public Session GetSession()
         {
-            var cookie = this.context.Request.Cookies["SessionId"];
+            var cookie = this.Context.Request.Cookies["SessionId"];
             var sessionId = string.Empty;
             var isCookieFresh = false;
 
@@ -84,7 +86,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
             {
                 session = this.sessionContainer.CreateNewSession();
                 sessionId = session.SessionId;
-                this.context.Response.Cookies.Add(
+                this.Cookies.AddCookie(
                     new Cookie("SessionId", sessionId, "/"));
                 session.IsSessionFresh = true;
             }

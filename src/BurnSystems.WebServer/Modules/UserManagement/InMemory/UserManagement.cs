@@ -15,6 +15,16 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             set;
         }
 
+        public IWebUser GetUser(long userId)
+        {
+            lock (this.Storage)
+            {
+                return this.Storage.Users
+                    .Where(x => x.Id == userId)
+                    .FirstOrDefault();
+            }
+        }
+
         public IWebUser GetUser(string username)
         {
             lock (this.Storage)
@@ -36,17 +46,17 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
         }
 
 
-        public void SetPersistantCookie(IWebUser user, string series, string token)
+        public void SetPersistentCookie(IWebUser user, string series, string token)
         {
             throw new NotImplementedException();
         }
 
-        public bool CheckPersistantCookie(IWebUser user, string series, string token)
+        public bool CheckPersistentCookie(IWebUser user, string series, string token)
         {
             throw new NotImplementedException();
         }
 
-        public void DeletePersistantCookie(IWebUser user, string series)
+        public void DeletePersistentCookie(IWebUser user, string series)
         {
             throw new NotImplementedException();
         }

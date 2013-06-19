@@ -7,6 +7,7 @@ using BurnSystems.WebServer.Modules.Sessions;
 using BurnSystems.Test;
 using BurnSystems.WebServer.Dispatcher;
 using System.Net;
+using BurnSystems.WebServer.Modules.Cookies;
 
 namespace BurnSystems.WebServer.Modules.UserManagement
 {
@@ -15,12 +16,18 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <summary>
         /// Defines the cookie name
         /// </summary>
-        private const string cookieName = "BS.Auth.Cookie";
+        private const string cookieName = "BSAuthCookie";
+
+        private const string sessionUsername = "Authentication.Username";
+
+        private const string sessionTokenSet = "Authentication.TokenSet";
+
+        private const string sessionPersistent = "Authentication.Persistent";
 
         /// <summary>
         /// Gets or sets the current session
         /// </summary>
-        [Inject(IsMandatory=true)]
+        [Inject(IsMandatory = true)]
         public Session Session
         {
             get;
@@ -30,7 +37,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <summary>
         /// Gets or sets the current session
         /// </summary>
-        [Inject(IsMandatory=true)]
+        [Inject(IsMandatory = true)]
         public IWebUserManagement UserManagement
         {
             get;
@@ -39,6 +46,13 @@ namespace BurnSystems.WebServer.Modules.UserManagement
 
         [Inject(IsMandatory = true)]
         public HttpListenerContext ListenerContext
+        {
+            get;
+            set;
+        }
+
+        [Inject]
+        public ICookieManagement Cookies
         {
             get;
             set;
@@ -59,13 +73,13 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 return null;
             }
 
-            this.Session["Authentication.Username"] = user.Username;
-            this.Session["Authentication.TokenSet"] = user.CredentialTokenSet;
-                        
+            this.Session[sessionUsername] = user.Username;
+            this.Session[sessionTokenSet] = user.CredentialTokenSet;
+
             if (isPersistant)
             {
                 // Store cookies over lifetime, add some additional secrets
-                this.AssignPersistantCookie(user);
+                this.AssignPersistentCookie(user);
             }
 
             return user;
@@ -78,70 +92,29 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         {
             if (this.IsUserLoggedIn())
             {
-                this.Session.Remove("Authentication.Username");
+                this.RemovePersistentCookie();
 
-                // Checks, if we have a permanent login that needs to be stopped
-                if (this.Session["Authentication.PersistantSeries"] != null)
-                {
-                    var user = this.UserManagement.GetUser(this.Session["Authentication.Username"] as string);
-                    if (user != null)
-                    {
-                        this.UserManagement.DeletePersistantCookie(
-                            user,
-                            this.Session["Authentication.PersistantSeries"] as string);
-                    }
-                }
+                this.Session.Remove(sessionUsername);
+                this.Session.Remove(sessionTokenSet);
             }
         }
 
+        /// <summary>
+        /// Gets or sets whether the user is currently logged in.
+        /// The current session and a persistance login will be used.
+        /// </summary>
+        /// <returns>True, if user had been logged in</returns>
         public bool IsUserLoggedIn()
         {
-            var isLoggedIn = this.Session["Authentication.Username"] != null;
-            if ( isLoggedIn )
+            if (this.Session[sessionUsername] != null)
             {
                 return true;
             }
 
-            // Check, if user is logged via permanent cookie
-            var cookie = this.ListenerContext.Request.Cookies[cookieName];
-            if (cookie != null)
-            {
-                // Check for cookie
-                var splitted = cookie.Value.Split(new[] { '|' });
-                if (splitted.Length != 3)
-                {
-                    return false;
-                }
-                var username = splitted[0];
-                var series = splitted[1];
-                var token = splitted[2];
-
-                // Get user
-                var user = this.UserManagement.GetUser(username);
-                if (user == null)
-                {
-                    // User not found
-                    return false;
-                }
-
-                if (this.UserManagement.CheckPersistantCookie(user, series, token))
-                {
-                    // Login, create new token
-                    this.AssignPersistantCookie(user, series);
-
-                    // Perform the login
-                    this.Session["Authentication.Username"] = user.Username;
-                    this.Session["Authentication.TokenSet"] = user.CredentialTokenSet;
-                }
-                else
-                {
-                    // No login
-                    return false;
-                }
-            }
-
-            // No cookie
             return false;
+
+            // Commented out because multiple requests interfer with series change.
+            //return this.IsLoggedInByPersistentCookie();
         }
 
         public IWebUser GetLoggedInUser()
@@ -152,7 +125,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             }
 
             var user = this.UserManagement.GetUser(
-                 this.Session["Authentication.Username"].ToString());
+                 this.Session[sessionUsername].ToString());
 
             return user;
         }
@@ -168,7 +141,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 return null;
             }
 
-            return this.Session["Authentication.TokenSet"] as TokenSet;
+            return this.Session[sessionTokenSet] as TokenSet;
         }
 
         /// <summary>
@@ -177,7 +150,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// </summary>
         /// <param name="user">User, which shall be assigned</param>
         /// <param name="series">Series which shall be reused</param>
-        private void AssignPersistantCookie(IWebUser user, string series = null)
+        private void AssignPersistentCookie(IWebUser user, string series = null)
         {
             if (string.IsNullOrEmpty(series))
             {
@@ -196,11 +169,85 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 cookieName,
                 cookieValue);
             cookie.Expires = DateTime.Now.AddDays(30);
+            cookie.Path = "/";
+            cookie.HttpOnly = true;
 
-            this.UserManagement.SetPersistantCookie(user, series, token);
-            this.Session["Authentication.PersistantSeries"] = series;
+            this.UserManagement.SetPersistentCookie(user, series, token);
+            this.Session[sessionPersistent] = series;
 
-            this.ListenerContext.Response.SetCookie(cookie);
+            this.Cookies.AddCookie(cookie);
+        }
+
+        /// <summary>
+        /// Checks, if the user is logged in via persistent cookie
+        /// </summary>
+        /// <returns>true, if user is logged in by persistent cookie</returns>
+        public bool IsLoggedInByPersistentCookie()
+        {
+            // Check, if user is logged via permanent cookie
+            var cookie = this.ListenerContext.Request.Cookies[cookieName];
+            if (cookie != null)
+            {
+                // Check for cookie
+                var splitted = cookie.Value.Split(new[] { '|' });
+                if (splitted.Length != 3)
+                {
+                    return false;
+                }
+                var userId = Convert.ToInt64(splitted[0]);
+                var series = splitted[1];
+                var token = splitted[2];
+
+                // Get user
+                var user = this.UserManagement.GetUser(userId);
+                if (user == null)
+                {
+                    // User not found
+                    return false;
+                }
+
+                if (this.UserManagement.CheckPersistentCookie(user, series, token))
+                {
+                    // Login, create new token
+                    this.AssignPersistentCookie(user, series);
+
+                    // Perform the login
+                    this.Session[sessionUsername] = user.Username;
+                    this.Session[sessionTokenSet] = user.CredentialTokenSet;
+
+                    // Everything OK... Hopefully
+                    return true;
+                }
+                else
+                {
+                    // No login
+                    return false;
+                }
+            }
+
+            // No cookie
+            return false;
+        }
+
+        /// <summary>
+        /// Removes the persistent cookie
+        /// </summary>
+        private void RemovePersistentCookie()
+        {
+            // Checks, if we have a permanent login that needs to be stopped
+            if (this.Session[sessionPersistent] != null)
+            {
+                var user = this.UserManagement.GetUser(this.Session[sessionUsername] as string);
+                if (user != null)
+                {
+                    this.UserManagement.DeletePersistentCookie(
+                        user,
+                        this.Session[sessionPersistent] as string);
+
+                    // Remove persistent cookie, if existing
+                    this.Cookies.DeleteCookie(cookieName);
+                }
+            }
         }
     }
 }

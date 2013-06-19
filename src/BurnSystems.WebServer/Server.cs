@@ -7,6 +7,7 @@ using BurnSystems.WebServer.Parser;
 using BurnSystems.WebServer.Helper;
 using BurnSystems.WebServer.Modules.Sessions;
 using BurnSystems.WebServer.Modules.PostVariables;
+using BurnSystems.WebServer.Modules.Cookies;
 
 namespace BurnSystems.WebServer
 {
@@ -96,7 +97,10 @@ namespace BurnSystems.WebServer
             activationContainer.Bind<SessionContainer>().To((x) => x.Get<SessionStorage>().SessionContainer);
             activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
             activationContainer.Bind<Session>().To(
-                (x) => x.Get<ISessionInterface>().GetSession());
+                (x) => x.Get<ISessionInterface>().GetSession())
+                .AsScoped();
+
+            activationContainer.Bind<ICookieManagement>().To<Rfc6265CookieManagement>();
 
             return new Server(activationContainer);
         }

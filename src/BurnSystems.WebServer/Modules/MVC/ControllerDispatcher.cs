@@ -49,7 +49,7 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <summary>
         /// Logger being used in this class.
         /// </summary>
-        private ClassLogger logger = new ClassLogger(typeof(ControllerDispatcher));
+        private static ClassLogger logger = new ClassLogger(typeof(ControllerDispatcher));
 
         /// <summary>
         /// Stores the webmethod infos
@@ -309,8 +309,9 @@ namespace BurnSystems.WebServer.Modules.MVC
             }
             catch (Exception exc)
             {
+                logger.LogEntry(LogLevel.Verbose, exc.ToString());
                 throw new InvalidOperationException(
-                    string.Format("Exception occured during execution of '" + methodName + "': " + exc.Message + "|" + exc.ToString()),
+                    string.Format("Exception occured during execution of '" + methodName + "': " + exc.Message),
                     exc);
             }
         }
