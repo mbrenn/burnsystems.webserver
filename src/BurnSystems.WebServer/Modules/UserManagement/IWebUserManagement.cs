@@ -12,6 +12,12 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         IWebUser GetUser(string username, string password);
 
         /// <summary>
+        /// Updatas the login date for a certain user
+        /// </summary>
+        /// <param name="userId">Id of the user that shall be updated</param>
+        void UpdateLoginDate(long userId, DateTime date);
+
+        /// <summary>
         /// Sets a persistant cookie to user.
         /// The following mechanism is used: 
         /// http://stackoverflow.com/questions/244882/what-is-the-best-way-to-implement-remember-me-for-a-website

@@ -75,6 +75,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
 
             this.Session[sessionUsername] = user.Username;
             this.Session[sessionTokenSet] = user.CredentialTokenSet;
+            this.UserManagement.UpdateLoginDate(user.Id, DateTime.Now);
 
             if (isPersistant)
             {
@@ -214,6 +215,8 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                     // Perform the login
                     this.Session[sessionUsername] = user.Username;
                     this.Session[sessionTokenSet] = user.CredentialTokenSet;
+
+                    this.UserManagement.UpdateLoginDate(user.Id, DateTime.Now);
 
                     // Everything OK... Hopefully
                     return true;
