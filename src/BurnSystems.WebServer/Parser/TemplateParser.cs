@@ -22,7 +22,7 @@ namespace BurnSystems.WebServer.Parser
         {
         }
 
-        public string Parse<T>(string template, T model, Dictionary<string, object> bag)
+        public string Parse<T>(string template, T model, Dictionary<string, object> bag = null)
         {
             if (bag != null)
             {
