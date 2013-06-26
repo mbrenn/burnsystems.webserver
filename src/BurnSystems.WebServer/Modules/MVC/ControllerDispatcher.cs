@@ -427,6 +427,11 @@ namespace BurnSystems.WebServer.Modules.MVC
                 return 0L;
             }
 
+            if (parameter.ParameterType == typeof(Guid))
+            {
+                return Guid.Empty;
+            }
+
             throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);
         }
 
@@ -456,6 +461,11 @@ namespace BurnSystems.WebServer.Modules.MVC
             if (parameter.ParameterType == typeof(long))
             {
                 return Convert.ToInt64(value);
+            }
+
+            if (parameter.ParameterType == typeof(Guid))
+            {
+                return new Guid(value);
             }
 
             throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);
