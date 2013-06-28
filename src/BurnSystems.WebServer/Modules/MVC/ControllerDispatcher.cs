@@ -353,7 +353,7 @@ namespace BurnSystems.WebServer.Modules.MVC
 
                     property.SetValue(
                         instance,
-                        value.ConvertTo(property.PropertyType),
+                        ConvertToType(value, property.PropertyType),
                         null);
                 }
             }
@@ -443,32 +443,44 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <returns>Converted Argument</returns>
         private object ConvertToArgument(string value, System.Reflection.ParameterInfo parameter)
         {
-            if (parameter.ParameterType == typeof(string))
+            var type = parameter.ParameterType; 
+            return ConvertToType(value, type);
+        }
+
+        /// <summary>
+        /// Converts the given string to a type
+        /// </summary>
+        /// <param name="value">Value to be converted</param>
+        /// <param name="type">Type of the argument</param>
+        /// <returns>Converted Argument</returns>
+        private static object ConvertToType(string value, Type type)
+        {
+            if (type == typeof(string))
             {
                 return value;
             }
 
-            if (parameter.ParameterType == typeof(int))
+            if (type == typeof(int))
             {
                 return Convert.ToInt32(value);
             }
 
-            if (parameter.ParameterType == typeof(double))
+            if (type == typeof(double))
             {
                 return Convert.ToDouble(value);
             }
 
-            if (parameter.ParameterType == typeof(long))
+            if (type == typeof(long))
             {
                 return Convert.ToInt64(value);
             }
 
-            if (parameter.ParameterType == typeof(Guid))
+            if (type == typeof(Guid))
             {
                 return new Guid(value);
             }
 
-            throw new ArgumentException("Unknown Parameter Type: " + parameter.ParameterType);
+            throw new ArgumentException("Unknown Parameter Type: " + type);
         }
     }
 }
