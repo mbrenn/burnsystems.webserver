@@ -480,6 +480,18 @@ namespace BurnSystems.WebServer.Modules.MVC
                 return new Guid(value);
             }
 
+            if (type == typeof(bool))
+            {
+                if (value.ToLowerInvariant() == "true")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             throw new ArgumentException("Unknown Parameter Type: " + type);
         }
     }
