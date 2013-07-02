@@ -18,7 +18,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// </summary>
         private const string cookieName = "BSAuthCookie";
 
-        private const string sessionUsername = "Authentication.Username";
+        private const string sessionUserId = "Authentication.UserId";
 
         private const string sessionTokenSet = "Authentication.TokenSet";
 
@@ -73,7 +73,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 return null;
             }
 
-            this.Session[sessionUsername] = user.Username;
+            this.Session[sessionUserId] = user.Id;
             this.Session[sessionTokenSet] = user.CredentialTokenSet;
             this.UserManagement.UpdateLoginDate(user.Id, DateTime.Now);
 
@@ -95,7 +95,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             {
                 this.RemovePersistentCookie();
 
-                this.Session.Remove(sessionUsername);
+                this.Session.Remove(sessionUserId);
                 this.Session.Remove(sessionTokenSet);
             }
         }
@@ -107,7 +107,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         /// <returns>True, if user had been logged in</returns>
         public bool IsUserLoggedIn()
         {
-            if (this.Session[sessionUsername] != null)
+            if (this.Session[sessionUserId] != null)
             {
                 return true;
             }
@@ -126,7 +126,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             }
 
             var user = this.UserManagement.GetUser(
-                 this.Session[sessionUsername].ToString());
+                 Convert.ToInt64(this.Session[sessionUserId]));
 
             return user;
         }
@@ -213,7 +213,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                     this.AssignPersistentCookie(user, series);
 
                     // Perform the login
-                    this.Session[sessionUsername] = user.Username;
+                    this.Session[sessionUserId] = user.Id;
                     this.Session[sessionTokenSet] = user.CredentialTokenSet;
 
                     this.UserManagement.UpdateLoginDate(user.Id, DateTime.Now);
@@ -240,7 +240,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             // Checks, if we have a permanent login that needs to be stopped
             if (this.Session[sessionPersistent] != null)
             {
-                var user = this.UserManagement.GetUser(this.Session[sessionUsername] as string);
+                var user = this.UserManagement.GetUser(Convert.ToInt64(this.Session[sessionUserId]));
                 if (user != null)
                 {
                     this.UserManagement.DeletePersistentCookie(
