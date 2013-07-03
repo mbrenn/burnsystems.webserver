@@ -10,6 +10,7 @@ using BurnSystems.WebServer.Responses;
 using BurnSystems.WebServer.Dispatcher;
 using System.Web.Script.Serialization;
 using System.Threading.Tasks;
+using BurnSystems.Synchronisation;
 
 namespace BurnSystems.WebServer
 {
@@ -149,76 +150,79 @@ namespace BurnSystems.WebServer
         /// <param name="context"></param>
         private void ExecuteHttpRequest(object value)
         {
-            var context = value as HttpListenerContext;
-            if (context == null)
+            using (var threadWatcher = ThreadWatcher.WatchThread(Thread.CurrentThread, TimeSpan.FromSeconds(10)))
             {
-                throw new ArgumentException("value is not HttpListenerContext");
-            }
-
-            var webRequestContainer = new ActivationContainer("WebRequest");
-            webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
-
-            using (var block = new ActivationBlock("WebRequest", webRequestContainer, this.activationBlock))
-            {
-                try
+                var context = value as HttpListenerContext;
+                if (context == null)
                 {
-                    var info = new ContextDispatchInformation(context);
-                    webRequestContainer.Bind<ContextDispatchInformation>().ToConstant(info);
+                    throw new ArgumentException("value is not HttpListenerContext");
+                }
 
+                var webRequestContainer = new ActivationContainer("WebRequest");
+                webRequestContainer.Bind<HttpListenerContext>().ToConstant(context);
+
+                using (var block = new ActivationBlock("WebRequest", webRequestContainer, this.activationBlock))
+                {
                     try
                     {
-                        // Go through all requestfilters
-                        foreach (var filter in this.requestFilters)
+                        var info = new ContextDispatchInformation(context);
+                        webRequestContainer.Bind<ContextDispatchInformation>().ToConstant(info);
+
+                        try
                         {
-                            var cancel = false;
-                            filter.BeforeDispatch(block, info, out cancel);
-                            if (cancel)
+                            // Go through all requestfilters
+                            foreach (var filter in this.requestFilters)
                             {
-                                // Has been cancelled by request filter
-                                return;
+                                var cancel = false;
+                                filter.BeforeDispatch(block, info, out cancel);
+                                if (cancel)
+                                {
+                                    // Has been cancelled by request filter
+                                    return;
+                                }
                             }
+
+                            // Perform the dispatch
+                            var found = PerformDispatch(block, info);
+
+                            // Go through all requestfilters
+                            foreach (var filter in this.requestFilters)
+                            {
+                                filter.AfterRequest(block, info);
+                            }
+
+                            if (!found)
+                            {
+                                // Throw 404
+                                var errorResponse = this.activationBlock.Create<ErrorResponse>();
+                                errorResponse.Set(HttpStatusCode.NotFound);
+                                errorResponse.Dispatch(block, info);
+                            }
+
                         }
-
-                        // Perform the dispatch
-                        var found = PerformDispatch(block, info);
-
-                        // Go through all requestfilters
-                        foreach (var filter in this.requestFilters)
+                        catch (Exception exc)
                         {
-                            filter.AfterRequest(block, info);
-                        }
-
-                        if (!found)
-                        {
-                            // Throw 404
                             var errorResponse = this.activationBlock.Create<ErrorResponse>();
-                            errorResponse.Set(HttpStatusCode.NotFound);
+                            errorResponse.Set(HttpStatusCode.ServerError);
+                            errorResponse.Message = exc.ToString();
                             errorResponse.Dispatch(block, info);
-                        }
 
+                            logger.LogEntry(LogEntry.Format(
+                                LogLevel.Fail,
+                                Localization_WebServer.ExceptionDuringWebRequest,
+                                context.Request.Url.ToString(),
+                                exc.Message));
+                        }
+                        finally
+                        {
+                            context.Response.Close();
+                        }
                     }
                     catch (Exception exc)
                     {
-                        var errorResponse = this.activationBlock.Create<ErrorResponse>();
-                        errorResponse.Set(HttpStatusCode.ServerError);
-                        errorResponse.Message = exc.ToString();
-                        errorResponse.Dispatch(block, info);
-
-                        logger.LogEntry(LogEntry.Format(
-                            LogLevel.Fail,
-                            Localization_WebServer.ExceptionDuringWebRequest,
-                            context.Request.Url.ToString(),
-                            exc.Message));
+                        // Default, can't do anything
+                        logger.LogEntry(new LogEntry(exc.Message, LogLevel.Message));
                     }
-                    finally
-                    {
-                        context.Response.Close();
-                    }
-                }
-                catch (Exception exc)
-                {
-                    // Default, can't do anything
-                    logger.LogEntry(new LogEntry(exc.Message, LogLevel.Message));
                 }
             }
         }
