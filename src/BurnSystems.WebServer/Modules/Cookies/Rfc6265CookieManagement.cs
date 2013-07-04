@@ -34,6 +34,22 @@ namespace BurnSystems.WebServer.Modules.Cookies
         }
 
         /// <summary>
+        /// Gets a cookie value by name
+        /// </summary>
+        /// <param name="name">Name  of the cookie</param>
+        /// <returns>Value of the found cookie or null</returns>
+        public string GetCookie(string name)
+        {
+            var cookie = this.ListenerContext.Request.Cookies[name];
+            if (cookie == null)
+            {
+                return null;
+            }
+
+            return cookie.Value;
+        }
+
+        /// <summary>
         /// Adds a cookie
         /// </summary>
         /// <param name="cookie">Cookie to be added</param>

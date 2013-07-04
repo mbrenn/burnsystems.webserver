@@ -22,5 +22,7 @@ namespace BurnSystems.WebServer.Modules.Cookies
         /// </summary>
         /// <param name="name">Name of the cookie</param>
         void DeleteCookie(string name);
+
+        string GetCookie(string name);
     }
 }

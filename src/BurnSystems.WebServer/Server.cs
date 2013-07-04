@@ -106,6 +106,33 @@ namespace BurnSystems.WebServer
         }
 
         /// <summary>
+        /// Creates a server with a dummy session and no binding to HTTP
+        /// </summary>
+        /// <param name="activationContainer">Activation container where default binding will be addedd</param>
+        /// <returns></returns>
+        public static Server CreateDummyServer(ObjectActivation.ActivationContainer activationContainer)
+        {
+            activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
+            activationContainer.Bind<ITemplateParser>().To(() => new TemplateParser());
+
+            activationContainer.Bind<MimeTypeConverter>().ToConstant(MimeTypeConverter.Default);
+
+            activationContainer.Bind<PostVariableReaderConfig>().ToConstant(new PostVariableReaderConfig());
+            activationContainer.Bind<PostVariableReader>().To<PostVariableReader>().AsScoped();
+
+            activationContainer.Bind<SessionConfiguration>().ToConstant(new SessionConfiguration());
+            activationContainer.Bind<SessionStorage>().To<SessionStorage>().AsScopedIn("Server");
+            activationContainer.Bind<SessionContainer>().To((x) => x.Get<SessionStorage>().SessionContainer);
+            activationContainer.Bind<ISessionInterface>().To<SessionInterface>().AsScoped();
+            activationContainer.Bind<Session>().ToConstant(new Session());
+
+            // No cookie management
+            activationContainer.Bind<ICookieManagement>().To<DummyCookieManagement>();
+
+            return new Server(activationContainer);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the Server class.
         /// </summary>
         /// <param name="container">Container to be set</param>

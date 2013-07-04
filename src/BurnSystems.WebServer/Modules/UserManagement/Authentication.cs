@@ -44,13 +44,6 @@ namespace BurnSystems.WebServer.Modules.UserManagement
             set;
         }
 
-        [Inject(IsMandatory = true)]
-        public HttpListenerContext ListenerContext
-        {
-            get;
-            set;
-        }
-
         [Inject]
         public ICookieManagement Cookies
         {
@@ -186,11 +179,11 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         public bool IsLoggedInByPersistentCookie()
         {
             // Check, if user is logged via permanent cookie
-            var cookie = this.ListenerContext.Request.Cookies[cookieName];
+            var cookie = this.Cookies.GetCookie(cookieName);
             if (cookie != null)
             {
                 // Check for cookie
-                var splitted = cookie.Value.Split(new[] { '|' });
+                var splitted = cookie.Split(new[] { '|' });
                 if (splitted.Length != 3)
                 {
                     return false;
