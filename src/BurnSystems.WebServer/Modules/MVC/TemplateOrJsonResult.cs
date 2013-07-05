@@ -9,9 +9,9 @@ namespace BurnSystems.WebServer.Modules.MVC
 {
     /// <summary>
     /// Returns an object or a created template, 
-    /// dependign whether whether we have a template
+    /// depending whether whether we have a template
     /// </summary>
-    public class TemplateOrJsonResult<T> : BaseActionResult, IActionResult
+    public class TemplateOrJsonResult<T> : BaseActionResult, IActionResult, IValueActionResult
     {
         /// <summary>
         /// Gets or sets the return object
@@ -20,6 +20,14 @@ namespace BurnSystems.WebServer.Modules.MVC
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the return object
+        /// </summary>
+        object IValueActionResult.ReturnObject
+        {
+            get { return this.ReturnObject; }
         }
 
         public TemplateOrJsonResult(T resultObject)

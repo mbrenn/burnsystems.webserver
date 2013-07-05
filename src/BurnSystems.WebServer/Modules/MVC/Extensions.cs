@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BurnSystems.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,5 +66,21 @@ namespace BurnSystems.WebServer.Modules.MVC
             return new BinaryActionResult(bytes, contentType);
         }
 
+        /// <summary>
+        /// Gets the action result value as a dynamic object
+        /// </summary>
+        /// <param name="actionResult">Actionresult to be converted</param>
+        /// <returns>Dynamic object to be converted</returns>
+        public static dynamic GetActionResultValue(this IActionResult actionResult)
+        {
+            var valueAcionResult = actionResult as IValueActionResult;
+            if (valueAcionResult == null)
+            {
+                return null;
+            }
+
+            dynamic jsonResult = valueAcionResult.ReturnObject.ToExpando();
+            return jsonResult;
+        }
     }
 }

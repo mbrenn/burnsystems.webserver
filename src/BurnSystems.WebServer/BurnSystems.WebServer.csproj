@@ -114,6 +114,7 @@
     <Compile Include="Modules\MVC\StreamActionResult.cs" />
     <Compile Include="Modules\MVC\TemplateOrJsonResult.cs" />
     <Compile Include="Modules\MVC\TextActionResult.cs" />
+    <Compile Include="Modules\MVC\ValueActionResult.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReader.cs" />
     <Compile Include="Modules\PostVariables\PostVariableReaderConfig.cs" />
     <Compile Include="IRequestFilter.cs" />

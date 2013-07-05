@@ -7,7 +7,7 @@ using System.Web.Script.Serialization;
 
 namespace BurnSystems.WebServer.Modules.MVC
 {
-    public class JsonActionResult : BaseActionResult, IActionResult
+    public class JsonActionResult : BaseActionResult, IActionResult, IValueActionResult
     {
         /// <summary>
         /// Gets or sets the object that shall be returned
