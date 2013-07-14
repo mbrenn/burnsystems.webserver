@@ -61,7 +61,7 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <param name="bytes">Bytes to be sent</param>
         /// <param name="contentType">Content-Type that will be sent to browser</param>
         /// <returns>Action result being used</returns>
-        public static IActionResult Bytes(this Controller controller, byte[] bytes, string contentType)
+        public static BinaryActionResult Bytes(this Controller controller, byte[] bytes, string contentType)
         {
             return new BinaryActionResult(bytes, contentType);
         }
