@@ -18,7 +18,7 @@ namespace BurnSystems.WebServer.Modules.Sessions
         /// <summary>
         /// Probability that collector will be called for each session query
         /// </summary>
-        private double collectorProbability = 0.01;
+        private double collectorProbability = 0.0001;
 
         /// <summary>
         /// Stores the sessions
