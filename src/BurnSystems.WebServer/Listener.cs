@@ -150,7 +150,7 @@ namespace BurnSystems.WebServer
         /// <param name="context"></param>
         private void ExecuteHttpRequest(object value)
         {
-            using (var threadWatcher = ThreadWatcher.WatchThread(Thread.CurrentThread, TimeSpan.FromSeconds(10)))
+            using (var threadWatcher = ThreadWatcher.WatchThread(Thread.CurrentThread, TimeSpan.FromSeconds(600)))
             {
                 var context = value as HttpListenerContext;
                 if (context == null)
