@@ -26,7 +26,7 @@ namespace BurnSystems.WebServer.Helper
             context.Response.Headers["Expires"] = "Mon, 26 Jul 1997 05:00:00 GMT";
             context.Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate";
             context.Response.Headers["Pragma"] = "no-cache";
-            context.Response.AddHeader("Cache-Control", "post-check=0, pre-check=0");
+            // context.Response.AddHeader("Cache-Control", "post-check=0, pre-check=0");
         }
 
         /// <summary>
