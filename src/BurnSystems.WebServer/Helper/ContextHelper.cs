@@ -139,5 +139,23 @@ namespace BurnSystems.WebServer.Helper
                 return false;
             }
         }
+
+        public static bool IsDeflatingAccepted(this ContextDispatchInformation info)
+        {
+            var header = info.Context.Request.Headers["Accept-Encoding"];
+            if (header == null)
+            {
+                return false;
+            }
+
+            if (header.Contains("deflate"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }  
     }
 }

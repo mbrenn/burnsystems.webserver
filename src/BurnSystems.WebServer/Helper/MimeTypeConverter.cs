@@ -40,13 +40,28 @@ namespace BurnSystems.WebServer.Helper
             {
                 var result = new MimeTypeConverter();
 
-                result.Add(new MimeTypeInfo(".txt", "text/plain", Encoding.UTF8));
-                result.Add(new MimeTypeInfo(".html", "text/html", Encoding.UTF8));
-                result.Add(new MimeTypeInfo(".htm", "text/html", Encoding.UTF8));
+                result.Add(new MimeTypeInfo(".txt", "text/plain", Encoding.UTF8)
+                    {
+                        DoDeflate = true
+                    });
+                result.Add(new MimeTypeInfo(".html", "text/html", Encoding.UTF8)
+                    {
+                        DoDeflate = true
+                    });
+                result.Add(new MimeTypeInfo(".htm", "text/html", Encoding.UTF8)
+                    {
+                        DoDeflate = true
+                    });
 
-                result.Add(new MimeTypeInfo(".css", "text/css", Encoding.UTF8));
+                result.Add(new MimeTypeInfo(".css", "text/css", Encoding.UTF8)
+                    {
+                        DoDeflate = true
+                    });
 
-                result.Add(new MimeTypeInfo(".js", "application/javascript", Encoding.UTF8));
+                result.Add(new MimeTypeInfo(".js", "application/javascript", Encoding.UTF8)
+                    {
+                        DoDeflate = true
+                    });
 
                 result.Add(new MimeTypeInfo(".jpg", "image/jpeg"));
                 result.Add(new MimeTypeInfo(".png", "image/png"));

@@ -3,6 +3,7 @@ using BurnSystems.ObjectActivation;
 using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Helper;
 using System.Text;
+using System.IO.Compression;
 
 namespace BurnSystems.WebServer.Responses
 {
@@ -31,6 +32,15 @@ namespace BurnSystems.WebServer.Responses
         }
 
         public string VirtualPath
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indication whether deflating shall be done
+        /// </summary>
+        public bool DoDeflate
         {
             get;
             set;
@@ -81,6 +91,11 @@ namespace BurnSystems.WebServer.Responses
                         info.Context.Response.ContentType = mimeInfo.MimeType;
                     }
                 }
+
+                if (mimeInfo.DoDeflate)
+                {
+                    this.DoDeflate = true;
+                }
             }
 
             // File is not sent out at once, file is sent out by by chunks
@@ -90,22 +105,53 @@ namespace BurnSystems.WebServer.Responses
                 return;
             }
 
-            using (var responseStream = info.Context.Response.OutputStream)
+            Stream httpOutputStream = null;
+            DeflateStream deflateStream = null;
+            try
             {
+                httpOutputStream = info.Context.Response.OutputStream;
+                var outputStream = httpOutputStream;
+
+                // Checks, if deflating is ok                
                 using (var stream = new FileStream(this.PhysicalPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    info.Context.Response.ContentLength64 = stream.Length;
+                    var inputStream = stream;
+
+                    // Check, if we'd like to have a deflating
+                    if (this.DoDeflate && info.IsDeflatingAccepted())
+                    {
+                        deflateStream = new DeflateStream(httpOutputStream, CompressionMode.Compress);
+                        outputStream = deflateStream;
+                        info.Context.Response.AddHeader("Content-Encoding", "deflate");
+                    }
+                    else
+                    {
+                        info.Context.Response.ContentLength64 = stream.Length;
+                    }
 
                     var restSize = stream.Length;
                     var byteBuffer = new byte[this.FileChunkSize];
 
                     while (restSize > 0)
                     {
-                        var read = stream.Read(byteBuffer, 0, this.FileChunkSize);
-                        responseStream.Write(byteBuffer, 0, read);
+                        var read = inputStream.Read(byteBuffer, 0, this.FileChunkSize);
+                        outputStream.Write(byteBuffer, 0, read);
 
                         restSize -= read;
                     }
+                }
+            }
+            finally
+            {
+                if (deflateStream != null)
+                {
+                    deflateStream.Flush();
+                    deflateStream.Dispose();
+                }
+
+                if (httpOutputStream != null)
+                {
+                    httpOutputStream.Dispose();
                 }
             }
         }

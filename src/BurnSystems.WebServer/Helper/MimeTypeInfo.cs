@@ -26,6 +26,15 @@ namespace BurnSystems.WebServer.Helper
         }
 
         /// <summary>
+        /// Requests compression as deflating
+        /// </summary>
+        public bool DoDeflate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Stores the type of the dispatcher used to evaluate the given file
         /// </summary>
         public Type FileRequestDispatcher
