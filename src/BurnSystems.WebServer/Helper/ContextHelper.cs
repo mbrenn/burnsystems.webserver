@@ -50,14 +50,24 @@ namespace BurnSystems.WebServer.Helper
                     isModifiedSince = isModifiedSince.Substring(0, positionSemicolon);
                 }
 
-                var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
-
-                if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                try
                 {
-                    info.Context.Response.StatusCode = 304;
-                    done = true;
+                    var cacheDate = DateTime.Parse(isModifiedSince).ToUniversalTime();
+
+                    if ((localModificationDate - TimeSpan.FromSeconds(2)) < cacheDate)
+                    {
+                        info.Context.Response.StatusCode = 304;
+                        done = true;
+                    }
+                }
+                catch (FormatException)
+                {
+                    // Do not handle, 
+                    // Header 'If-Modified-Since' might contain values like 'no-cache' or other
+                    // This might prevent the correct handling
                 }
             }
+
 
             info.Context.Response.AddHeader(
                 "Last-Modified",
