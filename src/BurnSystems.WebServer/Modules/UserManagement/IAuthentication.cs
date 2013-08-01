@@ -18,6 +18,13 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         IWebUser LoginUser(string username, string password, bool isPersistant = false);
 
         /// <summary>
+        /// Performs the login for the user
+        /// </summary>
+        /// <param name="userId">Id of the user, which is doing the login</param>
+        /// <returns>Found user, if successful, otherwise null</returns>
+        IWebUser LoginUser(long userId);
+
+        /// <summary>
         /// Performs logout of the user
         /// </summary>
         void LogoutUser();

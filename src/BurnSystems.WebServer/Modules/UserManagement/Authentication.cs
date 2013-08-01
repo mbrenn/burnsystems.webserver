@@ -66,6 +66,28 @@ namespace BurnSystems.WebServer.Modules.UserManagement
                 return null;
             }
 
+            return this.LoginUser(user, isPersistant);
+        }
+
+        /// <summary>
+        /// Performs the login by user id. 
+        /// Somehow safety critical
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>Retrieved webuser</returns>
+        public IWebUser LoginUser(long userId)
+        {
+            var user = this.UserManagement.GetUser(userId);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return this.LoginUser(user, false);
+        }
+
+        private IWebUser LoginUser(IWebUser user, bool isPersistant)
+        {
             this.Session[sessionUserId] = user.Id;
             this.Session[sessionTokenSet] = user.CredentialTokenSet;
             this.UserManagement.UpdateLoginDate(user.Id, DateTime.Now);
