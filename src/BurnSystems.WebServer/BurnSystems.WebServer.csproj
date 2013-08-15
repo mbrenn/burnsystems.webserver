@@ -95,6 +95,7 @@
     <Compile Include="Dispatcher\RelocationDispatcher.cs" />
     <Compile Include="Dispatcher\Test\ExceptionDispatcher.cs" />
     <Compile Include="Dispatcher\UrlDispatcher.cs" />
+    <Compile Include="Filters\AddCorsHeaderFilter.cs" />
     <Compile Include="Filters\DenyAllFilter.cs" />
     <Compile Include="Filters\DenyByUrlFilter.cs" />
     <Compile Include="Helper\ContextHelper.cs" />
