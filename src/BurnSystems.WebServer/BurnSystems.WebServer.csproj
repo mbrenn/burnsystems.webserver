@@ -202,6 +202,7 @@
     <Content Include="Resources\JSTree\themes\default\d.png" />
     <Content Include="Resources\JSTree\themes\default\style.css" />
     <Content Include="Resources\JSTree\themes\default\throbber.gif" />
+    <TypeScriptCompile Include="Resources\Require\require.d.ts" />
     <Content Include="Resources\Require\require.js" />
   </ItemGroup>
   <ItemGroup />
