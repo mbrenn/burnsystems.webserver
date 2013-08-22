@@ -329,36 +329,51 @@ namespace BurnSystems.WebServer.Modules.MVC
         private object CreatePostModel(IActivates activates, System.Reflection.ParameterInfo parameter)
         {
             var parameterType = parameter.ParameterType;
-            var instance = Activator.CreateInstance(parameterType);
             var postVariables = activates.Get<PostVariableReader>();
 
-            foreach (var property in parameterType.GetProperties(BindingFlags.SetField | BindingFlags.Instance | BindingFlags.Public))
+            if (parameter.ParameterType == typeof(Dictionary<string, string>))
             {
-                // Checks, if type is Webfile and reads from files
-                if (property.PropertyType == typeof(WebFile))
-                {
-                    property.SetValue(
-                        instance,
-                        postVariables.Files[property.Name],
-                        null);
-                }
-                else
-                {
-                     // Reads normal post variable
-                    var value = postVariables[property.Name];
-                    if (value == null)
-                    {
-                        continue;
-                    }
+                var result = new Dictionary<string, string>();
 
-                    property.SetValue(
-                        instance,
-                        ConvertToType(value, property.PropertyType),
-                        null);
+                foreach (var pair in postVariables)
+                {
+                    result[pair.Key] = pair.Value;
                 }
+
+                return result;
             }
+            else
+            {
+                var instance = Activator.CreateInstance(parameterType);
 
-            return instance;
+                foreach (var property in parameterType.GetProperties(BindingFlags.SetField | BindingFlags.Instance | BindingFlags.Public))
+                {
+                    // Checks, if type is Webfile and reads from files
+                    if (property.PropertyType == typeof(WebFile))
+                    {
+                        property.SetValue(
+                            instance,
+                            postVariables.Files[property.Name],
+                            null);
+                    }
+                    else
+                    {
+                        // Reads normal post variable
+                        var value = postVariables[property.Name];
+                        if (value == null)
+                        {
+                            continue;
+                        }
+
+                        property.SetValue(
+                            instance,
+                            ConvertToType(value, property.PropertyType),
+                            null);
+                    }
+                }
+
+                return instance;
+            }
         }
 
         /// <summary>
