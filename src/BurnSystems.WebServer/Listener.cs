@@ -142,7 +142,12 @@ namespace BurnSystems.WebServer
             {
                 // Listener has been stopped.
             }
-        }        
+            catch (InvalidOperationException exc)
+            {
+                // Might be thrown, when server gets stopped before it has really started
+                logger.Fail("Exception during HttpThreadEntry: " + exc.ToString());
+            }
+        }
 
         /// <summary>
         /// Executes the http request itself
