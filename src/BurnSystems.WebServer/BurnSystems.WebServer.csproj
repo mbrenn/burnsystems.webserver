@@ -12,6 +12,8 @@
     <AssemblyName>BurnSystems.WebServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\src\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -74,6 +76,9 @@
     <Reference Include="dotless.Core">
       <HintPath>..\..\dependencies\dotless\dotless.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\src\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -111,6 +116,7 @@
     <Compile Include="Modules\MVC\BinaryActionResult.cs" />
     <Compile Include="Modules\MVC\MVCProcessException.cs" />
     <Compile Include="Modules\MVC\NoActionResult.cs" />
+    <Compile Include="Modules\MVC\PostModelJsonDeserializer.cs" />
     <Compile Include="Modules\MVC\RawPostAttribute.cs" />
     <Compile Include="Modules\MVC\RedirectActionResult.cs" />
     <Compile Include="Modules\MVC\StreamActionResult.cs" />
@@ -190,6 +196,7 @@
     <Content Include="Resources\DateFormat\dateformat.min.js" />
     <Content Include="Resources\Error.txt" />
     <Content Include="Resources\JQuery\jquery.endless-scroll.js" />
+    <None Include="packages.config" />
     <None Include="Resources\Require\require.min.js" />
     <Content Include="Resources\JQuery\jquery.infinitescroll.js" />
     <Content Include="Resources\JQuery\jquery.js" />
@@ -207,6 +214,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

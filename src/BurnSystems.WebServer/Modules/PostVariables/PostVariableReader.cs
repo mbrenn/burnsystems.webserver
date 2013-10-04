@@ -19,6 +19,11 @@ namespace BurnSystems.WebServer.Modules.PostVariables
     public class PostVariableReader : IEnumerable<KeyValuePair<string, string>>
     {
         /// <summary>
+        /// Defines the logger
+        /// </summary>
+        private static ILog logger = new ClassLogger(typeof(PostVariableReader));
+             
+        /// <summary>
         /// Gets or sets the http Listener context
         /// </summary>
         private HttpListenerContext ListenerContext
@@ -213,6 +218,11 @@ namespace BurnSystems.WebServer.Modules.PostVariables
                 // Reads maximum size
                 var content = this.ListenerContext.Request.ContentEncoding.GetString(
                     bytes);
+
+                if (content.StartsWith("{") && content.EndsWith("}"))
+                {
+                    logger.Message("POST Content is probable a JSON object, use application/json to forward to JSON Deserializer");
+                }
 
                 foreach (var part in content.Split('&'))
                 {

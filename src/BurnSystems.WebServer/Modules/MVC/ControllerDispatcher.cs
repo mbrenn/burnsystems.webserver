@@ -10,6 +10,8 @@ using BurnSystems.WebServer.Dispatcher;
 using BurnSystems.WebServer.Modules.PostVariables;
 using BurnSystems.WebServer.Responses;
 using System.IO;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace BurnSystems.WebServer.Modules.MVC
 {
@@ -327,6 +329,42 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <param name="parameter"></param>
         /// <returns></returns>
         private object CreatePostModel(IActivates activates, System.Reflection.ParameterInfo parameter)
+        {
+            var httpListenerContext = activates.Get<HttpListenerContext>();
+            Ensure.That(httpListenerContext != null);
+
+            if (httpListenerContext.Request.ContentType.ToLower().Contains("application/json"))
+            {
+                // Ok, we have application/Json
+                return CreateModelByJson(activates, parameter);
+            }
+            else
+            {
+                return CreatePostModelByFormData(activates, parameter);
+            }
+        }
+
+        /// <summary>
+        /// Creates the post model by Json object. Json.Net library will be used to deserialize the object
+        /// </summary>
+        /// <param name="activates">Activation container</param>
+        /// <param name="parameter">Parameter information</param>
+        /// <returns>Created Object</returns>
+        private object CreateModelByJson(IActivates activates, ParameterInfo parameter)
+        {
+            var parameterType = parameter.ParameterType;
+
+            var deserializer = activates.Create<PostModelJsonDeserializer>();
+            return deserializer.Deserialize(parameterType);
+        }
+
+        /// <summary>
+        /// Creates the postmodel by formdata, RFC 2388
+        /// </summary>
+        /// <param name="activates">Activation container</param>
+        /// <param name="parameter">Parameterinto to be filled</param>
+        /// <returns>Created Object</returns>
+        private static object CreatePostModelByFormData(IActivates activates, System.Reflection.ParameterInfo parameter)
         {
             var parameterType = parameter.ParameterType;
             var postVariables = activates.Get<PostVariableReader>();

@@ -42,6 +42,7 @@ namespace SimpleTestServer
 
             server.Add(new ControllerDispatcher<CalcController>(DispatchFilter.ByUrl("/controller/Calculator"), "/controller/Calculator/"));
             server.Add(new ControllerDispatcher<UserManagementController>(DispatchFilter.ByUrl("/controller/Users"), "/controller/Users/"));
+            server.Add(new ControllerDispatcher<JsonPostController>(DispatchFilter.ByUrl("/controller/jsontest"), "/controller/jsontest/"));
             server.Add(new ControllerDispatcher<TestController>(DispatchFilter.ByUrl("/controller"), "/controller/"));
             server.Add(new ControllerDispatcher<PostController>(DispatchFilter.ByUrl("/postcontroller"), "/postcontroller/"));
             server.Add(new RelocationDispatcher("/", "/test.html"));
