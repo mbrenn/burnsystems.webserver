@@ -17,14 +17,33 @@ namespace BurnSystems.WebServer.Filters
             set;
         }
 
-        public AddCorsHeaderFilter(string allowOrigins = "*")
+        public string AllowHeaders
+        {
+            get;
+            set;
+        }
+
+        public string AllowMethods
+        {
+            get;
+            set;
+        }
+
+        public AddCorsHeaderFilter(
+            string allowOrigins = "*", 
+            string allowHeaders = "Content-Type",
+            string allowMethods = "GET, POST")
         {
             this.AllowOrigins = allowOrigins;
+            this.AllowHeaders = allowHeaders;
+            this.AllowMethods = allowMethods;
         }
 
         public void BeforeDispatch(ObjectActivation.IActivates container, Dispatcher.ContextDispatchInformation information, out bool cancel)
         {
             information.Context.Response.AddHeader("Access-Control-Allow-Origin", this.AllowOrigins);
+            information.Context.Response.AddHeader("Access-Control-Allow-Headers", this.AllowHeaders);
+            information.Context.Response.AddHeader("Access-Control-Allow-Methods", this.AllowMethods);
             cancel = false;
         }
 

@@ -8,6 +8,7 @@ using BurnSystems.WebServer.Helper;
 using BurnSystems.WebServer.Modules.Sessions;
 using BurnSystems.WebServer.Modules.PostVariables;
 using BurnSystems.WebServer.Modules.Cookies;
+using BurnSystems.WebServer.Dispatcher;
 
 namespace BurnSystems.WebServer
 {
@@ -84,6 +85,7 @@ namespace BurnSystems.WebServer
         /// <returns></returns>
         public static Server CreateDefaultServer(ObjectActivation.ActivationContainer activationContainer)
         {
+            activationContainer.Bind<IRequestDispatcher>().To<OptionsRequestIs200Dispatcher>();
             activationContainer.BindToName(Server.TemplateParserBindingName).ToConstant(parser);
             activationContainer.Bind<ITemplateParser>().To(() => new TemplateParser());
 

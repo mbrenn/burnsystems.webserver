@@ -31,9 +31,22 @@ namespace BurnSystems.WebServer.Modules.MVC
         /// <returns></returns>
         public object Deserialize(Type typeOfObject)
         {
+            var fullDebug = true;
             using (var reader = new StreamReader(this.context.Request.InputStream))
             {
-                return serializer.Deserialize(reader, typeOfObject);
+                if (fullDebug)
+                {
+                    var readText = reader.ReadToEnd();
+                    using (var stringReader = new StringReader(readText))
+                    {
+                        var returnedObject = serializer.Deserialize(stringReader, typeOfObject);
+                        return returnedObject;
+                    }
+                }
+                else
+                {
+                    return serializer.Deserialize(reader, typeOfObject);
+                }
             }
         }
     }
