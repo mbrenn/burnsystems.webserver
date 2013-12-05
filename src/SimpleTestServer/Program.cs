@@ -54,7 +54,7 @@ namespace SimpleTestServer
             // Web Auth
             var webAuth = new WebAuthorisation();
             webAuth.RestrictTo(DispatchFilter.ByUrl("/controller/Calculator/"), karl.Token);
-            //activationContainer.Bind<IRequestFilter>().ToConstant(webAuth);
+            activationContainer.Bind<IRequestFilter>().ToConstant(webAuth);
 
             server.Start();            
             

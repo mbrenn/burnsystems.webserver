@@ -333,7 +333,8 @@ namespace BurnSystems.WebServer.Modules.MVC
             var httpListenerContext = activates.Get<HttpListenerContext>();
             Ensure.That(httpListenerContext != null);
 
-            if (httpListenerContext.Request.ContentType.ToLower().Contains("application/json"))
+            if (httpListenerContext.Request.ContentType != null && 
+				httpListenerContext.Request.ContentType.ToLower().Contains("application/json"))
             {
                 // Ok, we have application/Json
                 return CreateModelByJson(activates, parameter);

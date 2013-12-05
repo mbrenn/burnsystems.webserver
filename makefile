@@ -34,13 +34,14 @@ build_SimpleTestServer: bin/SimpleTestServer.exe
 bin/SimpleTestServer.exe: $(CS_FILES) bin/BurnSystems.Webserver.dll
 	xbuild src/SimpleTestServer/SimpleTestServer.csproj
 	mkdir -p bin/
-	cp -r src/SimpleTestServer/bin/Debug/* bin/
-	mkdir -p bin/htdocs
+	mkdir -p bin/test-server
+	cp -r src/SimpleTestServer/bin/Debug/* bin/test-server
+	mkdir -p bin/test-server/htdocs
 	mkdir -p src/SimpleTestServer/bin/Debug/htdocs
 	mkdir -p src/SimpleTestServer/bin/Debug/htdocs/js
 	cp -r src/BurnSystems.WebServer/Resources/JQuery/* src/SimpleTestServer/bin/Debug/htdocs/js
-	mkdir -p bin/htdocs/js
-	cp -r src/BurnSystems.WebServer/Resources/JQuery/* bin/htdocs/js
+	mkdir -p bin/test-server/htdocs/js
+	cp -r src/BurnSystems.WebServer/Resources/JQuery/* bin/test-server/htdocs/js
 
 
 .PHONY: clean
