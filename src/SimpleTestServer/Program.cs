@@ -63,7 +63,6 @@ namespace SimpleTestServer
             server.Stop();
 
             Console.WriteLine("Server stopped");
-            Console.ReadKey();
         }
     }
 }
