@@ -185,6 +185,7 @@
     <Compile Include="Modules\Sessions\SessionContainer.cs" />
     <Compile Include="Modules\Sessions\SessionInterface.cs" />
     <Compile Include="Modules\Sessions\SessionStorage.cs" />
+    <Compile Include="Modules\UserManagement\InMemory\PersistentToken.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Localization_WebServer.resx">

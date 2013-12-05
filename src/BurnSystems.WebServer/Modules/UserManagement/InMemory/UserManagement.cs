@@ -61,9 +61,12 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
             throw new NotImplementedException();
         }
 
-        public void UpdateLoginDate(long userId, DateTime date)
-        {
-            throw new NotImplementedException();
+        public void UpdateLoginDate (long userId, DateTime date)
+		{
+			var user = this.GetUser (userId);
+			if (user != null) {
+				user.LastLoginDate = date;
+			}
         }
-    }
+	}
 }

@@ -162,7 +162,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement
 
         /// <summary>
         /// Assigns a persistant cookie to the user that is used to reauthenticate the user
-        /// Idea taken from: http://stackoverflow.com/questions/244882/what-is-the-best-way-to-implement-remember-me-for-a-website        
+        /// Idea taken from: http://stackoverflow.com/questions/244882/what-is-the-best-way-to-implement-remember-me-for-a-website
         /// </summary>
         /// <param name="user">User, which shall be assigned</param>
         /// <param name="series">Series which shall be reused</param>
