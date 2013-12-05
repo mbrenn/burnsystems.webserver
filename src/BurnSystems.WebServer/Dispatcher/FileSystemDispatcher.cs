@@ -36,7 +36,9 @@ namespace BurnSystems.WebServer.Dispatcher
             : base(filter)
         {
             this.PhysicalRootPaths = new List<string>();
-            this.PhysicalRootPaths.Add(physicalRootPath);
+			
+			// Replace backslashes in physical root path by slashes
+            this.PhysicalRootPaths.Add(physicalRootPath.Replace("\\", "/"));
         }
 
         public FileSystemDispatcher(Func<ContextDispatchInformation, bool> filter, string physicalRootPath, string webPrefix)
