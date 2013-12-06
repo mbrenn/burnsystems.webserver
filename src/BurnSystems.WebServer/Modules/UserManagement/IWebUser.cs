@@ -44,11 +44,5 @@ namespace BurnSystems.WebServer.Modules.UserManagement
 			get;
 			set;
 		}
-		
-		void AddOrUpdateToken(string series, string token);
-		
-		void RemoveToken(string series);
-		
-		bool CheckAndRemoveToken(string series, string token);
     }
 }
