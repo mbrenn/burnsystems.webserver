@@ -51,7 +51,7 @@ namespace BurnSystems.WebServer.UnitTests
 
                 try
                 {
-                    var data = webClient.DownloadString("http://localhost:8081/NotFound");
+                    webClient.DownloadString("http://localhost:8081/NotFound");
 
                     // Shall not get reached
                     Assert.IsTrue(false);

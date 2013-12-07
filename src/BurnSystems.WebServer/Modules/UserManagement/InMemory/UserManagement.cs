@@ -68,7 +68,7 @@ namespace BurnSystems.WebServer.Modules.UserManagement.InMemory
 
 		public void UpdateLoginDate (long userId, DateTime date)
 		{
-			var user = this.GetUser (userId);
+			var user = this.GetUser (userId) as User;
 			if (user != null) {
 				user.LastLoginDate = date;
 			}

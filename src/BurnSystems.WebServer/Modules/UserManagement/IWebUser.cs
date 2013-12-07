@@ -36,13 +36,5 @@ namespace BurnSystems.WebServer.Modules.UserManagement
         bool IsPasswordCorrect(string password);
 
         void SetPassword(string password);
-		
-		/// <summary>
-		/// Sets the last login date
-		/// </summary>
-		DateTime LastLoginDate {
-			get;
-			set;
-		}
     }
 }
