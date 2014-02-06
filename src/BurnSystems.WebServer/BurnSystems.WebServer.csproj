@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -94,12 +94,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="BurnSystems">
-      <HintPath>..\..\packages\bin\BurnSystems.dll</HintPath>
-    </Reference>
-    <Reference Include="BurnSystems.Parser">
-      <HintPath>..\..\packages\bin\BurnSystems.Parser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dispatcher\BaseDispatcher.cs" />
@@ -215,7 +209,19 @@
     <TypeScriptCompile Include="Resources\Require\require.d.ts" />
     <Content Include="Resources\Require\require.js" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\burnsystems.parser\src\BurnSystems.Parser.csproj">
+      <Project>{24fc6cc7-afef-456d-8056-96712d1b7909}</Project>
+      <Name>BurnSystems.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\burnsystems\src\BurnSystems.csproj">
+      <Project>{42023d16-afd1-4d99-bc39-9ef46982eb54}</Project>
+      <Name>BurnSystems</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

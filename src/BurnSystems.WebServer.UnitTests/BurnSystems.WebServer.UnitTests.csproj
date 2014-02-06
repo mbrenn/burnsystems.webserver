@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -90,9 +90,6 @@
     <Reference Include="nunit.framework">
       <HintPath>..\..\packages\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="BurnSystems">
-      <HintPath>..\..\packages\bin\BurnSystems.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BspxTests.cs" />
@@ -119,6 +116,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\burnsystems\src\BurnSystems.csproj">
+      <Project>{42023d16-afd1-4d99-bc39-9ef46982eb54}</Project>
+      <Name>BurnSystems</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BurnSystems.WebServer\BurnSystems.WebServer.csproj">
       <Project>{B31DF31A-F19E-4FF9-B50F-B70F4F5949F4}</Project>
       <Name>BurnSystems.WebServer</Name>
