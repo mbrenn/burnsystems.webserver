@@ -31,7 +31,7 @@ namespace BurnSystems.WebServer.Filters
 
         public AddCorsHeaderFilter(
             string allowOrigins = "*", 
-            string allowHeaders = "Content-Type",
+            string allowHeaders = "Content-Type, X-Requested-With",
             string allowMethods = "GET, POST")
         {
             this.AllowOrigins = allowOrigins;
